@@ -1,8 +1,9 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.entites;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.reservations.CottageQuickBooking;
+import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 
 @Entity
 @Table(name = "instructions")
@@ -53,8 +60,11 @@ public class Instructions {
 	@Column(name = "percentageOfEarningsWhenCanceling", unique = false, nullable = false)
 	private double percentageOfEarningsWhenCanceling;
 	
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "instructionsForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<InstructionsQuickBooking> instructionsQuickBookings = new HashSet<InstructionsQuickBooking>();
 	//termini slobodni
-	//akcije
 	
 	public Instructions() {
 		// TODO Auto-generated constructor stub

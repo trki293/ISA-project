@@ -1,4 +1,4 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.entites;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,21 +9,21 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "fishing_equipments")
-public class FishingEquipment {
+@Table(name = "additiona_services")
+public class AdditionalServices {
 	@Id
-	@SequenceGenerator(name = "mySeqGenFishingEquipment", sequenceName = "mySeqFishingEquipment", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenFishingEquipment")
+	@SequenceGenerator(name = "mySeqGenAdditionalServices", sequenceName = "mySeqAdditionalServices", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenAdditionalServices")
 	private long id;
 	
 	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 	
-	public FishingEquipment() {
+	public AdditionalServices() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FishingEquipment(long id, String name) {
+	public AdditionalServices(long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

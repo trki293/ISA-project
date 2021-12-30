@@ -1,8 +1,9 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.entites;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.reservations.CottageQuickBooking;
 
 @Entity
 @Table(name = "cottages")
@@ -46,6 +52,10 @@ public class Cottage {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottageForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageQuickBooking> cottageQuickBookings = new HashSet<CottageQuickBooking>();
 	
 	//termini slobodni
 	//akcije
@@ -145,6 +155,14 @@ public class Cottage {
 
 	public void setAdditionalServices(Set<AdditionalServices> additionalServices) {
 		this.additionalServices = additionalServices;
+	}
+
+	public Set<CottageQuickBooking> getCottageQuickBookings() {
+		return cottageQuickBookings;
+	}
+
+	public void setCottageQuickBookings(Set<CottageQuickBooking> cottageQuickBookings) {
+		this.cottageQuickBookings = cottageQuickBookings;
 	}
 	
 }

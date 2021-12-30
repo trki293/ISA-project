@@ -1,8 +1,9 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.entites;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,8 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 
 @Entity
 @Table(name = "boats")
@@ -70,8 +76,11 @@ public class Boat {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boatForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatQuickBooking> boatQuickBookings;
 	//termini slobodni
-	//akcije
+	
 	
 	public Boat() {
 		// TODO Auto-generated constructor stub
@@ -231,6 +240,14 @@ public class Boat {
 
 	public void setAdditionalServices(Set<AdditionalServices> additionalServices) {
 		this.additionalServices = additionalServices;
+	}
+
+	public Set<BoatQuickBooking> getBoatQuickBookings() {
+		return boatQuickBookings;
+	}
+
+	public void setBoatQuickBookings(Set<BoatQuickBooking> boatQuickBookings) {
+		this.boatQuickBookings = boatQuickBookings;
 	}
 	
 }
