@@ -17,7 +17,10 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.reservations.BoatReservation;
+import com.isa.booking_entities.models.reservations.CottageAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.CottageQuickBooking;
+import com.isa.booking_entities.models.reservations.CottageReservation;
 
 @Entity
 @Table(name = "cottages")
@@ -57,8 +60,13 @@ public class Cottage {
 	@OneToMany(mappedBy = "cottageForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageQuickBooking> cottageQuickBookings = new HashSet<CottageQuickBooking>();
 	
-	//termini slobodni
-	//akcije
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottageForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageReservation> cottageReservations = new HashSet<CottageReservation>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottageForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageAvailabilityPeriod> cottageAvailabilityPeriods = new HashSet<CottageAvailabilityPeriod>();
 	
 	public Cottage() {
 	}

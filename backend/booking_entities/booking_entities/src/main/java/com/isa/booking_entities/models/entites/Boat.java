@@ -19,7 +19,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
+import com.isa.booking_entities.models.reservations.BoatReservation;
 
 @Entity
 @Table(name = "boats")
@@ -78,9 +80,15 @@ public class Boat {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<BoatQuickBooking> boatQuickBookings;
-	//termini slobodni
+	private Set<BoatQuickBooking> boatQuickBookings = new HashSet<BoatQuickBooking>();
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boatForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatReservation> boatReservations = new HashSet<BoatReservation>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boatForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatAvailabilityPeriod> boatAvailabilityPeriods = new HashSet<BoatAvailabilityPeriod>();
 	
 	public Boat() {
 		// TODO Auto-generated constructor stub

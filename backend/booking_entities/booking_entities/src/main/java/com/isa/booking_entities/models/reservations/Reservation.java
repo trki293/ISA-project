@@ -27,8 +27,7 @@ import com.isa.booking_entities.models.users.Client;
 @Entity
 @Table(name = "quick_bookings")
 @Inheritance(strategy = JOINED)
-public class QuickBooking {
-	
+public class Reservation {
 	@Id
 	@SequenceGenerator(name = "mySeqGenQuickBooking", sequenceName = "mySeqQuickBooking", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenQuickBooking")
@@ -41,34 +40,28 @@ public class QuickBooking {
 	private LocalDateTime timeOfEndingReservation;
 	
 	@Column(name = "maxNumberOfPerson", unique = false, nullable = false)
-	private int maxNumberOfPerson;
+	private int numberOfPerson;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
-	
-	@Column(name = "price", unique = false, nullable = false)
-	private double price;
+	private Set<AdditionalServices> additionalServicesFromClient = new HashSet<AdditionalServices>();
 	
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Client clientForQuickBooking;
+	private Client clientForReservation;
 	
-	public QuickBooking() {
+	public Reservation() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public QuickBooking(long id, LocalDateTime timeOfBeginingReservation, LocalDateTime timeOfEndingReservation,
-			int maxNumberOfPerson, Set<AdditionalServices> additionalServices, double price,
-			Client clientForQuickBooking) {
+	public Reservation(long id, LocalDateTime timeOfBeginingReservation, LocalDateTime timeOfEndingReservation,
+			int numberOfPerson, Client clientForReservation) {
 		this.id = id;
 		this.timeOfBeginingReservation = timeOfBeginingReservation;
 		this.timeOfEndingReservation = timeOfEndingReservation;
-		this.maxNumberOfPerson = maxNumberOfPerson;
-		this.additionalServices = additionalServices;
-		this.price = price;
-		this.clientForQuickBooking = clientForQuickBooking;
+		this.numberOfPerson = numberOfPerson;
+		this.clientForReservation = clientForReservation;
 	}
-	
+
 	public long getId() {
 		return id;
 	}
@@ -93,36 +86,28 @@ public class QuickBooking {
 		this.timeOfEndingReservation = timeOfEndingReservation;
 	}
 
-	public int getMaxNumberOfPerson() {
-		return maxNumberOfPerson;
+	public int getNumberOfPerson() {
+		return numberOfPerson;
 	}
 
-	public void setMaxNumberOfPerson(int maxNumberOfPerson) {
-		this.maxNumberOfPerson = maxNumberOfPerson;
+	public void setNumberOfPerson(int numberOfPerson) {
+		this.numberOfPerson = numberOfPerson;
 	}
 
-	public Set<AdditionalServices> getAdditionalServices() {
-		return additionalServices;
+	public Set<AdditionalServices> getAdditionalServicesFromClient() {
+		return additionalServicesFromClient;
 	}
 
-	public void setAdditionalServices(Set<AdditionalServices> additionalServices) {
-		this.additionalServices = additionalServices;
+	public void setAdditionalServicesFromClient(Set<AdditionalServices> additionalServicesFromClient) {
+		this.additionalServicesFromClient = additionalServicesFromClient;
 	}
 
-	public double getPrice() {
-		return price;
+	public Client getClientForReservation() {
+		return clientForReservation;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public Client getClientForQuickBooking() {
-		return clientForQuickBooking;
-	}
-
-	public void setClientForQuickBooking(Client clientForQuickBooking) {
-		this.clientForQuickBooking = clientForQuickBooking;
+	public void setClientForReservation(Client clientForReservation) {
+		this.clientForReservation = clientForReservation;
 	}
 	
 }
