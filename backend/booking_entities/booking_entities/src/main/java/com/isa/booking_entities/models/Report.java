@@ -1,0 +1,106 @@
+package com.isa.booking_entities.models;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.isa.booking_entities.models.users.Client;
+import com.isa.booking_entities.models.users.SystemAdmin;
+
+public class Report {
+	@Id
+	@SequenceGenerator(name = "mySeqGenReport", sequenceName = "mySeqReport", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenReport")
+	private long id;
+	
+	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Client reportingClient;
+	
+	@Column(name = "picturesPaths", unique = false, nullable = true)
+	private String content;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private TypeOfReport typeOfReport;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private StatusOfReport statusOfReport;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private ReportingType reportingType;
+	
+	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private SystemAdmin adminWhoReviewsReport;
+	
+	public Report() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Report(long id, Client reportingClient, String content, TypeOfReport typeOfReport,
+			StatusOfReport statusOfReport, SystemAdmin adminWhoReviewsReport) {
+		this.id = id;
+		this.reportingClient = reportingClient;
+		this.content = content;
+		this.typeOfReport = typeOfReport;
+		this.statusOfReport = statusOfReport;
+		this.adminWhoReviewsReport = adminWhoReviewsReport;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Client getReportingClient() {
+		return reportingClient;
+	}
+
+	public void setReportingClient(Client reportingClient) {
+		this.reportingClient = reportingClient;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public TypeOfReport getTypeOfReport() {
+		return typeOfReport;
+	}
+
+	public void setTypeOfReport(TypeOfReport typeOfReport) {
+		this.typeOfReport = typeOfReport;
+	}
+
+	public StatusOfReport getStatusOfReport() {
+		return statusOfReport;
+	}
+
+	public void setStatusOfReport(StatusOfReport statusOfReport) {
+		this.statusOfReport = statusOfReport;
+	}
+
+	public SystemAdmin getAdminWhoReviewsReport() {
+		return adminWhoReviewsReport;
+	}
+
+	public void setAdminWhoReviewsReport(SystemAdmin adminWhoReviewsReport) {
+		this.adminWhoReviewsReport = adminWhoReviewsReport;
+	}
+		
+}

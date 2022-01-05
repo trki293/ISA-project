@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,6 +24,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.isa.booking_entities.models.entites.AdditionalServices;
+import com.isa.booking_entities.models.rating.TypeOfReview;
 import com.isa.booking_entities.models.users.Client;
 
 @Entity
@@ -48,6 +51,9 @@ public class QuickBooking {
 	
 	@Column(name = "price", unique = false, nullable = false)
 	private double price;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private TypeOfQuickBooking typeOfQuickBooking;
 	
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

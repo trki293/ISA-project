@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isa.booking_entities.models.rating.Review;
 import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.models.reservations.Reservation;
 
@@ -31,5 +32,9 @@ public class Client extends Users {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "clientForQuickBooking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<QuickBooking> quickBookings = new HashSet<QuickBooking>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "clientWhoEvaluating", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Review> reviews= new HashSet<Review>();
 	//It is necessary to add an enum for the client's rank
 }

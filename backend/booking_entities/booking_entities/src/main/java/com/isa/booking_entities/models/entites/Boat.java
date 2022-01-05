@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.rating.BoatReview;
 import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
@@ -85,6 +86,10 @@ public class Boat {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatReservation> boatReservations = new HashSet<BoatReservation>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boatForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatReview> boatReviews = new HashSet<BoatReview>();
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
