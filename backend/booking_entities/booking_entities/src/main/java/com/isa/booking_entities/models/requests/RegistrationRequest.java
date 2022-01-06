@@ -1,4 +1,4 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.requests;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.isa.booking_entities.models.Address;
 import com.isa.booking_entities.models.users.TypeOfUser;
 
 @Entity
@@ -43,7 +44,7 @@ public class RegistrationRequest{
 	@Column(name = "registrationReason", unique = false, nullable = false)
 	private String registrationReason;
 	
-	@Column(name = "stateOfRequest", unique = false, nullable = false)
+	@Enumerated(EnumType.ORDINAL)
 	private StateOfRequest stateOfRequest;
 	
 	//Perhaps add an administrator that handles request requests because two admins cannot view the same request at the same time

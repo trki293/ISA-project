@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.complaints.CottageComplaint;
 import com.isa.booking_entities.models.rating.CottageReview;
 import com.isa.booking_entities.models.reservations.BoatReservation;
 import com.isa.booking_entities.models.reservations.CottageAvailabilityPeriod;
@@ -72,6 +73,10 @@ public class Cottage {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageAvailabilityPeriod> cottageAvailabilityPeriods = new HashSet<CottageAvailabilityPeriod>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottageForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageComplaint>  cottageComplaints= new HashSet<CottageComplaint>();
 	
 	public Cottage() {
 	}

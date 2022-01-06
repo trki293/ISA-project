@@ -10,8 +10,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.isa.booking_entities.models.CottageOwnerReport;
+import com.isa.booking_entities.models.complaints.CottageComplaint;
 import com.isa.booking_entities.models.rating.CottageReview;
+import com.isa.booking_entities.models.reports.CottageOwnerReport;
 
 @Entity
 @Table(name="cottage_owners")
@@ -25,4 +26,7 @@ public class CottageOwner extends Users {
 	@OneToMany(mappedBy = "cottageOwnerWhoCreateReport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageOwnerReport>  cottageOwnerReports= new HashSet<CottageOwnerReport>();
 	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "cottageOwnerForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<CottageComplaint>  cottageOwnerComplaints= new HashSet<CottageComplaint>();
 }

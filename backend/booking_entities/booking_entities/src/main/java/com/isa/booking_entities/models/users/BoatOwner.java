@@ -10,8 +10,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.isa.booking_entities.models.BoatOwnerReport;
+import com.isa.booking_entities.models.complaints.BoatComplaint;
 import com.isa.booking_entities.models.rating.BoatReview;
+import com.isa.booking_entities.models.reports.BoatOwnerReport;
 
 @Entity
 @Table(name="boat_owners")
@@ -23,4 +24,8 @@ public class BoatOwner extends Users {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatOwnerWhoCreateReport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatOwnerReport>  boatOwnerReports= new HashSet<BoatOwnerReport>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boatOwnerForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatComplaint>  boatOwnerComplaints= new HashSet<BoatComplaint>();
 }

@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,6 +46,9 @@ public class Reservation {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServicesFromClient = new HashSet<AdditionalServices>();
+	
+	@Enumerated(EnumType.ORDINAL)
+	private TypeOfReservation typeOfReservation;
 	
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

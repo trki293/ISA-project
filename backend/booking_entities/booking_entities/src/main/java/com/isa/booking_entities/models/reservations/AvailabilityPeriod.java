@@ -5,6 +5,8 @@ import static javax.persistence.InheritanceType.JOINED;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,6 +30,9 @@ public class AvailabilityPeriod {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm", timezone = "UTC")
 	private LocalDateTime endPeriod;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private TypeOfAvailabilityPeriod typeOfAvailabilityPeriod;
 	
 	public AvailabilityPeriod() {
 		// TODO Auto-generated constructor stub

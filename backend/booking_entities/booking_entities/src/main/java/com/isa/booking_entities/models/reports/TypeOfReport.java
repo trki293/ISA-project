@@ -1,4 +1,4 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.reports;
 
 public enum TypeOfReport {
 	THE_CLIENT_DID_NOT_APPEAR, THE_CLIENT_SHOULD_BE_SANCTIONED, ORDINARY_REPORT

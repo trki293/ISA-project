@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.complaints.BoatComplaint;
 import com.isa.booking_entities.models.rating.BoatReview;
 import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
@@ -94,6 +95,10 @@ public class Boat {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatAvailabilityPeriod> boatAvailabilityPeriods = new HashSet<BoatAvailabilityPeriod>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "boatForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<BoatComplaint> boatComplaints = new HashSet<BoatComplaint>();
 	
 	public Boat() {
 		// TODO Auto-generated constructor stub

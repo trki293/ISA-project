@@ -7,10 +7,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isa.booking_entities.models.entites.Boat;
+import com.isa.booking_entities.models.entites.Cottage;
 import com.isa.booking_entities.models.rating.Review;
 import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.models.reservations.Reservation;
@@ -36,5 +39,14 @@ public class Client extends Users {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "clientWhoEvaluating", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Review> reviews= new HashSet<Review>();
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<Boat> boatSubscriptions = new HashSet<Boat>();
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<Cottage> cottageSubscriptions = new HashSet<Cottage>();
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<Instructor> instructorSubscriptions = new HashSet<Instructor>();
 	//It is necessary to add an enum for the client's rank
 }

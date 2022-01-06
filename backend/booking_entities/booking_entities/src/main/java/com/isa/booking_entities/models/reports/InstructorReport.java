@@ -1,4 +1,4 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.models.reports;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
