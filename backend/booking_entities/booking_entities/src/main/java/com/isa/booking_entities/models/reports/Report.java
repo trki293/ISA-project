@@ -1,20 +1,29 @@
 package com.isa.booking_entities.models.reports;
 
+import static javax.persistence.InheritanceType.JOINED;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.SystemAdmin;
 
+
+@Entity
+@Table(name = "reports")
+@Inheritance(strategy = JOINED)
 public class Report {
 	@Id
 	@SequenceGenerator(name = "mySeqGenReport", sequenceName = "mySeqReport", initialValue = 1, allocationSize = 1)
