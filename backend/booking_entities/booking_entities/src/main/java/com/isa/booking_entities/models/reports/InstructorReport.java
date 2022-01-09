@@ -17,4 +17,16 @@ public class InstructorReport extends Report{
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructor instructorWhoCreateReport;
 	
+	public InstructorReport() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Instructor getInstructorWhoCreateReport() {
+		return instructorWhoCreateReport;
+	}
+
+	public void setInstructorWhoCreateReport(Instructor instructorWhoCreateReport) {
+		this.instructorWhoCreateReport = instructorWhoCreateReport;
+	}
+	
 }

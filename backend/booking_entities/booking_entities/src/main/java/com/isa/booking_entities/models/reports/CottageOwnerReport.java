@@ -17,4 +17,16 @@ public class CottageOwnerReport extends Report {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private CottageOwner cottageOwnerWhoCreateReport;
 	
+	public CottageOwnerReport() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public CottageOwner getCottageOwnerWhoCreateReport() {
+		return cottageOwnerWhoCreateReport;
+	}
+
+	public void setCottageOwnerWhoCreateReport(CottageOwner cottageOwnerWhoCreateReport) {
+		this.cottageOwnerWhoCreateReport = cottageOwnerWhoCreateReport;
+	}
+	
 }

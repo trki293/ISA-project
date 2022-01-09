@@ -10,10 +10,23 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.booking_entities.models.entites.Instructions;
 
 @Entity
-@Table(name="instructions_quick_bookings")
+@Table(name = "instructions_quick_bookings")
 public class InstructionsQuickBooking extends QuickBooking {
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructions instructionsForQuickReservation;
+
+	public InstructionsQuickBooking() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Instructions getInstructionsForQuickReservation() {
+		return instructionsForQuickReservation;
+	}
+
+	public void setInstructionsForQuickReservation(Instructions instructionsForQuickReservation) {
+		this.instructionsForQuickReservation = instructionsForQuickReservation;
+	}
+
 }

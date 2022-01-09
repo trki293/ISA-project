@@ -20,39 +20,29 @@ public class Report {
 	@SequenceGenerator(name = "mySeqGenReport", sequenceName = "mySeqReport", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenReport")
 	private long id;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client reportingClient;
-	
+
 	@Column(name = "picturesPaths", unique = false, nullable = true)
 	private String content;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfReport typeOfReport;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private StatusOfReport statusOfReport;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private ReportingType reportingType;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private SystemAdmin adminWhoReviewsReport;
-	
+
 	public Report() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public Report(long id, Client reportingClient, String content, TypeOfReport typeOfReport,
-			StatusOfReport statusOfReport, SystemAdmin adminWhoReviewsReport) {
-		this.id = id;
-		this.reportingClient = reportingClient;
-		this.content = content;
-		this.typeOfReport = typeOfReport;
-		this.statusOfReport = statusOfReport;
-		this.adminWhoReviewsReport = adminWhoReviewsReport;
 	}
 
 	public long getId() {
@@ -102,5 +92,13 @@ public class Report {
 	public void setAdminWhoReviewsReport(SystemAdmin adminWhoReviewsReport) {
 		this.adminWhoReviewsReport = adminWhoReviewsReport;
 	}
-		
+
+	public ReportingType getReportingType() {
+		return reportingType;
+	}
+
+	public void setReportingType(ReportingType reportingType) {
+		this.reportingType = reportingType;
+	}
+
 }

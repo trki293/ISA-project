@@ -23,36 +23,27 @@ import com.isa.booking_entities.models.users.Client;
 @Table(name = "complaints")
 @Inheritance(strategy = JOINED)
 public class Complaint {
-	
+
 	@Id
 	@SequenceGenerator(name = "mySeqGenComplaint", sequenceName = "mySeqComplaint", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenComplaint")
 	private long id;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client clientWhoCreateComplaint;
-	
+
 	@Column(name = "text", unique = false, nullable = false)
 	private String text;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfComplaint typeOfComplaint;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private StatusOfComplaint statusOfComplaint;
-	
+
 	public Complaint() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public Complaint(long id, Client clientWhoCreateComplaint, String text, TypeOfComplaint typeOfComplaint,
-			StatusOfComplaint statusOfComplaint) {
-		this.id = id;
-		this.clientWhoCreateComplaint = clientWhoCreateComplaint;
-		this.text = text;
-		this.typeOfComplaint = typeOfComplaint;
-		this.statusOfComplaint = statusOfComplaint;
 	}
 
 	public long getId() {
@@ -94,5 +85,5 @@ public class Complaint {
 	public void setStatusOfComplaint(StatusOfComplaint statusOfComplaint) {
 		this.statusOfComplaint = statusOfComplaint;
 	}
-	
+
 }

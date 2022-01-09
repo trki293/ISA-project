@@ -37,13 +37,7 @@ public class AvailabilityPeriod {
 	public AvailabilityPeriod() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public AvailabilityPeriod(long id, LocalDateTime beginPeriod, LocalDateTime endPeriod) {
-		this.id = id;
-		this.beginPeriod = beginPeriod;
-		this.endPeriod = endPeriod;
-	}
-
+	
 	public long getId() {
 		return id;
 	}
@@ -66,6 +60,14 @@ public class AvailabilityPeriod {
 
 	public void setEndPeriod(LocalDateTime endPeriod) {
 		this.endPeriod = endPeriod;
+	}
+
+	public TypeOfAvailabilityPeriod getTypeOfAvailabilityPeriod() {
+		return typeOfAvailabilityPeriod;
+	}
+
+	public void setTypeOfAvailabilityPeriod(TypeOfAvailabilityPeriod typeOfAvailabilityPeriod) {
+		this.typeOfAvailabilityPeriod = typeOfAvailabilityPeriod;
 	}
 	
 }

@@ -11,23 +11,18 @@ import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.users.BoatOwner;
 
 @Entity
-@Table(name="boat_reviews")
-public class BoatReview extends Review{
+@Table(name = "boat_reviews")
+public class BoatReview extends Review {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Boat boatForReview;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private BoatOwner boatOwnerForReview;
-	
+
 	public BoatReview() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public BoatReview(Boat boatForReview, BoatOwner boatOwnerForReview) {
-		this.boatForReview = boatForReview;
-		this.boatOwnerForReview = boatOwnerForReview;
 	}
 
 	public Boat getBoatForReview() {
@@ -45,5 +40,5 @@ public class BoatReview extends Review{
 	public void setBoatOwnerForReview(BoatOwner boatOwnerForReview) {
 		this.boatOwnerForReview = boatOwnerForReview;
 	}
-	
+
 }

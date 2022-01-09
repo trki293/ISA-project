@@ -20,4 +20,25 @@ public class BoatComplaint extends Complaint{
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private BoatOwner boatOwnerForComplaint;
+	
+	public BoatComplaint() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Boat getBoatForComplaint() {
+		return boatForComplaint;
+	}
+
+	public void setBoatForComplaint(Boat boatForComplaint) {
+		this.boatForComplaint = boatForComplaint;
+	}
+
+	public BoatOwner getBoatOwnerForComplaint() {
+		return boatOwnerForComplaint;
+	}
+
+	public void setBoatOwnerForComplaint(BoatOwner boatOwnerForComplaint) {
+		this.boatOwnerForComplaint = boatOwnerForComplaint;
+	}
+	
 }

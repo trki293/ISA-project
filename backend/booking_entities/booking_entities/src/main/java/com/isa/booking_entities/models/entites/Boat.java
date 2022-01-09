@@ -13,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
 import com.isa.booking_entities.models.complaints.BoatComplaint;
@@ -24,6 +26,7 @@ import com.isa.booking_entities.models.rating.BoatReview;
 import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
+import com.isa.booking_entities.models.users.BoatOwner;
 
 @Entity
 @Table(name = "boats")
@@ -32,96 +35,81 @@ public class Boat {
 	@SequenceGenerator(name = "mySeqGenBoat", sequenceName = "mySeqBoat", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenBoat")
 	private long id;
-	
+
 	@Column(name = "title", unique = false, nullable = false)
 	private String title;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfBoat typeOfBoat;
-	
+
 	@Column(name = "length", unique = false, nullable = false)
 	private double length;
-	
+
 	@Column(name = "engineNumber", unique = false, nullable = false)
 	private int engineNumber;
-	
+
 	@Column(name = "enginePower", unique = false, nullable = false)
 	private double enginePower;
-	
+
 	@Column(name = "maxSpeed", unique = false, nullable = false)
 	private double maxSpeed;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<NavigationEquipment> navigationEquipment = new HashSet<NavigationEquipment>();
-	
+
 	private Address address;
-	
+
 	@Column(name = "promotionalDescription", unique = false, nullable = true)
 	private String promotionalDescription;
-	
+
 	@Column(name = "picturesPaths", unique = false, nullable = true)
-	private String picturesPaths; //trenutno zamisljeno kao string sa pathovima razdvojenim nekim karakterom, posle mozda bude promjenjeno kao i sa Address
-	
+	private String picturesPaths; // trenutno zamisljeno kao string sa pathovima razdvojenim nekim karakterom,
+									// posle mozda bude promjenjeno kao i sa Address
+
 	@Column(name = "capacity", unique = false, nullable = false)
 	private int capacity;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<FishingEquipment> fishingEquipment = new HashSet<FishingEquipment>();
-	
+
 	@Column(name = "rulesOfConduct", unique = false, nullable = true)
 	private String rulesOfConduct;
-	
+
 	@Column(name = "pricePerHour", unique = false, nullable = false)
 	private double pricePerHour;
-	
+
 	@Column(name = "percentageOfEarningsWhenCanceling", unique = false, nullable = false)
 	private double percentageOfEarningsWhenCanceling;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatQuickBooking> boatQuickBookings = new HashSet<BoatQuickBooking>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatReservation> boatReservations = new HashSet<BoatReservation>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatReview> boatReviews = new HashSet<BoatReview>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatAvailabilityPeriod> boatAvailabilityPeriods = new HashSet<BoatAvailabilityPeriod>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "boatForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatComplaint> boatComplaints = new HashSet<BoatComplaint>();
-	
+
+	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private BoatOwner ownerOfBoat;
+
 	public Boat() {
 		// TODO Auto-generated constructor stub
-	}
-	
-	public Boat(long id, String title, TypeOfBoat typeOfBoat, double length, int engineNumber, double enginePower,
-			double maxSpeed, Address address, String promotionalDescription, String picturesPaths, int capacity,
-			String rulesOfConduct, double pricePerHour, double percentageOfEarningsWhenCanceling) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.typeOfBoat = typeOfBoat;
-		this.length = length;
-		this.engineNumber = engineNumber;
-		this.enginePower = enginePower;
-		this.maxSpeed = maxSpeed;
-		this.address = address;
-		this.promotionalDescription = promotionalDescription;
-		this.picturesPaths = picturesPaths;
-		this.capacity = capacity;
-		this.rulesOfConduct = rulesOfConduct;
-		this.pricePerHour = pricePerHour;
-		this.percentageOfEarningsWhenCanceling = percentageOfEarningsWhenCanceling;
 	}
 
 	public long getId() {
@@ -267,5 +255,45 @@ public class Boat {
 	public void setBoatQuickBookings(Set<BoatQuickBooking> boatQuickBookings) {
 		this.boatQuickBookings = boatQuickBookings;
 	}
-	
+
+	public Set<BoatReservation> getBoatReservations() {
+		return boatReservations;
+	}
+
+	public void setBoatReservations(Set<BoatReservation> boatReservations) {
+		this.boatReservations = boatReservations;
+	}
+
+	public Set<BoatReview> getBoatReviews() {
+		return boatReviews;
+	}
+
+	public void setBoatReviews(Set<BoatReview> boatReviews) {
+		this.boatReviews = boatReviews;
+	}
+
+	public Set<BoatAvailabilityPeriod> getBoatAvailabilityPeriods() {
+		return boatAvailabilityPeriods;
+	}
+
+	public void setBoatAvailabilityPeriods(Set<BoatAvailabilityPeriod> boatAvailabilityPeriods) {
+		this.boatAvailabilityPeriods = boatAvailabilityPeriods;
+	}
+
+	public Set<BoatComplaint> getBoatComplaints() {
+		return boatComplaints;
+	}
+
+	public void setBoatComplaints(Set<BoatComplaint> boatComplaints) {
+		this.boatComplaints = boatComplaints;
+	}
+
+	public BoatOwner getOwnerOfBoat() {
+		return ownerOfBoat;
+	}
+
+	public void setOwnerOfBoat(BoatOwner ownerOfBoat) {
+		this.ownerOfBoat = ownerOfBoat;
+	}
+
 }

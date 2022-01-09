@@ -11,10 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
 import com.isa.booking_entities.models.complaints.CottageComplaint;
@@ -23,6 +25,7 @@ import com.isa.booking_entities.models.reservations.BoatReservation;
 import com.isa.booking_entities.models.reservations.CottageAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.CottageQuickBooking;
 import com.isa.booking_entities.models.reservations.CottageReservation;
+import com.isa.booking_entities.models.users.CottageOwner;
 
 @Entity
 @Table(name = "cottages")
@@ -31,70 +34,62 @@ public class Cottage {
 	@SequenceGenerator(name = "mySeqGenCottage", sequenceName = "mySeqCottage", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenCottage")
 	private long id;
-	
+
 	@Column(name = "title", unique = false, nullable = false)
 	private String title;
-	
+
 	private Address address;
-	
+
 	@Column(name = "promotionalDescription", unique = false, nullable = true)
 	private String promotionalDescription;
-	
+
 	@Column(name = "picturesPaths", unique = false, nullable = true)
-	private String picturesPaths; //trenutno zamisljeno kao string sa pathovima razdvojenim nekim karakterom, posle mozda bude promjenjeno kao i sa Address
-	
+	private String picturesPaths; // trenutno zamisljeno kao string sa pathovima razdvojenim nekim karakterom,
+									// posle mozda bude promjenjeno kao i sa Address
+
 	@Column(name = "numberOfRooms", unique = false, nullable = false)
 	private int numberOfRooms;
-	
+
 	@Column(name = "numberOfBeds", unique = false, nullable = false)
 	private int numberOfBeds;
-	
+
 	@Column(name = "rulesOfConduct", unique = false, nullable = true)
 	private String rulesOfConduct;
-	
+
 	@Column(name = "pricePerNight", unique = false, nullable = false)
 	private double pricePerNight;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageQuickBooking> cottageQuickBookings = new HashSet<CottageQuickBooking>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageReservation> cottageReservations = new HashSet<CottageReservation>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<CottageReview>  cottageReviews= new HashSet<CottageReview>();
-	
+	private Set<CottageReview> cottageReviews = new HashSet<CottageReview>();
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageAvailabilityPeriod> cottageAvailabilityPeriods = new HashSet<CottageAvailabilityPeriod>();
-	
+
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cottageForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<CottageComplaint>  cottageComplaints= new HashSet<CottageComplaint>();
-	
+	private Set<CottageComplaint> cottageComplaints = new HashSet<CottageComplaint>();
+
+	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private CottageOwner ownerOfCottage;
+
 	public Cottage() {
+
 	}
 
-	public Cottage(long id, String title, Address address, String promotionalDescription, String picturesPaths,
-			int numberOfRooms, int numberOfBeds, String rulesOfConduct, double pricePerNight) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.address = address;
-		this.promotionalDescription = promotionalDescription;
-		this.picturesPaths = picturesPaths;
-		this.numberOfRooms = numberOfRooms;
-		this.numberOfBeds = numberOfBeds;
-		this.rulesOfConduct = rulesOfConduct;
-		this.pricePerNight = pricePerNight;
-	}
-	
 	public long getId() {
 		return id;
 	}
@@ -182,5 +177,45 @@ public class Cottage {
 	public void setCottageQuickBookings(Set<CottageQuickBooking> cottageQuickBookings) {
 		this.cottageQuickBookings = cottageQuickBookings;
 	}
-	
+
+	public Set<CottageReservation> getCottageReservations() {
+		return cottageReservations;
+	}
+
+	public void setCottageReservations(Set<CottageReservation> cottageReservations) {
+		this.cottageReservations = cottageReservations;
+	}
+
+	public Set<CottageReview> getCottageReviews() {
+		return cottageReviews;
+	}
+
+	public void setCottageReviews(Set<CottageReview> cottageReviews) {
+		this.cottageReviews = cottageReviews;
+	}
+
+	public Set<CottageAvailabilityPeriod> getCottageAvailabilityPeriods() {
+		return cottageAvailabilityPeriods;
+	}
+
+	public void setCottageAvailabilityPeriods(Set<CottageAvailabilityPeriod> cottageAvailabilityPeriods) {
+		this.cottageAvailabilityPeriods = cottageAvailabilityPeriods;
+	}
+
+	public Set<CottageComplaint> getCottageComplaints() {
+		return cottageComplaints;
+	}
+
+	public void setCottageComplaints(Set<CottageComplaint> cottageComplaints) {
+		this.cottageComplaints = cottageComplaints;
+	}
+
+	public CottageOwner getOwnerOfCottage() {
+		return ownerOfCottage;
+	}
+
+	public void setOwnerOfCottage(CottageOwner ownerOfCottage) {
+		this.ownerOfCottage = ownerOfCottage;
+	}
+
 }

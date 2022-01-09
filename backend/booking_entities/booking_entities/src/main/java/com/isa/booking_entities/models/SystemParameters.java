@@ -40,26 +40,10 @@ public class SystemParameters {
 	@Column(name = "discountForSilver", unique = false, nullable = false)
 	private double discountForSilver;
 	
-	@Column(name = "discountForGold", unique = false, nullable = false)
 	private double discountForGold;
 	
 	public SystemParameters() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public SystemParameters(long id, double bookingFee, double incomeFromReservations, int pointsForClients,
-			int pointsForProviders, int thresholdForSilver, int thresholdForGold, double discountForRegular,
-			double discountForSilver, double discountForGold) {
-		this.id = id;
-		this.bookingFee = bookingFee;
-		this.incomeFromReservations = incomeFromReservations;
-		this.pointsForClients = pointsForClients;
-		this.pointsForProviders = pointsForProviders;
-		this.thresholdForSilver = thresholdForSilver;
-		this.thresholdForGold = thresholdForGold;
-		this.discountForRegular = discountForRegular;
-		this.discountForSilver = discountForSilver;
-		this.discountForGold = discountForGold;
 	}
 
 	public long getId() {

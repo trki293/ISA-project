@@ -35,14 +35,6 @@ public class DeleteAccountRequest {
 		// TODO Auto-generated constructor stub
 	}
 
-	public DeleteAccountRequest(long id, Users userWhoDeleteAccount, String text,
-			StateOfDeleteAccountRequest stateOfRequest) {
-		this.id = id;
-		this.userWhoDeleteAccount = userWhoDeleteAccount;
-		this.text = text;
-		this.stateOfRequest = stateOfRequest;
-	}
-
 	public long getId() {
 		return id;
 	}

@@ -10,9 +10,22 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.booking_entities.models.entites.Instructions;
 
 @Entity
-@Table(name="instructions_availability_periods")
-public class InstructionsAvailabilityPeriod extends AvailabilityPeriod{
+@Table(name = "instructions_availability_periods")
+public class InstructionsAvailabilityPeriod extends AvailabilityPeriod {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructions instructionsForAvailabilityPeriod;
+
+	public InstructionsAvailabilityPeriod() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Instructions getInstructionsForAvailabilityPeriod() {
+		return instructionsForAvailabilityPeriod;
+	}
+
+	public void setInstructionsForAvailabilityPeriod(Instructions instructionsForAvailabilityPeriod) {
+		this.instructionsForAvailabilityPeriod = instructionsForAvailabilityPeriod;
+	}
+
 }

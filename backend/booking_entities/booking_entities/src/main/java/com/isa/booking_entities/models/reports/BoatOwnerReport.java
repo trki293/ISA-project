@@ -18,9 +18,21 @@ import com.isa.booking_entities.models.users.CottageOwner;
 @Entity
 @Table(name = "boat_owner_reports")
 public class BoatOwnerReport {
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private BoatOwner boatOwnerWhoCreateReport;
-	
+
+	public BoatOwnerReport() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public BoatOwner getBoatOwnerWhoCreateReport() {
+		return boatOwnerWhoCreateReport;
+	}
+
+	public void setBoatOwnerWhoCreateReport(BoatOwner boatOwnerWhoCreateReport) {
+		this.boatOwnerWhoCreateReport = boatOwnerWhoCreateReport;
+	}
+
 }

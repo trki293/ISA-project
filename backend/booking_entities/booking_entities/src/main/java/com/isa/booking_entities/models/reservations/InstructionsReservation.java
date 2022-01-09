@@ -11,4 +11,17 @@ public class InstructionsReservation extends Reservation {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructions instructionsForReservation;
+	
+	public InstructionsReservation() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Instructions getInstructionsForReservation() {
+		return instructionsForReservation;
+	}
+
+	public void setInstructionsForReservation(Instructions instructionsForReservation) {
+		this.instructionsForReservation = instructionsForReservation;
+	}
+	
 }

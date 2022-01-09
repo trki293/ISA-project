@@ -27,25 +27,19 @@ public class ComplaintResponse {
 	@SequenceGenerator(name = "mySeqGenComplaintResponse", sequenceName = "mySeqComplaintResponse", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenComplaintResponse")
 	private long id;
-	
-	@Column(name="text", unique=false, nullable=false)
+
+	@Column(name = "text", unique = false, nullable = false)
 	private String text;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private SystemAdmin systemAdminWhoCreateResponse;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfComplaintResponse typeOfComplaintResponse;
-	
+
 	public ComplaintResponse() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public ComplaintResponse(long id, String text, SystemAdmin systemAdminWhoCreateResponse) {
-		this.id = id;
-		this.text = text;
-		this.systemAdminWhoCreateResponse = systemAdminWhoCreateResponse;
 	}
 
 	public long getId() {
@@ -71,5 +65,13 @@ public class ComplaintResponse {
 	public void setSystemAdminWhoCreateResponse(SystemAdmin systemAdminWhoCreateResponse) {
 		this.systemAdminWhoCreateResponse = systemAdminWhoCreateResponse;
 	}
-	
+
+	public TypeOfComplaintResponse getTypeOfComplaintResponse() {
+		return typeOfComplaintResponse;
+	}
+
+	public void setTypeOfComplaintResponse(TypeOfComplaintResponse typeOfComplaintResponse) {
+		this.typeOfComplaintResponse = typeOfComplaintResponse;
+	}
+
 }

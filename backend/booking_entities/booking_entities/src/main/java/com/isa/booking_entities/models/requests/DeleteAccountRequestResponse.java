@@ -15,4 +15,25 @@ public class DeleteAccountRequestResponse {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 	private SystemAdmin systemAdminWhoReviewRequest; 
+	
+	public DeleteAccountRequestResponse() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DeleteAccountRequest getDeleteAccountRequest() {
+		return deleteAccountRequest;
+	}
+
+	public void setDeleteAccountRequest(DeleteAccountRequest deleteAccountRequest) {
+		this.deleteAccountRequest = deleteAccountRequest;
+	}
+
+	public SystemAdmin getSystemAdminWhoReviewRequest() {
+		return systemAdminWhoReviewRequest;
+	}
+
+	public void setSystemAdminWhoReviewRequest(SystemAdmin systemAdminWhoReviewRequest) {
+		this.systemAdminWhoReviewRequest = systemAdminWhoReviewRequest;
+	}
+	
 }

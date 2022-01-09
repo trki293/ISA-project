@@ -34,37 +34,28 @@ public class Reservation {
 	@SequenceGenerator(name = "mySeqGenQuickBooking", sequenceName = "mySeqQuickBooking", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenQuickBooking")
 	private long id;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm", timezone = "UTC")
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "UTC")
 	private LocalDateTime timeOfBeginingReservation;
-	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm", timezone = "UTC")
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "UTC")
 	private LocalDateTime timeOfEndingReservation;
-	
+
 	@Column(name = "maxNumberOfPerson", unique = false, nullable = false)
 	private int numberOfPerson;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServicesFromClient = new HashSet<AdditionalServices>();
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfReservation typeOfReservation;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client clientForReservation;
-	
+
 	public Reservation() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public Reservation(long id, LocalDateTime timeOfBeginingReservation, LocalDateTime timeOfEndingReservation,
-			int numberOfPerson, Client clientForReservation) {
-		this.id = id;
-		this.timeOfBeginingReservation = timeOfBeginingReservation;
-		this.timeOfEndingReservation = timeOfEndingReservation;
-		this.numberOfPerson = numberOfPerson;
-		this.clientForReservation = clientForReservation;
 	}
 
 	public long getId() {
@@ -114,5 +105,13 @@ public class Reservation {
 	public void setClientForReservation(Client clientForReservation) {
 		this.clientForReservation = clientForReservation;
 	}
-	
+
+	public TypeOfReservation getTypeOfReservation() {
+		return typeOfReservation;
+	}
+
+	public void setTypeOfReservation(TypeOfReservation typeOfReservation) {
+		this.typeOfReservation = typeOfReservation;
+	}
+
 }

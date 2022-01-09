@@ -16,4 +16,17 @@ public class InstructionsReview extends Review {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructor instructorForReview;
+	
+	public InstructionsReview() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Instructor getInstructorForReview() {
+		return instructorForReview;
+	}
+
+	public void setInstructorForReview(Instructor instructorForReview) {
+		this.instructorForReview = instructorForReview;
+	}
+	
 }

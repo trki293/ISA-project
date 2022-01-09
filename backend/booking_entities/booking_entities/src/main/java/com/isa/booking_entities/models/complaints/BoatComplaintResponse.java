@@ -10,4 +10,17 @@ import javax.persistence.Table;
 public class BoatComplaintResponse extends ComplaintResponse {
 	@OneToOne(cascade = CascadeType.ALL)
 	private BoatComplaint boatComplaintForComplaintResponse;
+
+	public BoatComplaintResponse() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public BoatComplaint getBoatComplaintForComplaintResponse() {
+		return boatComplaintForComplaintResponse;
+	}
+
+	public void setBoatComplaintForComplaintResponse(BoatComplaint boatComplaintForComplaintResponse) {
+		this.boatComplaintForComplaintResponse = boatComplaintForComplaintResponse;
+	}
+
 }

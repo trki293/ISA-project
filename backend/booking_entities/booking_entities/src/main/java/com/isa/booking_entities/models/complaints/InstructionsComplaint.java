@@ -15,4 +15,17 @@ public class InstructionsComplaint extends Complaint {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructor instructorForComplaint;
+
+	public InstructionsComplaint() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Instructor getInstructorForComplaint() {
+		return instructorForComplaint;
+	}
+
+	public void setInstructorForComplaint(Instructor instructorForComplaint) {
+		this.instructorForComplaint = instructorForComplaint;
+	}
+
 }

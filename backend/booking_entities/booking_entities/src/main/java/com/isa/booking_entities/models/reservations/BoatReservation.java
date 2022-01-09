@@ -7,8 +7,21 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.booking_entities.models.entites.Boat;
 
-public class BoatReservation extends Reservation{
+public class BoatReservation extends Reservation {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Boat boatForReservation;
+
+	public BoatReservation() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Boat getBoatForReservation() {
+		return boatForReservation;
+	}
+
+	public void setBoatForReservation(Boat boatForReservation) {
+		this.boatForReservation = boatForReservation;
+	}
+
 }

@@ -20,4 +20,25 @@ public class CottageReview extends Review{
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private CottageOwner cottageOwnerForReview;
+	
+	public CottageReview() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Cottage getCottageForReview() {
+		return cottageForReview;
+	}
+
+	public void setCottageForReview(Cottage cottageForReview) {
+		this.cottageForReview = cottageForReview;
+	}
+
+	public CottageOwner getCottageOwnerForReview() {
+		return cottageOwnerForReview;
+	}
+
+	public void setCottageOwnerForReview(CottageOwner cottageOwnerForReview) {
+		this.cottageOwnerForReview = cottageOwnerForReview;
+	}
+	
 }

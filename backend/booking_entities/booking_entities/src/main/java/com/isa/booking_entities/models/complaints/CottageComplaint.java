@@ -16,8 +16,29 @@ public class CottageComplaint extends Complaint {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Cottage cottageForComplaint;
-	
+
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private CottageOwner cottageOwnerForComplaint;
+
+	public CottageComplaint() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Cottage getCottageForComplaint() {
+		return cottageForComplaint;
+	}
+
+	public void setCottageForComplaint(Cottage cottageForComplaint) {
+		this.cottageForComplaint = cottageForComplaint;
+	}
+
+	public CottageOwner getCottageOwnerForComplaint() {
+		return cottageOwnerForComplaint;
+	}
+
+	public void setCottageOwnerForComplaint(CottageOwner cottageOwnerForComplaint) {
+		this.cottageOwnerForComplaint = cottageOwnerForComplaint;
+	}
+
 }

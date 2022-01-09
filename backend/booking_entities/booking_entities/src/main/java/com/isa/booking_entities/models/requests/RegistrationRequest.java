@@ -1,72 +1,63 @@
 package com.isa.booking_entities.models.requests;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.users.SystemAdmin;
 import com.isa.booking_entities.models.users.TypeOfUser;
 
 @Entity
 @Table(name = "registration_requests")
-public class RegistrationRequest{
+public class RegistrationRequest {
 	@Id
 	@SequenceGenerator(name = "mySeqGenRegistrationRequest", sequenceName = "mySeqRegistrationRequest", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenRegistrationRequest")
 	private long id;
-	
+
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
-	
+
 	@Column(name = "password", unique = false, nullable = false)
 	private String password;
-	
+
 	@Column(name = "firstName", unique = false, nullable = false)
 	private String firstName;
-	
+
 	@Column(name = "lastName", unique = false, nullable = false)
-	private String lastName; 
-	
+	private String lastName;
+
 	@Column(name = "phoneNumber", unique = false, nullable = false)
-	private String phoneNumber; 
-	
+	private String phoneNumber;
+
 	private Address residentalAddress;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfUser typeOfUser;
-	
+
 	@Column(name = "registrationReason", unique = false, nullable = false)
 	private String registrationReason;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private StateOfRequest stateOfRequest;
-	
-	//Perhaps add an administrator that handles request requests because two admins cannot view the same request at the same time
-	
+
+	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private SystemAdmin systemAdminWhoReviewRegistrationRequest;
+
 	public RegistrationRequest() {
 		// TODO Auto-generated constructor stub
-	}
-	
-	public RegistrationRequest(long id, String email, String password, String firstName, String lastName,
-			String phoneNumber, Address residentalAddress, TypeOfUser typeOfUser, String registrationReason,
-			StateOfRequest stateOfRequest) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
-		this.residentalAddress = residentalAddress;
-		this.typeOfUser = typeOfUser;
-		this.registrationReason = registrationReason;
-		this.stateOfRequest = stateOfRequest;
 	}
 
 	public long getId() {
@@ -140,5 +131,21 @@ public class RegistrationRequest{
 	public void setRegistrationReason(String registrationReason) {
 		this.registrationReason = registrationReason;
 	}
-	
+
+	public StateOfRequest getStateOfRequest() {
+		return stateOfRequest;
+	}
+
+	public void setStateOfRequest(StateOfRequest stateOfRequest) {
+		this.stateOfRequest = stateOfRequest;
+	}
+
+	public SystemAdmin getSystemAdminWhoReviewRegistrationRequest() {
+		return systemAdminWhoReviewRegistrationRequest;
+	}
+
+	public void setSystemAdminWhoReviewRegistrationRequest(SystemAdmin systemAdminWhoReviewRegistrationRequest) {
+		this.systemAdminWhoReviewRegistrationRequest = systemAdminWhoReviewRegistrationRequest;
+	}
+
 }
