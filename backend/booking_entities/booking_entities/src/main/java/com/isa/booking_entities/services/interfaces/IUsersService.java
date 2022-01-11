@@ -8,4 +8,5 @@ public interface IUsersService {
 	Users getById(long id);
 	Users getByEmail(String email);
 	List<Users> getAll();
+	Users save(Users user);
 }

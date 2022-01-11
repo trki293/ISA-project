@@ -190,4 +190,8 @@ public class Users implements UserDetails  {
 		return enabledLogin;
 	}
 
+	public void setAuthorities(List<Authority> authorities) {
+		this.authorities = authorities;
+	}
+
 }

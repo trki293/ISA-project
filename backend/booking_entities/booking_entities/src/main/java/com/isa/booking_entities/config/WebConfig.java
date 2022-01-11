@@ -1,4 +1,4 @@
-package com.isa.booking_entities.configuration;
+package com.isa.booking_entities.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

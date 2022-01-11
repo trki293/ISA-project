@@ -31,4 +31,9 @@ public class UsersService implements IUsersService {
 		return iUsersRepository.findAll().stream().filter(user -> user.getEmail().equals(email)).findFirst().orElse(null);
 	}
 
+	@Override
+	public Users save(Users user) {
+		return iUsersRepository.save(user);
+	}
+
 }
