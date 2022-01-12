@@ -6,20 +6,21 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.isa.booking_entities.dtos.UserCreateDTO;
+import com.isa.booking_entities.dtos.UserUpdateDTO;
 import com.isa.booking_entities.models.users.Authority;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.StatusOfUser;
 import com.isa.booking_entities.models.users.TypeOfUser;
 
-public class UserCreateDTOConverter {
+public class UsersDTOConverter {
 	
 	private PasswordEncoder passwordEncoder;
 	
-	public UserCreateDTOConverter() {
+	public UsersDTOConverter() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public UserCreateDTOConverter(PasswordEncoder passwordEncoder) {
+	public UsersDTOConverter(PasswordEncoder passwordEncoder) {
 		this.passwordEncoder = passwordEncoder;
 	}
 	

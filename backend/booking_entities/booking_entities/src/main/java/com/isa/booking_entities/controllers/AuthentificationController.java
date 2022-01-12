@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.isa.booking_entities.converter.UserCreateDTOConverter;
+import com.isa.booking_entities.converter.UsersDTOConverter;
 import com.isa.booking_entities.dtos.UserCreateDTO;
 import com.isa.booking_entities.dtos.UserLoginDTO;
 import com.isa.booking_entities.dtos.UserTokenStateDTO;
@@ -53,7 +53,7 @@ public class AuthentificationController {
 
 	private IUsersService iUsersService;
 
-	private UserCreateDTOConverter userCreateDTOConverter;
+	private UsersDTOConverter usersDTOConverter;
 
 	private IClientService iClientService;
 
@@ -71,7 +71,7 @@ public class AuthentificationController {
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = userDetailsService;
 		this.iUsersService = iUsersService;
-		this.userCreateDTOConverter = new UserCreateDTOConverter(new BCryptPasswordEncoder());
+		this.usersDTOConverter = new UsersDTOConverter(new BCryptPasswordEncoder());
 		this.iClientService = iClientService;
 		this.iAuthorityService = iAuthorityService;
 		this.iConfirmationTokenService = iConfirmationTokenService;
@@ -115,7 +115,7 @@ public class AuthentificationController {
 				|| !userCreateDTO.getPassword().equals(userCreateDTO.getConfirmationPassword())) {
 			return new ResponseEntity<Users>(HttpStatus.BAD_REQUEST);
 		}
-		Client client = userCreateDTOConverter.convertUserCreateDTOToClient(userCreateDTO);
+		Client client = usersDTOConverter.convertUserCreateDTOToClient(userCreateDTO);
 		client.setAuthorities(iAuthorityService.getByName("ROLE_CLIENT"));
 		iClientService.save(client);
 		Users userCreated = iUsersService.save(client);
