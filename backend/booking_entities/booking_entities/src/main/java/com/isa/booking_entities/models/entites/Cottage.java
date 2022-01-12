@@ -58,6 +58,12 @@ public class Cottage {
 
 	@Column(name = "pricePerNight", unique = false, nullable = false)
 	private double pricePerNight;
+	
+	@Column(name = "averageGrade", unique = false, nullable = false)
+	private double averageGrade;
+	
+	@Column(name = "deleted", unique = false, nullable = false)
+	private Boolean deleted;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
@@ -216,6 +222,22 @@ public class Cottage {
 
 	public void setOwnerOfCottage(CottageOwner ownerOfCottage) {
 		this.ownerOfCottage = ownerOfCottage;
+	}
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }

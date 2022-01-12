@@ -36,6 +36,7 @@ public class UserCreateDTOConverter {
 		client.setResidentalAddress(userCreateDTO.getAddress());
 		client.setStatuseOfUser(StatusOfUser.REGULAR);
 		client.setTypeOfUser(TypeOfUser.CLIENT);
+		client.setDeleted(false);
 		return client;
 	}
 

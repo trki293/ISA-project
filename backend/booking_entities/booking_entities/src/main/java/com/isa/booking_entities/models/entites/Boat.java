@@ -45,6 +45,12 @@ public class Boat {
 	@Column(name = "length", unique = false, nullable = false)
 	private double length;
 
+	@Column(name = "averageGrade", unique = false, nullable = false)
+	private double averageGrade;
+	
+	@Column(name = "deleted", unique = false, nullable = false)
+	private Boolean deleted;
+	
 	@Column(name = "engineNumber", unique = false, nullable = false)
 	private int engineNumber;
 
@@ -294,6 +300,22 @@ public class Boat {
 
 	public void setOwnerOfBoat(BoatOwner ownerOfBoat) {
 		this.ownerOfBoat = ownerOfBoat;
+	}
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }

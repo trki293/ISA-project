@@ -70,6 +70,9 @@ public class Users implements UserDetails  {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Authority> authorities;
 	
+	@Column(name = "deleted", unique = false, nullable = false)
+	private Boolean deleted;
+	
 	public Users() {
 		// TODO Auto-generated constructor stub
 	}
@@ -192,6 +195,14 @@ public class Users implements UserDetails  {
 
 	public void setAuthorities(List<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }

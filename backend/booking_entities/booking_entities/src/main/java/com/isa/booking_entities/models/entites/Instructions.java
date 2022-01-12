@@ -51,6 +51,12 @@ public class Instructions {
 	@Column(name = "maxNumberOfPeople", unique = false, nullable = false)
 	private int maxNumberOfPeople;
 
+	@Column(name = "averageGrade", unique = false, nullable = false)
+	private double averageGrade;
+	
+	@Column(name = "deleted", unique = false, nullable = false)
+	private Boolean deleted;
+	
 	@Column(name = "rulesOfConduct", unique = false, nullable = true)
 	private String rulesOfConduct;
 
@@ -213,6 +219,22 @@ public class Instructions {
 	public void setInstructionsAvailabilityPeriods(
 			Set<InstructionsAvailabilityPeriod> instructionsAvailabilityPeriods) {
 		this.instructionsAvailabilityPeriods = instructionsAvailabilityPeriods;
+	}
+
+	public double getAverageGrade() {
+		return averageGrade;
+	}
+
+	public void setAverageGrade(double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 }
