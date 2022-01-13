@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
+import com.isa.booking_entities.dtos.InstructionDisplayDTO;
 import com.isa.booking_entities.dtos.InstructionsPreviewDTO;
 import com.isa.booking_entities.dtos.InstructionsSearchDTO;
 import com.isa.booking_entities.services.interfaces.IInstructionsService;
@@ -30,5 +32,10 @@ public class InstructionsController {
 	@PostMapping("/unauthenticated/getAllInstructions")
 	public ResponseEntity<List<InstructionsPreviewDTO>> getAllInstructionsForUnautorize(@RequestBody InstructionsSearchDTO instructionsSearchDTO) {
 		return new ResponseEntity<>(iInstructionsService.getAllInstructions(instructionsSearchDTO),HttpStatus.OK);
+	}
+	
+	@PostMapping("/getAllInstructionsForClient")
+	public ResponseEntity<List<InstructionDisplayDTO>> getAllInstructionsForClient(@RequestBody EntitySearchReservationDTO instructionsSearchReservationDTO) {
+		return new ResponseEntity<>(iInstructionsService.getAllInstructionsForClient(instructionsSearchReservationDTO),HttpStatus.OK);
 	}
 }

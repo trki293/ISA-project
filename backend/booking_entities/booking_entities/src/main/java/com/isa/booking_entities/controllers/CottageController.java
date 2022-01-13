@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.CottagePreviewDTO;
 import com.isa.booking_entities.dtos.CottageSearchDTO;
+import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
+import com.isa.booking_entities.dtos.CottageDisplayDTO;
 import com.isa.booking_entities.services.interfaces.ICottageService;
 
 @Controller
@@ -31,5 +33,10 @@ public class CottageController {
 	@PostMapping("/unauthenticated/getAllCottages")
 	public ResponseEntity<List<CottagePreviewDTO>> getAllCottagesForUnautorize(@RequestBody CottageSearchDTO cottageSearchDTO) {
 		return new ResponseEntity<>(iCottageService.getAllCottages(cottageSearchDTO),HttpStatus.OK);
+	}
+	
+	@PostMapping("/getAllCottagesForClient")
+	public ResponseEntity<List<CottageDisplayDTO>> getAllCottagesForClient(@RequestBody EntitySearchReservationDTO cottageSearchReservationDTO) {
+		return new ResponseEntity<>(iCottageService.getAllCottagesForClient(cottageSearchReservationDTO),HttpStatus.OK);
 	}
 }

@@ -22,7 +22,6 @@ import com.isa.booking_entities.models.Address;
 import com.isa.booking_entities.models.reservations.InstructionsAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
-import com.isa.booking_entities.models.users.BoatOwner;
 import com.isa.booking_entities.models.users.Instructor;
 
 @Entity

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.BoatPreviewDTO;
 import com.isa.booking_entities.dtos.BoatSearchDTO;
+import com.isa.booking_entities.dtos.BoatDisplayDTO;
+import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
 import com.isa.booking_entities.services.interfaces.IBoatService;
 
 @Controller
@@ -30,5 +32,10 @@ public class BoatController {
 	@PostMapping("/unauthenticated/getAllBoats")
 	public ResponseEntity<List<BoatPreviewDTO>> getAllBoatsForUnautorize(@RequestBody BoatSearchDTO instructionsSearchDTO) {
 		return new ResponseEntity<>(iBoatService.getAllBoats(instructionsSearchDTO),HttpStatus.OK);
+	}
+	
+	@PostMapping("/getAllBoatsForClient")
+	public ResponseEntity<List<BoatDisplayDTO>> getAllBoatsForClient(@RequestBody EntitySearchReservationDTO boatSearchReservationDTO) {
+		return new ResponseEntity<>(iBoatService.getAllBoatsForClient(boatSearchReservationDTO),HttpStatus.OK);
 	}
 }
