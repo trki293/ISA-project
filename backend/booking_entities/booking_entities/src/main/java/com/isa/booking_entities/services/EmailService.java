@@ -29,4 +29,15 @@ public class EmailService {
         mail.setText("Please confirm your registration by clicking the link below \n\n"+ "http://localhost:8080/auth/confirm_account/" + confirmationToken);
         javaMailSender.send(mail);
     }
+    
+    @Async
+    public void sendReservationConfirmationEmail(String email, String typeOfReservation) throws MailException, InterruptedException {
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Confirmation of booking");
+        mail.setText("You have successfully made a reservation of "+typeOfReservation+"!\n\nBest Regards.");
+        javaMailSender.send(mail);
+    }
 }

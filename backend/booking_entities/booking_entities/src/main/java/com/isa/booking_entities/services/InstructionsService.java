@@ -1,6 +1,8 @@
 package com.isa.booking_entities.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
 import com.isa.booking_entities.dtos.InstructionDisplayDTO;
 import com.isa.booking_entities.dtos.InstructionsPreviewDTO;
 import com.isa.booking_entities.dtos.InstructionsSearchDTO;
+import com.isa.booking_entities.models.entites.AdditionalServices;
+import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.reservations.InstructionsAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
@@ -175,4 +179,19 @@ public class InstructionsService implements IInstructionsService {
 								.isAfter(entitySearchReservationDTO.getEndDate()));
 	}
 
+	@Override
+	public List<String> getAdditionalServicesForInstructions(long id) throws Exception {
+		Instructions instructions = iInstructionsRepository.findById(id).orElse(null);
+		if (instructions==null) {
+			throw new Exception("Don't exist instructions with id '"+id+"'!");
+		}
+		return getNamesOfAdditionalServices(instructions.getAdditionalServices());
+	}
+	
+	private List<String> getNamesOfAdditionalServices(Set<AdditionalServices> additionalServices){
+		List<String> list = new ArrayList<String>();
+		additionalServices.forEach(additionalServiceIt -> list.add(additionalServiceIt.getName()));
+		return list;
+	}
+	
 }

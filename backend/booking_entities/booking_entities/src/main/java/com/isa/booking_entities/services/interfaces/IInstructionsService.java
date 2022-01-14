@@ -13,4 +13,5 @@ public interface IInstructionsService {
 	Instructions save(Instructions instructions);
 	List<InstructionsPreviewDTO> getAllInstructions(InstructionsSearchDTO instructionsSearchDTO);
 	List<InstructionDisplayDTO> getAllInstructionsForClient(EntitySearchReservationDTO instructionsSearchReservationDTO);
+	List<String> getAdditionalServicesForInstructions(long id) throws Exception;
 }

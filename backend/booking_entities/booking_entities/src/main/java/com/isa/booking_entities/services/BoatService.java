@@ -1,6 +1,8 @@
 package com.isa.booking_entities.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import com.isa.booking_entities.dtos.BoatDisplayDTO;
 import com.isa.booking_entities.dtos.BoatPreviewDTO;
 import com.isa.booking_entities.dtos.BoatSearchDTO;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
+import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
@@ -183,5 +186,20 @@ public class BoatService implements IBoatService {
 				|| (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
 						&& quickBookingIt.getTimeOfBeginingReservation()
 								.isAfter(entitySearchReservationDTO.getEndDate()));
+	}
+
+	@Override
+	public List<String> getAdditionalServicesForBoat(long id) throws Exception {
+		Boat boat = iBoatRepository.findById(id).orElse(null);
+		if (boat==null) {
+			throw new Exception("Don't exist boat with id '"+id+"'!");
+		}
+		return getNamesOfAdditionalServices(boat.getAdditionalServices());
+	}
+	
+	private List<String> getNamesOfAdditionalServices(Set<AdditionalServices> additionalServices){
+		List<String> list = new ArrayList<String>();
+		additionalServices.forEach(additionalServiceIt -> list.add(additionalServiceIt.getName()));
+		return list;
 	}
 }

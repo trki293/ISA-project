@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +42,16 @@ public class CottageController {
 	@PostMapping("/getAllCottagesForClient")
 	public ResponseEntity<List<CottageDisplayDTO>> getAllCottagesForClient(@RequestBody EntitySearchReservationDTO cottageSearchReservationDTO) {
 		return new ResponseEntity<>(iCottageService.getAllCottagesForClient(cottageSearchReservationDTO),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAdditionalServicesForCottage/{id}")
+	public ResponseEntity<List<String>> getAdditionalServicesForCottage(@PathVariable long id) {
+		try {
+			return new ResponseEntity<>(iCottageService.getAdditionalServicesForCottage(id),HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping("/sort/title/{asc}")

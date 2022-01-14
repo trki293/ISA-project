@@ -1,6 +1,8 @@
 package com.isa.booking_entities.services;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,7 @@ import com.isa.booking_entities.dtos.CottageDisplayDTO;
 import com.isa.booking_entities.dtos.CottagePreviewDTO;
 import com.isa.booking_entities.dtos.CottageSearchDTO;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
-import com.isa.booking_entities.models.entites.Cottage;
+import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.entites.Cottage;
 import com.isa.booking_entities.models.reservations.CottageAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.CottageQuickBooking;
@@ -191,5 +193,20 @@ public class CottageService implements ICottageService {
 				|| (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
 						&& quickBookingIt.getTimeOfBeginingReservation()
 								.isAfter(entitySearchReservationDTO.getEndDate()));
+	}
+	
+	@Override
+	public List<String> getAdditionalServicesForCottage(long id) throws Exception {
+		Cottage cottage = iCottageRepository.findById(id).orElse(null);
+		if (cottage==null) {
+			throw new Exception("Don't exist cottage with id '"+id+"'!");
+		}
+		return getNamesOfAdditionalServices(cottage.getAdditionalServices());
+	}
+	
+	private List<String> getNamesOfAdditionalServices(Set<AdditionalServices> additionalServices){
+		List<String> list = new ArrayList<String>();
+		additionalServices.forEach(additionalServiceIt -> list.add(additionalServiceIt.getName()));
+		return list;
 	}
 }

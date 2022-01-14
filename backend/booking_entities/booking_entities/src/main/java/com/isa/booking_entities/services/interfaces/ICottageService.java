@@ -14,4 +14,5 @@ public interface ICottageService {
 	Cottage save(Cottage cottage);
 	List<CottagePreviewDTO> getAllCottages(CottageSearchDTO cottageSearchDTO);
 	List<CottageDisplayDTO> getAllCottagesForClient(EntitySearchReservationDTO cottageSearchReservationDTO);
+	List<String> getAdditionalServicesForCottage(long id) throws Exception;
 }

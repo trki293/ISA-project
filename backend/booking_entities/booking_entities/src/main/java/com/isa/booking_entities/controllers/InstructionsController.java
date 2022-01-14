@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,16 @@ public class InstructionsController {
 	@PostMapping("/getAllInstructionsForClient")
 	public ResponseEntity<List<InstructionDisplayDTO>> getAllInstructionsForClient(@RequestBody EntitySearchReservationDTO instructionsSearchReservationDTO) {
 		return new ResponseEntity<>(iInstructionsService.getAllInstructionsForClient(instructionsSearchReservationDTO),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAdditionalServicesForInstructions/{id}")
+	public ResponseEntity<List<String>> getAdditionalServicesForInstructions(@PathVariable long id) {
+		try {
+			return new ResponseEntity<>(iInstructionsService.getAdditionalServicesForInstructions(id),HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping("/sort/title/{asc}")

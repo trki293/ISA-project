@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +18,37 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.BoatReservationHistoryDTO;
+import com.isa.booking_entities.dtos.BoatReservationNewDTO;
+import com.isa.booking_entities.models.entites.Boat;
+import com.isa.booking_entities.models.reservations.BoatReservation;
+import com.isa.booking_entities.models.users.Client;
+import com.isa.booking_entities.services.EmailService;
 import com.isa.booking_entities.services.interfaces.IBoatReservationService;
+import com.isa.booking_entities.services.interfaces.IBoatService;
+import com.isa.booking_entities.services.interfaces.IClientService;
+import com.isa.booking_entities.services.interfaces.IReservationService;
 
 @Controller
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/boat_reservations", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BoatReservationController {
 	private IBoatReservationService iBoatReservationService;
+	
+	private IBoatService iBoatService;
 
+	private IClientService iClientService;
+	
+	private IReservationService iReservationService;
+	
+	private EmailService emailService;
+	
 	@Autowired
-	public BoatReservationController(IBoatReservationService iBoatReservationService) {
+	public BoatReservationController(EmailService emailService,IBoatReservationService iBoatReservationService,IBoatService iBoatService,IClientService iClientService,IReservationService iReservationService) {
 		this.iBoatReservationService = iBoatReservationService;
+		this.iBoatService = iBoatService;
+		this.iClientService = iClientService;
+		this.iReservationService =iReservationService;
+		this.emailService = emailService;
 	}
 	
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
@@ -45,6 +66,23 @@ public class BoatReservationController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<List<BoatReservationHistoryDTO>>(boatReservationHistoryDTOs, HttpStatus.OK);
+	}
+	
+	@PostMapping("/create")
+	public ResponseEntity<Boolean> createBoatReservation(@RequestBody BoatReservationNewDTO boatReservationNewDTO) {
+		Boat boat = iBoatService.getById(boatReservationNewDTO.getBoatId());
+		Client client = iClientService.getByEmail(boatReservationNewDTO.getClientEmail()); 
+		BoatReservation boatReservation = iBoatReservationService.createReservation(boatReservationNewDTO,boat,client);
+		iBoatReservationService.save(boatReservation);
+		iReservationService.save(boatReservation);
+		try {
+			emailService.sendReservationConfirmationEmail(client.getEmail(), "boat");
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (MailException | InterruptedException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	@PostMapping("/history/sort/duration/{asc}")
