@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.converter.InstructionsPreviewDTOConverter;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
@@ -18,6 +19,7 @@ import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.repositories.IInstructionsRepository;
 import com.isa.booking_entities.services.interfaces.IInstructionsService;
 
+@Service
 public class InstructionsService implements IInstructionsService {
 
 	private IInstructionsRepository iInstructionsRepository;

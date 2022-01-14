@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.converter.CottagePreviewDTOConverter;
 import com.isa.booking_entities.dtos.CottageDisplayDTO;
@@ -19,6 +20,7 @@ import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.repositories.ICottageRepository;
 import com.isa.booking_entities.services.interfaces.ICottageService;
 
+@Service
 public class CottageService implements ICottageService {
 
 	private ICottageRepository iCottageRepository;

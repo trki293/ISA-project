@@ -59,6 +59,14 @@ public class InstructionDisplayDTO {
 	public Address getAddress() {
 		return address;
 	}
+	
+	public String getCountryFromAddress() {
+		return address.getCountry();
+	}
+	
+	public String getCityFromAddress() {
+		return address.getCity();
+	}
 
 	public void setAddress(Address address) {
 		this.address = address;

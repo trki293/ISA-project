@@ -41,15 +41,21 @@ public class Reservation {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "UTC")
 	private LocalDateTime timeOfEndingReservation;
 
-	@Column(name = "maxNumberOfPerson", unique = false, nullable = false)
+	@Column(name = "numberOfPerson", unique = false, nullable = false)
 	private int numberOfPerson;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServicesFromClient = new HashSet<AdditionalServices>();
 
+	@Column(name = "totalPrice", unique = false, nullable = false)
+	private double totalPrice;
+	
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfReservation typeOfReservation;
 
+	@Enumerated(EnumType.ORDINAL)
+	private StatusOfReservation statusOfReservation;
+	
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client clientForReservation;
@@ -114,4 +120,20 @@ public class Reservation {
 		this.typeOfReservation = typeOfReservation;
 	}
 
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public StatusOfReservation getStatusOfReservation() {
+		return statusOfReservation;
+	}
+
+	public void setStatusOfReservation(StatusOfReservation statusOfReservation) {
+		this.statusOfReservation = statusOfReservation;
+	}
+	
 }

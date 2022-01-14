@@ -48,12 +48,15 @@ public class QuickBooking {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
 
-	@Column(name = "price", unique = false, nullable = false)
-	private double price;
+	@Column(name = "totalPrice", unique = false, nullable = false)
+	private double totalPrice;
 
 	@Enumerated(EnumType.ORDINAL)
 	private TypeOfQuickBooking typeOfQuickBooking;
-
+	
+	@Enumerated(EnumType.ORDINAL)
+	private StatusOfQuickBooking statusOfQuickBooking;
+	
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client clientForQuickBooking;
@@ -102,12 +105,12 @@ public class QuickBooking {
 		this.additionalServices = additionalServices;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public Client getClientForQuickBooking() {

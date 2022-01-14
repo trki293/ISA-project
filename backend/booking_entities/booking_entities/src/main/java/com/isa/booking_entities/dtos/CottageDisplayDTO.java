@@ -61,6 +61,14 @@ public class CottageDisplayDTO {
 	public Address getAddress() {
 		return address;
 	}
+	
+	public String getCityFromAddress() {
+		return address.getCity();
+	}
+	
+	public String getCountryFromAddress() {
+		return address.getCountry();
+	}
 
 	public void setAddress(Address address) {
 		this.address = address;

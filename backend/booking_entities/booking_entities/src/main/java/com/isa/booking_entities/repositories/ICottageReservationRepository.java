@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.isa.booking_entities.models.reservations.CottageReservation;
 
-public interface ICottageReservationRespository extends JpaRepository<CottageReservation, Long> {
+public interface ICottageReservationRepository extends JpaRepository<CottageReservation, Long> {
 
 }
