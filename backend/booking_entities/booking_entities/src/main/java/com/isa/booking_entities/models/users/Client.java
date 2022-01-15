@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.complaints.Complaint;
 import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.entites.Cottage;
+import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.rating.Review;
 import com.isa.booking_entities.models.reports.Report;
 import com.isa.booking_entities.models.reservations.QuickBooking;
@@ -62,7 +63,7 @@ public class Client extends Users {
 	private Set<Cottage> cottageSubscriptions = new HashSet<Cottage>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	private Set<Instructor> instructorSubscriptions = new HashSet<Instructor>();
+	private Set<Instructions> instructionsSubscriptions = new HashSet<Instructions>();
 
 	public Client() {
 		// TODO Auto-generated constructor stub
@@ -148,12 +149,12 @@ public class Client extends Users {
 		this.cottageSubscriptions = cottageSubscriptions;
 	}
 
-	public Set<Instructor> getInstructorSubscriptions() {
-		return instructorSubscriptions;
+	public Set<Instructions> getInstructionsSubscriptions() {
+		return instructionsSubscriptions;
 	}
 
-	public void setInstructorSubscriptions(Set<Instructor> instructorSubscriptions) {
-		this.instructorSubscriptions = instructorSubscriptions;
+	public void setInstructionsSubscriptions(Set<Instructions> instructionsSubscriptions) {
+		this.instructionsSubscriptions = instructionsSubscriptions;
 	}
 
 }
