@@ -19,6 +19,7 @@ import com.isa.booking_entities.models.reservations.CottageAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.CottageQuickBooking;
 import com.isa.booking_entities.models.reservations.CottageReservation;
 import com.isa.booking_entities.models.reservations.QuickBooking;
+import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.repositories.ICottageRepository;
 import com.isa.booking_entities.services.interfaces.ICottageService;
 
@@ -179,7 +180,7 @@ public class CottageService implements ICottageService {
 
 	private boolean isReservationBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			CottageReservation reservationIt) {
-		return (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
 				&& reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
 				|| (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
 						&& reservationIt.getTimeOfBeginingReservation()

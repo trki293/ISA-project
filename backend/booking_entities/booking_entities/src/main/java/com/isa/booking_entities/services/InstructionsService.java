@@ -19,6 +19,7 @@ import com.isa.booking_entities.models.reservations.InstructionsAvailabilityPeri
 import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
 import com.isa.booking_entities.models.reservations.QuickBooking;
+import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.repositories.IInstructionsRepository;
 import com.isa.booking_entities.services.interfaces.IInstructionsService;
 
@@ -162,7 +163,7 @@ public class InstructionsService implements IInstructionsService {
 
 	private boolean isReservationBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			InstructionsReservation reservationIt) {
-		return (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
 				&& reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
 				|| (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
 						&& reservationIt.getTimeOfBeginingReservation()

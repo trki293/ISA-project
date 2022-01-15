@@ -14,18 +14,23 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.BoatReservationHistoryDTO;
 import com.isa.booking_entities.dtos.BoatReservationNewDTO;
 import com.isa.booking_entities.models.entites.Boat;
+import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
+import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.services.EmailService;
+import com.isa.booking_entities.services.interfaces.IBoatQuickBookingService;
 import com.isa.booking_entities.services.interfaces.IBoatReservationService;
 import com.isa.booking_entities.services.interfaces.IBoatService;
 import com.isa.booking_entities.services.interfaces.IClientService;
+import com.isa.booking_entities.services.interfaces.IQuickBookingService;
 import com.isa.booking_entities.services.interfaces.IReservationService;
 
 @Controller
@@ -33,6 +38,10 @@ import com.isa.booking_entities.services.interfaces.IReservationService;
 @RequestMapping(value = "/boat_reservations", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BoatReservationController {
 	private IBoatReservationService iBoatReservationService;
+	
+	private IBoatQuickBookingService iBoatQuickBookingService;
+	
+	private IQuickBookingService iQuickBookingService;
 	
 	private IBoatService iBoatService;
 
@@ -43,12 +52,14 @@ public class BoatReservationController {
 	private EmailService emailService;
 	
 	@Autowired
-	public BoatReservationController(EmailService emailService,IBoatReservationService iBoatReservationService,IBoatService iBoatService,IClientService iClientService,IReservationService iReservationService) {
+	public BoatReservationController(IQuickBookingService iQuickBookingService,IBoatQuickBookingService iBoatQuickBookingService,EmailService emailService,IBoatReservationService iBoatReservationService,IBoatService iBoatService,IClientService iClientService,IReservationService iReservationService) {
 		this.iBoatReservationService = iBoatReservationService;
 		this.iBoatService = iBoatService;
 		this.iClientService = iClientService;
 		this.iReservationService =iReservationService;
+		this.iBoatQuickBookingService =iBoatQuickBookingService;
 		this.emailService = emailService;
+		this.iQuickBookingService = iQuickBookingService;
 	}
 	
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
@@ -82,6 +93,21 @@ public class BoatReservationController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	@PutMapping(value = "/cancel_boat_reservation/{boatReservationId}", consumes = "application/json")
+	public ResponseEntity<Boolean> cancelBoatReservation(@PathVariable long boatReservationId) {
+		BoatReservation boatReservation = iBoatReservationService.getById(boatReservationId);
+		boatReservation.setStatusOfReservation(StatusOfReservation.CANCELED);
+		BoatQuickBooking boatQuickBooking = iBoatQuickBookingService.checkExistBoatQuickBookingForBoatReservation(boatReservation);
+		if (boatQuickBooking!=null) {
+			boatQuickBooking.setClientForQuickBooking(null);
+			iBoatQuickBookingService.save(boatQuickBooking);
+			iQuickBookingService.save(boatQuickBooking);
+		}
+		iBoatReservationService.save(boatReservation);
+		iReservationService.save(boatReservation);
+		return new ResponseEntity<Boolean>(HttpStatus.OK);
 		
 	}
 	

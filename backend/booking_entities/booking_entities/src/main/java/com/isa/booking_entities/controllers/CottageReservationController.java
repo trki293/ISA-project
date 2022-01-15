@@ -14,18 +14,23 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.CottageReservationHistoryDTO;
 import com.isa.booking_entities.dtos.CottageReservationNewDTO;
 import com.isa.booking_entities.models.entites.Cottage;
+import com.isa.booking_entities.models.reservations.CottageQuickBooking;
 import com.isa.booking_entities.models.reservations.CottageReservation;
+import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.services.EmailService;
 import com.isa.booking_entities.services.interfaces.IClientService;
+import com.isa.booking_entities.services.interfaces.ICottageQuickBookingService;
 import com.isa.booking_entities.services.interfaces.ICottageReservationService;
 import com.isa.booking_entities.services.interfaces.ICottageService;
+import com.isa.booking_entities.services.interfaces.IQuickBookingService;
 import com.isa.booking_entities.services.interfaces.IReservationService;
 
 @Controller
@@ -33,9 +38,13 @@ import com.isa.booking_entities.services.interfaces.IReservationService;
 @RequestMapping(value = "/cottage_reservations", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CottageReservationController {
 	private ICottageReservationService iCottageReservationService;
-
-	private ICottageService iCottageService;
 	
+	private ICottageQuickBookingService iCottageQuickBookingService;
+	
+	private IQuickBookingService iQuickBookingService;
+	
+	private ICottageService iCottageService;
+
 	private IClientService iClientService;
 	
 	private IReservationService iReservationService;
@@ -43,17 +52,35 @@ public class CottageReservationController {
 	private EmailService emailService;
 	
 	@Autowired
-	public CottageReservationController(EmailService emailService,ICottageReservationService iCottageReservationService,ICottageService iCottageService,IClientService iClientService,IReservationService iReservationService) {
+	public CottageReservationController(IQuickBookingService iQuickBookingService,ICottageQuickBookingService iCottageQuickBookingService,EmailService emailService,ICottageReservationService iCottageReservationService,ICottageService iCottageService,IClientService iClientService,IReservationService iReservationService) {
 		this.iCottageReservationService = iCottageReservationService;
 		this.iCottageService = iCottageService;
 		this.iClientService = iClientService;
 		this.iReservationService =iReservationService;
+		this.iCottageQuickBookingService =iCottageQuickBookingService;
 		this.emailService = emailService;
+		this.iQuickBookingService = iQuickBookingService;
 	}
 	
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
 	public ResponseEntity<List<CottageReservationHistoryDTO>> getClientByEmail(@PathVariable String email){
 		return new ResponseEntity<List<CottageReservationHistoryDTO>>(iCottageReservationService.getHistoryOfCottageReservations(email), HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/cancel_cottage_reservation/{cottageReservationId}", consumes = "application/json")
+	public ResponseEntity<Boolean> cancelCottageReservation(@PathVariable long cottageReservationId) {
+		CottageReservation cottageReservation = iCottageReservationService.getById(cottageReservationId);
+		cottageReservation.setStatusOfReservation(StatusOfReservation.CANCELED);
+		CottageQuickBooking cottageQuickBooking = iCottageQuickBookingService.checkExistCottageQuickBookingForCottageReservation(cottageReservation);
+		if (cottageQuickBooking!=null) {
+			cottageQuickBooking.setClientForQuickBooking(null);
+			iCottageQuickBookingService.save(cottageQuickBooking);
+			iQuickBookingService.save(cottageQuickBooking);
+		}
+		iCottageReservationService.save(cottageReservation);
+		iReservationService.save(cottageReservation);
+		return new ResponseEntity<Boolean>(HttpStatus.OK);
+		
 	}
 	
 	@PostMapping("/create")

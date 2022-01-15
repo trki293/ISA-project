@@ -12,4 +12,5 @@ public interface ICottageQuickBookingService {
 	CottageQuickBooking save(CottageQuickBooking cottageQuickBooking);
 	List<CottageQuickBookingDisplayDTO> getFutureFreeQuickBookingsForCottage(long cottageId,Client client);
 	CottageReservation createCottageReservationByCottageQuickBooking(CottageQuickBooking cottageQuickBooking, Client client);
+	CottageQuickBooking checkExistCottageQuickBookingForCottageReservation(CottageReservation cottageReservation);
 }

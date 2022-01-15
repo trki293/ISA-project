@@ -86,4 +86,16 @@ public class CottageQuickBookingService implements ICottageQuickBookingService {
 	public CottageQuickBooking save(CottageQuickBooking cottageQuickBooking) {
 		return iCottageQuickBookingRepository.save(cottageQuickBooking);
 	}
+	
+	@Override
+	public CottageQuickBooking checkExistCottageQuickBookingForCottageReservation(CottageReservation cottageReservation) {
+		return iCottageQuickBookingRepository.findAll().stream().filter(cottageQuickBookingIt -> cottageReservation
+				.getTimeOfBeginingReservation().isEqual(cottageReservation.getTimeOfBeginingReservation())
+				&& cottageReservation.getTimeOfEndingReservation().isEqual(cottageReservation.getTimeOfEndingReservation())
+				&& cottageQuickBookingIt.getClientForQuickBooking().getId() == cottageReservation.getClientForReservation()
+						.getId()
+				&& cottageQuickBookingIt.getCottageForQuickReservation().getId() == cottageReservation.getCottageForReservation()
+						.getId())
+				.findAny().orElse(null);
+	}
 }

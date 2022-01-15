@@ -12,4 +12,5 @@ public interface IBoatQuickBookingService {
 	List<BoatQuickBookingDisplayDTO> getFutureFreeQuickBookingsForBoat(long boatId, Client client);
 	BoatReservation createBoatReservationByBoatQuickBooking(BoatQuickBooking boatQuickBooking, Client client);
 	BoatQuickBooking save(BoatQuickBooking boatQuickBooking);
+	BoatQuickBooking checkExistBoatQuickBookingForBoatReservation(BoatReservation boatReservation);
 }

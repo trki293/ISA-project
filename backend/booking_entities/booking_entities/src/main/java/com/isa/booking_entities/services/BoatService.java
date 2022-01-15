@@ -19,6 +19,7 @@ import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
 import com.isa.booking_entities.models.reservations.QuickBooking;
+import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.repositories.IBoatRepository;
 import com.isa.booking_entities.services.interfaces.IBoatService;
 
@@ -159,11 +160,11 @@ public class BoatService implements IBoatService {
 	private Boolean isThereReservationForInstruction(Boat boat,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
 		List<BoatReservation> boatReservation = boat.getBoatReservations().stream()
-				.filter(reservationIt -> isReservationBeforOrAfterPeriod(entitySearchReservationDTO, reservationIt))
+				.filter(reservationIt ->isReservationBeforOrAfterPeriod(entitySearchReservationDTO, reservationIt))
 				.collect(Collectors.toList());
 
 		List<QuickBooking> quickBookings = boat.getBoatQuickBookings().stream()
-				.filter(quickBookingIt -> isQuickBookingBeforOrAfterPeriod(entitySearchReservationDTO, quickBookingIt))
+				.filter(quickBookingIt ->isQuickBookingBeforOrAfterPeriod(entitySearchReservationDTO, quickBookingIt))
 				.collect(Collectors.toList());
 		return (boatReservation.size() != boat.getBoatReservations().size()
 				|| quickBookings.size() != boat.getBoatQuickBookings().size()) ? false : true;
@@ -171,7 +172,7 @@ public class BoatService implements IBoatService {
 
 	private boolean isReservationBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			BoatReservation reservationIt) {
-		return (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
 				&& reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
 				|| (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
 						&& reservationIt.getTimeOfBeginingReservation()

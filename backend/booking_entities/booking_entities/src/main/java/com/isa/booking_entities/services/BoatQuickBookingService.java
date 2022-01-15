@@ -28,7 +28,7 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 	private IBoatQuickBookingRepository iBoatQuickBookingRepository;
 
 	private ISystemParametersRepository iSystemParametersRepository;
-	
+
 	@Autowired
 	public BoatQuickBookingService(IBoatQuickBookingRepository iBoatQuickBookingRepository,
 			ISystemParametersRepository iSystemParametersRepository) {
@@ -50,7 +50,7 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 								&& boatQuickBookingIt.getTimeOfBeginingReservation().isAfter(LocalDateTime.now())
 								&& boatQuickBookingIt.getBoatForQuickReservation().getId() == boatId)
 						.collect(Collectors.toList()),
-						getCoefficentForClient(client));
+				getCoefficentForClient(client));
 	}
 
 	private double getCoefficentForClient(Client client) {
@@ -66,10 +66,9 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 			return 1;
 		}
 	}
-	
+
 	@Override
-	public BoatReservation createBoatReservationByBoatQuickBooking(BoatQuickBooking boatQuickBooking,
-			Client client) {
+	public BoatReservation createBoatReservationByBoatQuickBooking(BoatQuickBooking boatQuickBooking, Client client) {
 		BoatReservation boatReservation = new BoatReservation();
 		boatReservation.setAdditionalServicesFromClient(boatQuickBooking.getAdditionalServices());
 		boatReservation.setClientForReservation(client);
@@ -78,7 +77,7 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 		boatReservation.setStatusOfReservation(StatusOfReservation.CREATED);
 		boatReservation.setTimeOfBeginingReservation(boatQuickBooking.getTimeOfBeginingReservation());
 		boatReservation.setTimeOfEndingReservation(boatQuickBooking.getTimeOfEndingReservation());
-		boatReservation.setTotalPrice(boatQuickBooking.getTotalPrice()* getCoefficentForClient(client));
+		boatReservation.setTotalPrice(boatQuickBooking.getTotalPrice() * getCoefficentForClient(client));
 		boatReservation.setTypeOfReservation(TypeOfReservation.BOAT_RESERVATION);
 		return boatReservation;
 	}
@@ -86,6 +85,18 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 	@Override
 	public BoatQuickBooking save(BoatQuickBooking boatQuickBooking) {
 		return iBoatQuickBookingRepository.save(boatQuickBooking);
+	}
+
+	@Override
+	public BoatQuickBooking checkExistBoatQuickBookingForBoatReservation(BoatReservation boatReservation) {
+		return iBoatQuickBookingRepository.findAll().stream().filter(boatQuickBookingIt -> boatReservation
+				.getTimeOfBeginingReservation().isEqual(boatReservation.getTimeOfBeginingReservation())
+				&& boatReservation.getTimeOfEndingReservation().isEqual(boatReservation.getTimeOfEndingReservation())
+				&& boatQuickBookingIt.getClientForQuickBooking().getId() == boatReservation.getClientForReservation()
+						.getId()
+				&& boatQuickBookingIt.getBoatForQuickReservation().getId() == boatReservation.getBoatForReservation()
+						.getId())
+				.findAny().orElse(null);
 	}
 
 }

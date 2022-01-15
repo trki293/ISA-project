@@ -86,4 +86,16 @@ public class InstructionsQuickBookingService implements IInstructionsQuickBookin
 	public InstructionsQuickBooking save(InstructionsQuickBooking instructionsQuickBooking) {
 		return iInstructionsQuickBookingRepository.save(instructionsQuickBooking);
 	}
+	
+	@Override
+	public InstructionsQuickBooking checkExistInstructionsQuickBookingForInstructionsReservation(InstructionsReservation instructionsReservation) {
+		return iInstructionsQuickBookingRepository.findAll().stream().filter(instructionsQuickBookingIt -> instructionsReservation
+				.getTimeOfBeginingReservation().isEqual(instructionsReservation.getTimeOfBeginingReservation())
+				&& instructionsReservation.getTimeOfEndingReservation().isEqual(instructionsReservation.getTimeOfEndingReservation())
+				&& instructionsQuickBookingIt.getClientForQuickBooking().getId() == instructionsReservation.getClientForReservation()
+						.getId()
+				&& instructionsQuickBookingIt.getInstructionsForQuickReservation().getId() == instructionsReservation.getInstructionsForReservation()
+						.getId())
+				.findAny().orElse(null);
+	}
 }

@@ -13,4 +13,6 @@ public interface IInstructionsQuickBookingService {
 	InstructionsQuickBooking save(InstructionsQuickBooking instructionsQuickBooking);
 	InstructionsReservation createInstructionsReservationByInstructionsQuickBooking(
 			InstructionsQuickBooking instructionsQuickBooking, Client client);
+	InstructionsQuickBooking checkExistInstructionsQuickBookingForInstructionsReservation(
+			InstructionsReservation instructionsReservation);
 }
