@@ -25,8 +25,6 @@ import com.isa.booking_entities.repositories.IAdditionalServicesRepository;
 import com.isa.booking_entities.repositories.IBoatReservationRepository;
 import com.isa.booking_entities.repositories.ISystemParametersRepository;
 import com.isa.booking_entities.services.interfaces.IBoatReservationService;
-import com.isa.booking_entities.services.interfaces.IBoatService;
-import com.isa.booking_entities.services.interfaces.IClientService;
 
 @Service
 public class BoatReservationService implements IBoatReservationService {

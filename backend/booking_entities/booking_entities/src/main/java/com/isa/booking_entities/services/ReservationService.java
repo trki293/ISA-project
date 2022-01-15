@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.converter.ReservationDTOConverter;
@@ -19,6 +20,12 @@ public class ReservationService implements IReservationService {
 	private IReservationRepository iReservationRepository;
 
 	private ReservationDTOConverter reservationDTOConverter;
+
+	@Autowired
+	public ReservationService(IReservationRepository iReservationRepository) {
+		this.iReservationRepository = iReservationRepository;
+		this.reservationDTOConverter = new ReservationDTOConverter();
+	}
 
 	@Override
 	public Reservation getById(long id) {

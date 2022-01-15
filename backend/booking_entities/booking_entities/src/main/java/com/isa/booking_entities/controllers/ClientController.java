@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.UserUpdateDTO;
 import com.isa.booking_entities.models.users.Client;
-import com.isa.booking_entities.models.users.TypeOfUser;
 import com.isa.booking_entities.services.interfaces.IClientService;
 import com.isa.booking_entities.services.interfaces.IUsersService;
 

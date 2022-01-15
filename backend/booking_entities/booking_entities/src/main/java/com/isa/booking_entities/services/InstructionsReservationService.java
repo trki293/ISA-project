@@ -11,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.converter.InstructionsReservationDTOConverter;
-import com.isa.booking_entities.converter.InstructionsReservationDTOConverter;
-import com.isa.booking_entities.dtos.InstructionsReservationNewDTO;
 import com.isa.booking_entities.dtos.InstructionsReservationHistoryDTO;
+import com.isa.booking_entities.dtos.InstructionsReservationNewDTO;
 import com.isa.booking_entities.models.SystemParameters;
 import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.entites.Instructions;
-import com.isa.booking_entities.models.reservations.InstructionsReservation;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.models.reservations.TypeOfReservation;
@@ -40,7 +38,7 @@ public class InstructionsReservationService implements IInstructionsReservationS
 	private ISystemParametersRepository iSystemParametersRepository;
 	
 	@Autowired
-	public InstructionsReservationService(IInstructionsReservationRepository iInstructionsReservationRepository) {
+	public InstructionsReservationService(IInstructionsReservationRepository iInstructionsReservationRepository,IAdditionalServicesRepository iAdditionalServicesRepository,ISystemParametersRepository iSystemParametersRepository) {
 		this.iInstructionsReservationRepository = iInstructionsReservationRepository;
 		this.instructionsReservationDTOConverter = new InstructionsReservationDTOConverter();
 		this.iAdditionalServicesRepository = iAdditionalServicesRepository;

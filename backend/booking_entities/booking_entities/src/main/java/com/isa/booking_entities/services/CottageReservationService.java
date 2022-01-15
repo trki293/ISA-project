@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.converter.CottageReservationDTOConverter;
-import com.isa.booking_entities.dtos.CottageReservationNewDTO;
 import com.isa.booking_entities.dtos.CottageReservationHistoryDTO;
+import com.isa.booking_entities.dtos.CottageReservationNewDTO;
 import com.isa.booking_entities.models.SystemParameters;
 import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.entites.Cottage;
-import com.isa.booking_entities.models.reservations.CottageReservation;
 import com.isa.booking_entities.models.reservations.CottageReservation;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.models.reservations.TypeOfReservation;

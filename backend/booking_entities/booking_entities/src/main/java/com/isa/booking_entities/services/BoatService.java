@@ -15,7 +15,6 @@ import com.isa.booking_entities.dtos.BoatSearchDTO;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
 import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.entites.Boat;
-import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.reservations.BoatAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
