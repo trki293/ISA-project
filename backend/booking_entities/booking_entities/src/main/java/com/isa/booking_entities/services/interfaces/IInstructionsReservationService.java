@@ -14,4 +14,5 @@ public interface IInstructionsReservationService {
 	List<InstructionsReservationHistoryDTO> getHistoryOfInstructionsReservations(String emailOfClient);
 	InstructionsReservation createReservation(InstructionsReservationNewDTO instructionsReservationNewDTO,
 			Instructions instructions, Client client);
+	List<InstructionsReservation> getHistoryInstructionsReservationsForClient(Client client);
 }

@@ -14,7 +14,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.isa.booking_entities.models.users.SystemAdmin;
 import com.isa.booking_entities.models.users.Users;
 
 @Entity

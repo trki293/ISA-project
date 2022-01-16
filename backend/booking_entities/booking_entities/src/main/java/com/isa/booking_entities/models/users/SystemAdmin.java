@@ -10,7 +10,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.isa.booking_entities.models.Address;
 import com.isa.booking_entities.models.reports.Report;
 import com.isa.booking_entities.models.requests.DeleteAccountRequestResponse;
 import com.isa.booking_entities.models.requests.RegistrationRequest;

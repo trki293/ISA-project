@@ -13,4 +13,5 @@ public interface IBoatReservationService {
 	BoatReservation save(BoatReservation boatReservation);
 	List<BoatReservationHistoryDTO> getHistoryOfBoatReservations(String emailOfClient);
 	BoatReservation createReservation(BoatReservationNewDTO boatReservationNewDTO, Boat boatForReservation, Client clientForReservation);
+	List<BoatReservation> getHistoryBoatReservationsForClient(Client client);
 }

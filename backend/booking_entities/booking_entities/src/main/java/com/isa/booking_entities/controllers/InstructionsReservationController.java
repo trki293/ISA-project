@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.isa.booking_entities.converter.ComplaintDTOConverter;
 import com.isa.booking_entities.dtos.InstructionsReservationHistoryDTO;
 import com.isa.booking_entities.dtos.InstructionsReservationNewDTO;
+import com.isa.booking_entities.dtos.InstructorComplaintDTO;
 import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
@@ -52,6 +54,8 @@ public class InstructionsReservationController {
 	
 	private EmailService emailService;
 	
+	private ComplaintDTOConverter complaintDTOConverter;
+	
 	@Autowired
 	public InstructionsReservationController(IQuickBookingService iQuickBookingService,IInstructionsQuickBookingService iInstructionsQuickBookingService,EmailService emailService,IInstructionsReservationService iInstructionsReservationService,IInstructionsService iInstructionsService,IClientService iClientService,IReservationService iReservationService) {
 		this.iInstructionsReservationService = iInstructionsReservationService;
@@ -61,12 +65,20 @@ public class InstructionsReservationController {
 		this.iInstructionsQuickBookingService =iInstructionsQuickBookingService;
 		this.emailService = emailService;
 		this.iQuickBookingService = iQuickBookingService;
+		this.complaintDTOConverter = new ComplaintDTOConverter();
 	}
 
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
 	public ResponseEntity<List<InstructionsReservationHistoryDTO>> getClientByEmail(@PathVariable String email) {
 		return new ResponseEntity<List<InstructionsReservationHistoryDTO>>(
 				iInstructionsReservationService.getHistoryOfInstructionsReservations(email), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getInstructorsForClientComplaint/{email}")
+	public ResponseEntity<List<InstructorComplaintDTO>> getInstructorsForClientComplaint(@PathVariable String email) {
+		Client client = iClientService.getByEmail(email);
+		List<InstructionsReservation> instructionsReservations = iInstructionsReservationService.getHistoryInstructionsReservationsForClient(client);
+		return new ResponseEntity<List<InstructorComplaintDTO>>(complaintDTOConverter.convertListInstructionsReservationToListInstructorComplaintDTO(instructionsReservations),HttpStatus.OK);
 	}
 	
 	@PostMapping("/create")

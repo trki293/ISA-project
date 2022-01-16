@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.isa.booking_entities.converter.ComplaintDTOConverter;
+import com.isa.booking_entities.dtos.BoatComplaintDTO;
 import com.isa.booking_entities.dtos.BoatReservationHistoryDTO;
 import com.isa.booking_entities.dtos.BoatReservationNewDTO;
 import com.isa.booking_entities.models.entites.Boat;
@@ -51,6 +53,8 @@ public class BoatReservationController {
 	
 	private EmailService emailService;
 	
+	private ComplaintDTOConverter complaintDTOConverter;
+	
 	@Autowired
 	public BoatReservationController(IQuickBookingService iQuickBookingService,IBoatQuickBookingService iBoatQuickBookingService,EmailService emailService,IBoatReservationService iBoatReservationService,IBoatService iBoatService,IClientService iClientService,IReservationService iReservationService) {
 		this.iBoatReservationService = iBoatReservationService;
@@ -60,11 +64,19 @@ public class BoatReservationController {
 		this.iBoatQuickBookingService =iBoatQuickBookingService;
 		this.emailService = emailService;
 		this.iQuickBookingService = iQuickBookingService;
+		this.complaintDTOConverter = new ComplaintDTOConverter();
 	}
 	
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
 	public ResponseEntity<List<BoatReservationHistoryDTO>> getClientByEmail(@PathVariable String email){
 		return new ResponseEntity<List<BoatReservationHistoryDTO>>(iBoatReservationService.getHistoryOfBoatReservations(email), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getBoatsForClientComplaint/{email}")
+	public ResponseEntity<List<BoatComplaintDTO>> getBoatsForClientComplaint(@PathVariable String email) {
+		Client client = iClientService.getByEmail(email);
+		List<BoatReservation> boatReservations = iBoatReservationService.getHistoryBoatReservationsForClient(client);
+		return new ResponseEntity<List<BoatComplaintDTO>>(complaintDTOConverter.convertListBoatReservationToListBoatComplaintDTO(boatReservations),HttpStatus.OK);
 	}
 	
 	@PostMapping("/history/sort/begin_date/{asc}")

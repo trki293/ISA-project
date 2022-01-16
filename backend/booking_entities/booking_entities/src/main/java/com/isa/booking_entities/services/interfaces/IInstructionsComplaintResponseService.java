@@ -1,0 +1,12 @@
+package com.isa.booking_entities.services.interfaces;
+
+import com.isa.booking_entities.dtos.InstructionsComplaintResponseNewDTO;
+import com.isa.booking_entities.models.complaints.InstructionsComplaint;
+import com.isa.booking_entities.models.complaints.InstructionsComplaintResponse;
+import com.isa.booking_entities.models.users.SystemAdmin;
+
+public interface IInstructionsComplaintResponseService {
+	InstructionsComplaintResponse save(InstructionsComplaintResponse instructionsComplaintResponse);
+	InstructionsComplaintResponse getById(long id);
+	InstructionsComplaintResponse createInstructionsComplain(InstructionsComplaintResponseNewDTO instructionsComplaintResponseNewDTO, SystemAdmin systemAdmin, InstructionsComplaint instructionsComplaint);
+}

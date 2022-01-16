@@ -40,4 +40,15 @@ public class EmailService {
         mail.setText("You have successfully made a reservation of "+typeOfReservation+"!\n\nBest Regards.");
         javaMailSender.send(mail);
     }
+    
+    @Async
+    public void sendResponseToComplaint(String email, String textOfComplaintResponse, String typeOfComplaint) throws MailException, InterruptedException {
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Response to the "+typeOfComplaint+" complaint");
+        mail.setText(textOfComplaintResponse);
+        javaMailSender.send(mail);
+    }
 }

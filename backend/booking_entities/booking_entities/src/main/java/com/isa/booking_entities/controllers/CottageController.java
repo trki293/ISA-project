@@ -24,7 +24,6 @@ import com.isa.booking_entities.dtos.CottagePreviewDTO;
 import com.isa.booking_entities.dtos.CottageSearchDTO;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
 import com.isa.booking_entities.models.entites.Cottage;
-import com.isa.booking_entities.models.entites.Cottage;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.services.interfaces.IClientService;
 import com.isa.booking_entities.services.interfaces.ICottageService;

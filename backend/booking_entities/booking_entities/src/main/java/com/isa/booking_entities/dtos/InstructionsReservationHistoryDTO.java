@@ -3,7 +3,6 @@ package com.isa.booking_entities.dtos;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
 

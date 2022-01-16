@@ -13,4 +13,5 @@ public interface ICottageReservationService {
 	CottageReservation save(CottageReservation cottageReservation);
 	List<CottageReservationHistoryDTO> getHistoryOfCottageReservations(String emailOfClient);
 	CottageReservation createReservation(CottageReservationNewDTO boatReservationNewDTO, Cottage cottage, Client client);
+	List<CottageReservation> getHistoryCottageReservationsForClient(Client client);
 }

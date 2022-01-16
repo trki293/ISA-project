@@ -104,5 +104,12 @@ public class CottageReservationService implements ICottageReservationService {
 		return iAdditionalServicesRepository.findAll().stream()
 				.filter(additionalServicesIt -> additionalServicesIt.getName().equals(name)).findFirst().orElse(null);
 	}
-
+	
+	@Override
+	public List<CottageReservation> getHistoryCottageReservationsForClient(Client client) {
+		return iCottageReservationRepository.findAll().stream()
+				.filter(cottageReservationIt ->cottageReservationIt.getClientForReservation().getId()==client.getId() && cottageReservationIt.getTimeOfEndingReservation()
+				.isBefore(LocalDateTime.now()) && cottageReservationIt.getStatusOfReservation() != StatusOfReservation.MISSED)
+				.collect(Collectors.toList());
+	}
 }

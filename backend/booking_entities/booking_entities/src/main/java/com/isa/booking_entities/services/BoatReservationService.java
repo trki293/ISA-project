@@ -100,4 +100,12 @@ public class BoatReservationService implements IBoatReservationService {
 		return iAdditionalServicesRepository.findAll().stream().filter(additionalServicesIt -> additionalServicesIt.getName().equals(name)).findFirst().orElse(null);
 	}
 	
+	@Override
+	public List<BoatReservation> getHistoryBoatReservationsForClient(Client client) {
+		return iBoatReservationRepository.findAll().stream()
+				.filter(boatReservationIt ->boatReservationIt.getClientForReservation().getId()==client.getId() && boatReservationIt.getTimeOfEndingReservation()
+				.isBefore(LocalDateTime.now()) && boatReservationIt.getStatusOfReservation() != StatusOfReservation.MISSED)
+				.collect(Collectors.toList());
+	}
+	
 }

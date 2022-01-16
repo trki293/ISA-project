@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.isa.booking_entities.converter.ComplaintDTOConverter;
+import com.isa.booking_entities.dtos.CottageComplaintDTO;
 import com.isa.booking_entities.dtos.CottageReservationHistoryDTO;
 import com.isa.booking_entities.dtos.CottageReservationNewDTO;
 import com.isa.booking_entities.models.entites.Cottage;
@@ -51,6 +53,8 @@ public class CottageReservationController {
 	
 	private EmailService emailService;
 	
+	private ComplaintDTOConverter complaintDTOConverter;
+	
 	@Autowired
 	public CottageReservationController(IQuickBookingService iQuickBookingService,ICottageQuickBookingService iCottageQuickBookingService,EmailService emailService,ICottageReservationService iCottageReservationService,ICottageService iCottageService,IClientService iClientService,IReservationService iReservationService) {
 		this.iCottageReservationService = iCottageReservationService;
@@ -60,11 +64,19 @@ public class CottageReservationController {
 		this.iCottageQuickBookingService =iCottageQuickBookingService;
 		this.emailService = emailService;
 		this.iQuickBookingService = iQuickBookingService;
+		this.complaintDTOConverter = new ComplaintDTOConverter();
 	}
 	
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
 	public ResponseEntity<List<CottageReservationHistoryDTO>> getClientByEmail(@PathVariable String email){
 		return new ResponseEntity<List<CottageReservationHistoryDTO>>(iCottageReservationService.getHistoryOfCottageReservations(email), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getCottagesForClientComplaint/{email}")
+	public ResponseEntity<List<CottageComplaintDTO>> getCottagesForClientComplaint(@PathVariable String email) {
+		Client client = iClientService.getByEmail(email);
+		List<CottageReservation> cottageReservations = iCottageReservationService.getHistoryCottageReservationsForClient(client);
+		return new ResponseEntity<List<CottageComplaintDTO>>(complaintDTOConverter.convertListCottageReservationToListCottageComplaintDTO(cottageReservations),HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/cancel_cottage_reservation/{cottageReservationId}", consumes = "application/json")

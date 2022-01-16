@@ -32,13 +32,15 @@ public class InstructionsReservationService implements IInstructionsReservationS
 	private IInstructionsReservationRepository iInstructionsReservationRepository;
 
 	private InstructionsReservationDTOConverter instructionsReservationDTOConverter;
-	
+
 	private IAdditionalServicesRepository iAdditionalServicesRepository;
-	
+
 	private ISystemParametersRepository iSystemParametersRepository;
-	
+
 	@Autowired
-	public InstructionsReservationService(IInstructionsReservationRepository iInstructionsReservationRepository,IAdditionalServicesRepository iAdditionalServicesRepository,ISystemParametersRepository iSystemParametersRepository) {
+	public InstructionsReservationService(IInstructionsReservationRepository iInstructionsReservationRepository,
+			IAdditionalServicesRepository iAdditionalServicesRepository,
+			ISystemParametersRepository iSystemParametersRepository) {
 		this.iInstructionsReservationRepository = iInstructionsReservationRepository;
 		this.instructionsReservationDTOConverter = new InstructionsReservationDTOConverter();
 		this.iAdditionalServicesRepository = iAdditionalServicesRepository;
@@ -57,18 +59,25 @@ public class InstructionsReservationService implements IInstructionsReservationS
 
 	@Override
 	public List<InstructionsReservationHistoryDTO> getHistoryOfInstructionsReservations(String emailOfClient) {
-		return instructionsReservationDTOConverter.convertListInstructionsReservationToListInstructionsReservationHistoryDTO(
-				iInstructionsReservationRepository.findAll().stream().filter(instructionsReservationIt -> 
-				instructionsReservationIt.getClientForReservation().getEmail().equals(emailOfClient)
-						&& (instructionsReservationIt.getStatusOfReservation() == StatusOfReservation.CANCELED
-								|| instructionsReservationIt.getStatusOfReservation() == StatusOfReservation.FINISHED
-								|| instructionsReservationIt.getStatusOfReservation() == StatusOfReservation.MISSED
-								|| instructionsReservationIt.getTimeOfEndingReservation().isBefore(LocalDateTime.now())))
-						.collect(Collectors.toList()));
+		return instructionsReservationDTOConverter
+				.convertListInstructionsReservationToListInstructionsReservationHistoryDTO(
+						iInstructionsReservationRepository.findAll().stream()
+								.filter(instructionsReservationIt -> instructionsReservationIt.getClientForReservation()
+										.getEmail().equals(emailOfClient)
+										&& (instructionsReservationIt
+												.getStatusOfReservation() == StatusOfReservation.CANCELED
+												|| instructionsReservationIt
+														.getStatusOfReservation() == StatusOfReservation.FINISHED
+												|| instructionsReservationIt
+														.getStatusOfReservation() == StatusOfReservation.MISSED
+												|| instructionsReservationIt.getTimeOfEndingReservation()
+														.isBefore(LocalDateTime.now())))
+								.collect(Collectors.toList()));
 	}
-	
+
 	@Override
-	public InstructionsReservation createReservation(InstructionsReservationNewDTO instructionsReservationNewDTO, Instructions instructionsForReservation, Client clientForReservation) {
+	public InstructionsReservation createReservation(InstructionsReservationNewDTO instructionsReservationNewDTO,
+			Instructions instructionsForReservation, Client clientForReservation) {
 		InstructionsReservation instructionsReservation = new InstructionsReservation();
 		SystemParameters systemParameters = iSystemParametersRepository.findAll().stream().findFirst().orElse(null);
 		double coefficient = clientForReservation.getStatuseOfUser() == StatusOfUser.REGULAR
@@ -81,21 +90,34 @@ public class InstructionsReservationService implements IInstructionsReservationS
 		instructionsReservation.setInstructionsForReservation(instructionsForReservation);
 		instructionsReservation.setStatusOfReservation(StatusOfReservation.CREATED);
 		instructionsReservation.setTypeOfReservation(TypeOfReservation.INSTRUCTIONS_RESERVATION);
-		instructionsReservation.setTimeOfBeginingReservation(instructionsReservationNewDTO.getTimeOfBeginingReservation());
+		instructionsReservation
+				.setTimeOfBeginingReservation(instructionsReservationNewDTO.getTimeOfBeginingReservation());
 		instructionsReservation.setTimeOfEndingReservation(instructionsReservationNewDTO.getTimeOfEndingReservation());
-		instructionsReservation.setTotalPrice((Duration.between(instructionsReservationNewDTO.getTimeOfBeginingReservation(),
-				instructionsReservationNewDTO.getTimeOfEndingReservation()).getSeconds() / 3600)* instructionsForReservation.getPricePerHour() * coefficient);
-		instructionsReservation.setAdditionalServicesFromClient(getSetAdditionalServicesByListAdditionalServicesNames(instructionsReservationNewDTO.getNamesOfAdditionalsServices()));
+		instructionsReservation
+				.setTotalPrice((Duration.between(instructionsReservationNewDTO.getTimeOfBeginingReservation(),
+						instructionsReservationNewDTO.getTimeOfEndingReservation()).getSeconds() / 3600)
+						* instructionsForReservation.getPricePerHour() * coefficient);
+		instructionsReservation.setAdditionalServicesFromClient(getSetAdditionalServicesByListAdditionalServicesNames(
+				instructionsReservationNewDTO.getNamesOfAdditionalsServices()));
 		return instructionsReservation;
 	}
 
-	private Set<AdditionalServices> getSetAdditionalServicesByListAdditionalServicesNames(List<String> list){
+	private Set<AdditionalServices> getSetAdditionalServicesByListAdditionalServicesNames(List<String> list) {
 		Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
 		list.forEach(nameIt -> additionalServices.add(getAdditionalServicesByName(nameIt)));
 		return additionalServices;
 	}
-	
+
 	private AdditionalServices getAdditionalServicesByName(String name) {
-		return iAdditionalServicesRepository.findAll().stream().filter(additionalServicesIt -> additionalServicesIt.getName().equals(name)).findFirst().orElse(null);
+		return iAdditionalServicesRepository.findAll().stream()
+				.filter(additionalServicesIt -> additionalServicesIt.getName().equals(name)).findFirst().orElse(null);
+	}
+
+	@Override
+	public List<InstructionsReservation> getHistoryInstructionsReservationsForClient(Client client) {
+		return iInstructionsReservationRepository.findAll().stream()
+				.filter(instructionsReservationIt ->instructionsReservationIt.getClientForReservation().getId()==client.getId() && instructionsReservationIt.getTimeOfEndingReservation()
+				.isBefore(LocalDateTime.now()) && instructionsReservationIt.getStatusOfReservation() != StatusOfReservation.MISSED)
+				.collect(Collectors.toList());
 	}
 }

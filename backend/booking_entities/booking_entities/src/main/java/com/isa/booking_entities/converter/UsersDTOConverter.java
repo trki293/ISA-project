@@ -1,13 +1,8 @@
 package com.isa.booking_entities.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.isa.booking_entities.dtos.UserCreateDTO;
-import com.isa.booking_entities.dtos.UserUpdateDTO;
-import com.isa.booking_entities.models.users.Authority;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.StatusOfUser;
 import com.isa.booking_entities.models.users.TypeOfUser;
