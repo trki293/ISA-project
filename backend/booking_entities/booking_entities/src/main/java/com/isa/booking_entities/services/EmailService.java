@@ -51,4 +51,14 @@ public class EmailService {
         mail.setText(textOfComplaintResponse);
         javaMailSender.send(mail);
     }
+    
+    @Async
+	public void sendMailForDeletingUser(String email, String emailText) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Deleting account");
+        mail.setText(emailText);
+        javaMailSender.send(mail);
+	}
 }

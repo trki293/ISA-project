@@ -1,6 +1,7 @@
 package com.isa.booking_entities.models.requests;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,9 @@ public class DeleteAccountRequestResponse {
 	@OneToOne(cascade = CascadeType.ALL)
 	private DeleteAccountRequest deleteAccountRequest;
 	
+	@Column(name = "text", unique = false, nullable = false)
+	private String text;
+	
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER) 
 	private SystemAdmin systemAdminWhoReviewRequest; 
@@ -48,6 +52,22 @@ public class DeleteAccountRequestResponse {
 
 	public void setSystemAdminWhoReviewRequest(SystemAdmin systemAdminWhoReviewRequest) {
 		this.systemAdminWhoReviewRequest = systemAdminWhoReviewRequest;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 }
