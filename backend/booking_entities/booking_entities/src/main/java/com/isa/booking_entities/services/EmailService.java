@@ -82,4 +82,14 @@ public class EmailService {
            mail.setText("The client whose email "+clientEmail+" "+(statusOfReport==StatusOfReport.APPROVED ? "recived" : "did not recive")+" the penalty point!");
            javaMailSender.send(mail);
    	}
+    
+    @Async
+   	public void sendNotificationAboutApprovedRegistrationRequest(String email, String emailText) throws MailException, InterruptedException{
+       	SimpleMailMessage mail = new SimpleMailMessage();
+           mail.setTo(email);
+           mail.setFrom(env.getProperty("spring.mail.username"));
+           mail.setSubject("Registration request");
+           mail.setText(emailText);
+           javaMailSender.send(mail);
+   	}
 }
