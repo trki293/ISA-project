@@ -1,58 +1,30 @@
-package com.isa.booking_entities.models;
+package com.isa.booking_entities.dtos;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "system_parameters")
-public class SystemParameters {
-	@Id
-	@SequenceGenerator(name = "mySeqGenSystemParameters", sequenceName = "mySeqSystemParameters", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenSystemParameters")
-	private long id;
-	
-	@Column(name = "bookingFee", unique = false, nullable = false)
+public class SystemParametersNewDTO {
 	private double bookingFee;
-	
-	@Column(name = "incomeFromReservations", unique = false, nullable = false)
-	private double incomeFromReservations;
-	
-	@Column(name = "pointsForClients", unique = false, nullable = false)
 	private int pointsForClients;
-	
-	@Column(name = "pointsForProviders", unique = false, nullable = false)
 	private int pointsForProviders;
-	
-	@Column(name = "thresholdForSilver", unique = false, nullable = false)
 	private int thresholdForSilver;
-	
-	@Column(name = "thresholdForGold", unique = false, nullable = false)
 	private int thresholdForGold;
-	
-	@Column(name = "discountForRegular", unique = false, nullable = false)
 	private double discountForRegular;
-	
-	@Column(name = "discountForSilver", unique = false, nullable = false)
 	private double discountForSilver;
-	
-	@Column(name = "discountForGold", unique = false, nullable = false)
 	private double discountForGold;
 	
-	public SystemParameters() {
+	public SystemParametersNewDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
+	public SystemParametersNewDTO(double bookingFee, int pointsForClients, int pointsForProviders,
+			int thresholdForSilver, int thresholdForGold, double discountForRegular, double discountForSilver,
+			double discountForGold) {
+		this.bookingFee = bookingFee;
+		this.pointsForClients = pointsForClients;
+		this.pointsForProviders = pointsForProviders;
+		this.thresholdForSilver = thresholdForSilver;
+		this.thresholdForGold = thresholdForGold;
+		this.discountForRegular = discountForRegular;
+		this.discountForSilver = discountForSilver;
+		this.discountForGold = discountForGold;
 	}
 
 	public double getBookingFee() {
@@ -61,14 +33,6 @@ public class SystemParameters {
 
 	public void setBookingFee(double bookingFee) {
 		this.bookingFee = bookingFee;
-	}
-
-	public double getIncomeFromReservations() {
-		return incomeFromReservations;
-	}
-
-	public void setIncomeFromReservations(double incomeFromReservations) {
-		this.incomeFromReservations = incomeFromReservations;
 	}
 
 	public int getPointsForClients() {
