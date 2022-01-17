@@ -1,5 +1,7 @@
 package com.isa.booking_entities.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.UserUpdateDTO;
+import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.services.interfaces.IClientService;
 import com.isa.booking_entities.services.interfaces.IUsersService;
@@ -42,6 +45,26 @@ public class ClientController {
 		iClientService.save(updatedClient);
 		iUsersService.save(updatedClient);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllClients")
+	public ResponseEntity<List<Client>> getAllClients() {
+		return new ResponseEntity<>(iClientService.getAllNonDeletedClients(),HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteClient/{clientId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteBoat(@PathVariable long clientId) {
+		Client client = iClientService.getById(clientId);
+		client.setDeleted(true);
+		client.setEnabledLogin(false);
+		iUsersService.save(iClientService.save(client));
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+	@GetMapping(value = "/getClientById/{id}")
+	public ResponseEntity<Client> getClientById(@PathVariable long id) {
+		return new ResponseEntity<>(iClientService.getById(id),HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getByEmail/{email}")

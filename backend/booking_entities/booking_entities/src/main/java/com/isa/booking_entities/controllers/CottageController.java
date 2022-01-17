@@ -25,8 +25,11 @@ import com.isa.booking_entities.dtos.CottageSearchDTO;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
 import com.isa.booking_entities.models.entites.Cottage;
 import com.isa.booking_entities.models.users.Client;
+import com.isa.booking_entities.models.users.CottageOwner;
 import com.isa.booking_entities.services.interfaces.IClientService;
+import com.isa.booking_entities.services.interfaces.ICottageOwnerService;
 import com.isa.booking_entities.services.interfaces.ICottageService;
+import com.isa.booking_entities.services.interfaces.IUsersService;
 
 @Controller
 @CrossOrigin(origins = "*")
@@ -35,12 +38,18 @@ public class CottageController {
 	
 	private ICottageService iCottageService;
 	
+	private ICottageOwnerService iCottageOwnerService;
+	
 	private IClientService iClientService;
 
+	private IUsersService iUsersService;
+	
 	@Autowired
-	public CottageController(ICottageService iCottageService,IClientService iClientService) {
+	public CottageController(IUsersService iUsersService, ICottageOwnerService iCottageOwnerService, ICottageService iCottageService,IClientService iClientService) {
 		this.iCottageService = iCottageService;
 		this.iClientService = iClientService;
+		this.iCottageOwnerService = iCottageOwnerService;
+		this.iUsersService = iUsersService;
 	}
 	
 	@PostMapping("/unauthenticated/getAllCottages")
@@ -51,6 +60,50 @@ public class CottageController {
 	@PostMapping("/getAllCottagesForClient")
 	public ResponseEntity<List<CottageDisplayDTO>> getAllCottagesForClient(@RequestBody EntitySearchReservationDTO cottageSearchReservationDTO) {
 		return new ResponseEntity<>(iCottageService.getAllCottagesForClient(cottageSearchReservationDTO),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllCottageOwners")
+	public ResponseEntity<List<CottageOwner>> getAllCottageOwners() {
+		return new ResponseEntity<List<CottageOwner>>(iCottageOwnerService.getAllNonDeletedCottageOwners(),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllCottages")
+	public ResponseEntity<List<CottagePreviewDTO>> getAllCottages() {
+		return new ResponseEntity<>(iCottageService.getAllNonDeletedCottages(),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getCottageById/{id}")
+	public ResponseEntity<Cottage> getCottageById(@PathVariable long id) {
+		return new ResponseEntity<Cottage>(iCottageService.getById(id),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getCottageOwnerById/{id}")
+	public ResponseEntity<CottageOwner> getCottageOwnerById(@PathVariable long id) {
+		return new ResponseEntity<CottageOwner>(iCottageOwnerService.getById(id),HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteCottageOwner/{cottageOwnerId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteCottageOwner(@PathVariable long cottageOwnerId) {
+		CottageOwner cottageOwner = iCottageOwnerService.getById(cottageOwnerId);
+		cottageOwner.setDeleted(true);
+		cottageOwner.setEnabledLogin(false);
+		iUsersService.save(iCottageOwnerService.save(cottageOwner));
+		List<CottagePreviewDTO> allNonDeletedCottage = iCottageService.getAllNonDeletedCottages();
+		for (CottagePreviewDTO cottagePreviewDTO : allNonDeletedCottage) {
+			Cottage cottage = iCottageService.getById(cottagePreviewDTO.getId());
+			cottage.setDeleted(true);
+			iCottageService.save(cottage);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteCottage/{cottageId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteCottage(@PathVariable long cottageId) {
+		Cottage cottage = iCottageService.getById(cottageId);
+		cottage.setDeleted(true);
+		cottage.setOwnerOfCottage(null);
+		iCottageService.save(cottage);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/checkSubscription/{email}/cottage/{cottageId}")

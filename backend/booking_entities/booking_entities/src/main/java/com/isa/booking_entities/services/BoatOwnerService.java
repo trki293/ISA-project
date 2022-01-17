@@ -1,5 +1,8 @@
 package com.isa.booking_entities.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.isa.booking_entities.models.users.BoatOwner;
@@ -28,6 +31,11 @@ public class BoatOwnerService implements IBoatOwnerService {
 	@Override
 	public BoatOwner getByEmail(String email) {
 		return iBoatOwnerRepository.findAll().stream().filter(boatOwnerIt -> boatOwnerIt.getEmail().equals(email)).findFirst().orElse(null);
+	}
+
+	@Override
+	public List<BoatOwner> getAllNonDeletedBoatOwners() {
+		return iBoatOwnerRepository.findAll().stream().filter(boatOwnerIt -> !boatOwnerIt.getDeleted()).collect(Collectors.toList());
 	}
 
 }

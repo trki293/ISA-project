@@ -14,4 +14,5 @@ public interface IBoatService {
 	List<BoatPreviewDTO> getAllBoats(BoatSearchDTO boatSearchDTO);
 	List<BoatDisplayDTO> getAllBoatsForClient(EntitySearchReservationDTO boatSearchReservationDTO);
 	List<String> getAdditionalServicesForBoat(long id) throws Exception;
+	List<BoatPreviewDTO> getAllNonDeletedBoats();
 }

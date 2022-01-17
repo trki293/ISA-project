@@ -24,9 +24,12 @@ import com.isa.booking_entities.dtos.BoatPreviewDTO;
 import com.isa.booking_entities.dtos.BoatSearchDTO;
 import com.isa.booking_entities.dtos.EntitySearchReservationDTO;
 import com.isa.booking_entities.models.entites.Boat;
+import com.isa.booking_entities.models.users.BoatOwner;
 import com.isa.booking_entities.models.users.Client;
+import com.isa.booking_entities.services.interfaces.IBoatOwnerService;
 import com.isa.booking_entities.services.interfaces.IBoatService;
 import com.isa.booking_entities.services.interfaces.IClientService;
+import com.isa.booking_entities.services.interfaces.IUsersService;
 
 @Controller
 @CrossOrigin(origins = "*")
@@ -34,12 +37,18 @@ import com.isa.booking_entities.services.interfaces.IClientService;
 public class BoatController {
 	private IBoatService iBoatService;
 	
+	private IBoatOwnerService iBoatOwnerService;
+	
 	private IClientService iClientService;
+	
+	private IUsersService iUsersService;
 
 	@Autowired
-	public BoatController(IBoatService iBoatService,IClientService iClientService) {
+	public BoatController(IUsersService iUsersService, IBoatOwnerService iBoatOwnerService, IBoatService iBoatService,IClientService iClientService) {
 		this.iBoatService = iBoatService;
 		this.iClientService = iClientService;
+		this.iBoatOwnerService = iBoatOwnerService;
+		this.iUsersService = iUsersService;
 	}
 	
 	@PostMapping("/unauthenticated/getAllBoats")
@@ -47,9 +56,53 @@ public class BoatController {
 		return new ResponseEntity<>(iBoatService.getAllBoats(instructionsSearchDTO),HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/getAllBoats")
+	public ResponseEntity<List<BoatPreviewDTO>> getAllBoats() {
+		return new ResponseEntity<>(iBoatService.getAllNonDeletedBoats(),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllBoatOwners")
+	public ResponseEntity<List<BoatOwner>> getAllBoatOwners() {
+		return new ResponseEntity<List<BoatOwner>>(iBoatOwnerService.getAllNonDeletedBoatOwners(),HttpStatus.OK);
+	}
+	
 	@PostMapping("/getAllBoatsForClient")
 	public ResponseEntity<List<BoatDisplayDTO>> getAllBoatsForClient(@RequestBody EntitySearchReservationDTO boatSearchReservationDTO) {
 		return new ResponseEntity<>(iBoatService.getAllBoatsForClient(boatSearchReservationDTO),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getBoatById/{id}")
+	public ResponseEntity<Boat> getBoatById(@PathVariable long id) {
+		return new ResponseEntity<Boat>(iBoatService.getById(id),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getBoatOwnerById/{id}")
+	public ResponseEntity<BoatOwner> getBoatOwnerById(@PathVariable long id) {
+		return new ResponseEntity<BoatOwner>(iBoatOwnerService.getById(id),HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteBoatOwner/{boatOwnerId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteBoatOwner(@PathVariable long boatOwnerId) {
+		BoatOwner boatOwner = iBoatOwnerService.getById(boatOwnerId);
+		boatOwner.setDeleted(true);
+		boatOwner.setEnabledLogin(false);
+		iUsersService.save(iBoatOwnerService.save(boatOwner));
+		List<BoatPreviewDTO> allNonDeletedBoat = iBoatService.getAllNonDeletedBoats();
+		for (BoatPreviewDTO boatPreviewDTO : allNonDeletedBoat) {
+			Boat boat = iBoatService.getById(boatPreviewDTO.getId());
+			boat.setDeleted(true);
+			iBoatService.save(boat);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteBoat/{boatId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteBoat(@PathVariable long boatId) {
+		Boat boat = iBoatService.getById(boatId);
+		boat.setDeleted(true);
+		boat.setOwnerOfBoat(null);
+		iBoatService.save(boat);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getAdditionalServicesForBoat/{id}")

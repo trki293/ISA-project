@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -25,7 +26,10 @@ public class SystemAdmin extends Users {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "systemAdminWhoReviewRegistrationRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RegistrationRequest> registrationRequests = new HashSet<RegistrationRequest>();
-
+	
+	@Column(name = "isFirstLogin", unique = false, nullable = false)
+	private boolean isFirstLogin;
+	
 	public SystemAdmin() {
 		// TODO Auto-generated constructor stub
 	}
@@ -46,4 +50,12 @@ public class SystemAdmin extends Users {
 		this.registrationRequests = registrationRequests;
 	}
 
+	public boolean isFirstLogin() {
+		return isFirstLogin;
+	}
+
+	public void setFirstLogin(boolean isFirstLogin) {
+		this.isFirstLogin = isFirstLogin;
+	}
+	
 }

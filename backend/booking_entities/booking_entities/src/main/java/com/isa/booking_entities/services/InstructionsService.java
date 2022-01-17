@@ -193,5 +193,10 @@ public class InstructionsService implements IInstructionsService {
 		additionalServices.forEach(additionalServiceIt -> list.add(additionalServiceIt.getName()));
 		return list;
 	}
+
+	@Override
+	public List<InstructionsPreviewDTO> getAllNonDeletedInstructions() {
+		return instructionsPreviewDTOConverter.convertListInstructionsToListInstructionsPreviewDTO(iInstructionsRepository.findAll().stream().filter(instructionsIt -> !instructionsIt.getDeleted()).collect(Collectors.toList()));
+	}
 	
 }

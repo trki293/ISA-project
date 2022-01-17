@@ -202,4 +202,9 @@ public class BoatService implements IBoatService {
 		additionalServices.forEach(additionalServiceIt -> list.add(additionalServiceIt.getName()));
 		return list;
 	}
+
+	@Override
+	public List<BoatPreviewDTO> getAllNonDeletedBoats() {
+		return boatPreviewDTOConverter.convertListBoatToListBoatPreviewDTO(iBoatRepository.findAll().stream().filter(boatIt -> !boatIt.getDeleted()).collect(Collectors.toList()));
+	}
 }

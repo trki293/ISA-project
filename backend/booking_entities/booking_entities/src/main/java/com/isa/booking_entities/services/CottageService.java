@@ -210,4 +210,9 @@ public class CottageService implements ICottageService {
 		additionalServices.forEach(additionalServiceIt -> list.add(additionalServiceIt.getName()));
 		return list;
 	}
+
+	@Override
+	public List<CottagePreviewDTO> getAllNonDeletedCottages() {
+		return cottagePreviewDTOConverter.convertListCottageToListCottagePreviewDTO(iCottageRepository.findAll().stream().filter(cottageIt -> !cottageIt.getDeleted()).collect(Collectors.toList())); 
+	}
 }

@@ -25,20 +25,27 @@ import com.isa.booking_entities.dtos.InstructionsPreviewDTO;
 import com.isa.booking_entities.dtos.InstructionsSearchDTO;
 import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.users.Client;
+import com.isa.booking_entities.models.users.Instructor;
 import com.isa.booking_entities.services.interfaces.IClientService;
 import com.isa.booking_entities.services.interfaces.IInstructionsService;
+import com.isa.booking_entities.services.interfaces.IInstructorService;
+import com.isa.booking_entities.services.interfaces.IUsersService;
 
 @Controller
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/instructions", produces = MediaType.APPLICATION_JSON_VALUE)
 public class InstructionsController {
 	private IInstructionsService iInstructionsService;
+	private IInstructorService iInstructorService;
 	private IClientService iClientService;
-
+	private IUsersService iUsersService;
+	
 	@Autowired
-	public InstructionsController(IInstructionsService iInstructionsService, IClientService iClientService) {
+	public InstructionsController(IUsersService iUsersService, IInstructorService iInstructorService, IInstructionsService iInstructionsService, IClientService iClientService) {
 		this.iInstructionsService = iInstructionsService;
 		this.iClientService= iClientService;
+		this.iInstructorService = iInstructorService;
+		this.iUsersService = iUsersService;
 	}
 	
 	@PostMapping("/unauthenticated/getAllInstructions")
@@ -56,6 +63,50 @@ public class InstructionsController {
 		Client client= iClientService.getByEmail(email);
 		Instructions instructions = client.getInstructionsSubscriptions().stream().filter(instructionsIt -> instructionsIt.getId()==instructionsId).findFirst().orElse(null);
 		return new ResponseEntity<Boolean>(instructions!=null, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllInstructors")
+	public ResponseEntity<List<Instructor>> getAllInstructors() {
+		return new ResponseEntity<List<Instructor>>(iInstructorService.getAllNonDeletedInstructors(),HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteInstructor/{instructorId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteInstructor(@PathVariable long instructorId) {
+		Instructor instructor = iInstructorService.getById(instructorId);
+		instructor.setDeleted(true);
+		instructor.setEnabledLogin(false);
+		iUsersService.save(iInstructorService.save(instructor));
+		List<InstructionsPreviewDTO> allNonDeletedInstructions = iInstructionsService.getAllNonDeletedInstructions();
+		for (InstructionsPreviewDTO instructionsPreviewDTO : allNonDeletedInstructions) {
+			Instructions instructions = iInstructionsService.getById(instructionsPreviewDTO.getId());
+			instructions.setDeleted(true);
+			iInstructionsService.save(instructions);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/deleteInstructions/{instructionsId}", consumes = "application/json")
+	public ResponseEntity<Boolean> deleteInstructions(@PathVariable long instructionsId) {
+		Instructions instructions = iInstructionsService.getById(instructionsId);
+		instructions.setDeleted(true);
+		instructions.setInstructor(null);
+		iInstructionsService.save(instructions);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getAllInstructions")
+	public ResponseEntity<List<InstructionsPreviewDTO>> getAllInstructions() {
+		return new ResponseEntity<>(iInstructionsService.getAllNonDeletedInstructions(),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getInstructionsById/{id}")
+	public ResponseEntity<Instructions> getInstructionsById(@PathVariable long id) {
+		return new ResponseEntity<Instructions>(iInstructionsService.getById(id),HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getInstructorById/{id}")
+	public ResponseEntity<Instructor> getInstructorById(@PathVariable long id) {
+		return new ResponseEntity<Instructor>(iInstructorService.getById(id),HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/subscribe/{email}/instructions/{instructionsId}", consumes = "application/json")
