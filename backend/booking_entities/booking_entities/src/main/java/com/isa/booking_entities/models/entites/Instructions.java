@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.Address;
+import com.isa.booking_entities.models.rating.InstructionsReview;
 import com.isa.booking_entities.models.reservations.InstructionsAvailabilityPeriod;
 import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
@@ -86,6 +87,11 @@ public class Instructions {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "instructionsForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructionsAvailabilityPeriod> instructionsAvailabilityPeriods = new HashSet<InstructionsAvailabilityPeriod>();
+	
+	@JsonManagedReference
+	@OneToMany(mappedBy = "instructionsForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<InstructionsReview> instructionsReviews= new HashSet<InstructionsReview>();
+	
 
 	public Instructions() {
 		// TODO Auto-generated constructor stub
@@ -236,4 +242,12 @@ public class Instructions {
 		this.deleted = deleted;
 	}
 
+	public Set<InstructionsReview> getInstructionsReviews() {
+		return instructionsReviews;
+	}
+
+	public void setInstructionsReviews(Set<InstructionsReview> instructionsReviews) {
+		this.instructionsReviews = instructionsReviews;
+	}
+	
 }

@@ -61,4 +61,13 @@ public class EmailService {
         mail.setText(emailText);
         javaMailSender.send(mail);
 	}
+    @Async
+	public void sendMailAboutPublishReview(String email) throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(email);
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Review published");
+        mail.setText("Review published. Best Regards!");
+        javaMailSender.send(mail);
+	}
 }

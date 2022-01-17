@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.isa.booking_entities.dtos.BoatComplaintDisplayDTO;
 import com.isa.booking_entities.dtos.DeleteAccountRequestNewDTO;
 import com.isa.booking_entities.dtos.DeleteAccountRequestResponseNewDTO;
-
 import com.isa.booking_entities.models.requests.DeleteAccountRequest;
 import com.isa.booking_entities.models.requests.DeleteAccountRequestResponse;
 import com.isa.booking_entities.models.requests.StateOfDeleteAccountRequest;

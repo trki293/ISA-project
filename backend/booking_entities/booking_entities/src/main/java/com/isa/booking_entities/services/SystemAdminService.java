@@ -1,11 +1,13 @@
 package com.isa.booking_entities.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.models.users.SystemAdmin;
 import com.isa.booking_entities.repositories.ISystemAdminRepository;
 import com.isa.booking_entities.services.interfaces.ISystemAdminService;
 
+@Service
 public class SystemAdminService implements ISystemAdminService {
 	
 	private ISystemAdminRepository iSystemAdminRepository;

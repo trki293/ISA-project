@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.users.Instructor;
 
 @Entity
@@ -16,6 +17,10 @@ public class InstructionsReview extends Review {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructor instructorForReview;
+	
+	@JsonBackReference
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Instructions instructionsForReview;
 	
 	public InstructionsReview() {
 		// TODO Auto-generated constructor stub
@@ -27,6 +32,14 @@ public class InstructionsReview extends Review {
 
 	public void setInstructorForReview(Instructor instructorForReview) {
 		this.instructorForReview = instructorForReview;
+	}
+
+	public Instructions getInstructionsForReview() {
+		return instructionsForReview;
+	}
+
+	public void setInstructionsForReview(Instructions instructionsForReview) {
+		this.instructionsForReview = instructionsForReview;
 	}
 	
 }

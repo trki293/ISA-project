@@ -48,6 +48,9 @@ public class Review {
 	private boolean published;
 
 	@Enumerated(EnumType.ORDINAL)
+	private StatusOfReview statusOfReview;
+	
+	@Enumerated(EnumType.ORDINAL)
 	private TypeOfReview typeOfReview;
 
 	public Review() {
@@ -110,4 +113,12 @@ public class Review {
 		this.typeOfReview = typeOfReview;
 	}
 
+	public StatusOfReview getStatusOfReview() {
+		return statusOfReview;
+	}
+
+	public void setStatusOfReview(StatusOfReview statusOfReview) {
+		this.statusOfReview = statusOfReview;
+	}
+	
 }
