@@ -8,6 +8,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.isa.booking_entities.models.reports.StatusOfReport;
+
 @Service
 public class EmailService {
 	private JavaMailSender javaMailSender;
@@ -69,5 +71,15 @@ public class EmailService {
         mail.setSubject("Review published");
         mail.setText("Review published. Best Regards!");
         javaMailSender.send(mail);
-	}
+    }
+    
+    @Async
+   	public void sendNotificationAboutPenaltyPoints(String email, String clientEmail, StatusOfReport statusOfReport) throws MailException, InterruptedException{
+       	SimpleMailMessage mail = new SimpleMailMessage();
+           mail.setTo(email);
+           mail.setFrom(env.getProperty("spring.mail.username"));
+           mail.setSubject("Penalty points");
+           mail.setText("The client whose email "+clientEmail+" "+(statusOfReport==StatusOfReport.APPROVED ? "recived" : "did not recive")+" the penalty point!");
+           javaMailSender.send(mail);
+   	}
 }

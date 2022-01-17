@@ -26,10 +26,6 @@ public class SystemAdmin extends Users {
 	@OneToMany(mappedBy = "systemAdminWhoReviewRegistrationRequest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RegistrationRequest> registrationRequests = new HashSet<RegistrationRequest>();
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "adminWhoReviewsReport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<Report> reports = new HashSet<Report>();
-
 	public SystemAdmin() {
 		// TODO Auto-generated constructor stub
 	}
@@ -48,14 +44,6 @@ public class SystemAdmin extends Users {
 
 	public void setRegistrationRequests(Set<RegistrationRequest> registrationRequests) {
 		this.registrationRequests = registrationRequests;
-	}
-
-	public Set<Report> getReports() {
-		return reports;
-	}
-
-	public void setReports(Set<Report> reports) {
-		this.reports = reports;
 	}
 
 }

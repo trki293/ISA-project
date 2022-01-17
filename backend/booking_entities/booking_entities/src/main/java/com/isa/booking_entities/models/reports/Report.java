@@ -46,10 +46,6 @@ public class Report {
 	@Enumerated(EnumType.ORDINAL)
 	private ReportingType reportingType;
 
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private SystemAdmin adminWhoReviewsReport;
-
 	public Report() {
 		// TODO Auto-generated constructor stub
 	}
@@ -92,14 +88,6 @@ public class Report {
 
 	public void setStatusOfReport(StatusOfReport statusOfReport) {
 		this.statusOfReport = statusOfReport;
-	}
-
-	public SystemAdmin getAdminWhoReviewsReport() {
-		return adminWhoReviewsReport;
-	}
-
-	public void setAdminWhoReviewsReport(SystemAdmin adminWhoReviewsReport) {
-		this.adminWhoReviewsReport = adminWhoReviewsReport;
 	}
 
 	public ReportingType getReportingType() {
