@@ -113,7 +113,8 @@ public class AuthentificationController {
 			UriComponentsBuilder ucBuilder) {
 		if (iUsersService.getByEmail(userCreateDTO.getEmail()) != null
 				|| !userCreateDTO.getPassword().equals(userCreateDTO.getConfirmationPassword())) {
-			return new ResponseEntity<Users>(HttpStatus.BAD_REQUEST);
+			System.out.println("Usao ovdje!"+ iUsersService.getByEmail(userCreateDTO.getEmail()).getEmail());
+			
 		}
 		Client client = usersDTOConverter.convertUserCreateDTOToClient(userCreateDTO);
 		client.setAuthorities(iAuthorityService.getByName("ROLE_CLIENT"));
@@ -122,11 +123,13 @@ public class AuthentificationController {
 		ConfirmationToken confirmationToken = iConfirmationTokenService.save(new ConfirmationToken(userCreated));
 		try {
 			emailService.sendConfirmationMail(userCreated.getEmail(), confirmationToken.getConfirmationToken());
+			return new ResponseEntity<Users>(userCreated, HttpStatus.CREATED);
 		} catch (MailException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return new ResponseEntity<Users>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<Users>(userCreated, HttpStatus.CREATED);
+		
 
 	}
 	

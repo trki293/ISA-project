@@ -167,7 +167,7 @@ const NavBar = ({ user }) => {
                 </Grid>
                 <Grid item xs={2}>
                     <Typography>
-                        <Link to="/registerPatient" style={{ color: "#fafafa", textDecoration: "none" }}>
+                        <Link to="/register" style={{ color: "#fafafa", textDecoration: "none" }}>
                             Sign up
                         </Link>
                     </Typography>

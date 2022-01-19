@@ -3,7 +3,10 @@ import StartPage from './components/UnauthorizeUser/StartPage';
 import GetAllBoatUnauthorize from './components/UnauthorizeUser/GetAllBoatUnauthorize';
 import GetAllCottagesUnauthorize from './components/UnauthorizeUser/GetAllCottagesUnauthorize';
 import GetAllInstructionsUnauthorize from './components/UnauthorizeUser/GetAllInstructionsUnauthorize';
+import RegistrationPage from './components/UnauthorizeUser/RegistrationPage';
+import ConfirmationPage from './components/UnauthorizeUser/ConfirmationPage'
 import NavBar from "./components/NavBar";
+import LoginPage from "./components/UnauthorizeUser/LoginPage";
 import React, { useState, useEffect } from "react";
 
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
@@ -47,8 +50,14 @@ const redirect = () => {
           </>
 
           <>
-            {(userId === undefined || userId === null) && (
+            {(userRole === undefined || userRole === null) && (
               <NavBar user="unregistred" />
+            )}
+            {(userRole === "SYSTEM_ADMIN") && (
+              <NavBar user="systemAdmin" />
+            )}
+            {(userRole === "CLIENT") && (
+              <NavBar user="client" />
             )}
           </>
 
@@ -57,6 +66,9 @@ const redirect = () => {
             <Route exact path="/boats/unauthorize" component={GetAllBoatUnauthorize}></Route>
             <Route exact path="/cottages/unauthorize" component={GetAllCottagesUnauthorize}></Route>
             <Route exact path="/instructions/unauthorize" component={GetAllInstructionsUnauthorize}></Route>
+            <Route exact path="/register" component={RegistrationPage}></Route>
+            <Route exact path="/confirm_account/:token" component={ConfirmationPage}></Route>
+            <Route exact path="/login" component={LoginPage}></Route>
           </Switch>
         </div>
       </Router>
