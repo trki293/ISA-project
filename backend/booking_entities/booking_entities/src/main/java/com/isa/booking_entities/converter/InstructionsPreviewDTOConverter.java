@@ -16,7 +16,7 @@ public class InstructionsPreviewDTOConverter {
 	public List<InstructionsPreviewDTO> convertListInstructionsToListInstructionsPreviewDTO(List<Instructions> instructions){
 		List<InstructionsPreviewDTO> instructionsPreviewDTOs = new ArrayList<InstructionsPreviewDTO>();
 		for (Instructions instructionsIt : instructions) {
-			instructionsPreviewDTOs.add(new InstructionsPreviewDTO(instructionsIt.getId(),instructionsIt.getTitle(), instructionsIt.getAddress(), instructionsIt.getPromotionalDescription(), instructionsIt.getInstructorBiography(), instructionsIt.getAverageGrade()));
+			instructionsPreviewDTOs.add(new InstructionsPreviewDTO(instructionsIt.getId(),instructionsIt.getTitle(), instructionsIt.getAddress(), instructionsIt.getPromotionalDescription(), instructionsIt.getInstructorBiography(), instructionsIt.getAverageGrade(), instructionsIt.getPricePerHour()));
 		}
 		return instructionsPreviewDTOs;
 	}

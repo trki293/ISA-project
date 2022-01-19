@@ -9,19 +9,21 @@ public class InstructionsPreviewDTO {
 	private String promotionalDescription;
 	private String instructorBiography;
 	private double averageGrade;
+	private double pricePerHour;
 
 	public InstructionsPreviewDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public InstructionsPreviewDTO(long id, String title, Address address, String promotionalDescription,
-			String instructorBiography, double averageGrade) {
+			String instructorBiography, double averageGrade, double pricePerHour) {
 		this.id = id;
 		this.title = title;
 		this.address = address;
 		this.promotionalDescription = promotionalDescription;
 		this.instructorBiography = instructorBiography;
 		this.averageGrade = averageGrade;
+		this.pricePerHour = pricePerHour;
 	}
 
 	public long getId() {
@@ -70,6 +72,14 @@ public class InstructionsPreviewDTO {
 
 	public void setAverageGrade(double averageGrade) {
 		this.averageGrade = averageGrade;
+	}
+
+	public double getPricePerHour() {
+		return pricePerHour;
+	}
+
+	public void setPricePerHour(double pricePerHour) {
+		this.pricePerHour = pricePerHour;
 	}
 
 }

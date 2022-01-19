@@ -4,11 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.models.users.BoatOwner;
 import com.isa.booking_entities.repositories.IBoatOwnerRepository;
 import com.isa.booking_entities.services.interfaces.IBoatOwnerService;
 
+@Service
 public class BoatOwnerService implements IBoatOwnerService {
 	
 	private IBoatOwnerRepository iBoatOwnerRepository;

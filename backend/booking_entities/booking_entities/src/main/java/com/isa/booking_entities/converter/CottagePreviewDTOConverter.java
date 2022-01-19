@@ -15,7 +15,7 @@ public class CottagePreviewDTOConverter {
 	public List<CottagePreviewDTO> convertListCottageToListCottagePreviewDTO(List<Cottage> cottages) {
 		List<CottagePreviewDTO> cottagePreviewDTOs = new ArrayList<CottagePreviewDTO>();
 		for (Cottage cottageIt : cottages) {
-			cottagePreviewDTOs.add(new CottagePreviewDTO(cottageIt .getId(),cottageIt.getTitle(), cottageIt.getAddress(), cottageIt.getPromotionalDescription(), cottageIt.getAverageGrade()));
+			cottagePreviewDTOs.add(new CottagePreviewDTO(cottageIt .getId(),cottageIt.getTitle(), cottageIt.getAddress(), cottageIt.getPromotionalDescription(), cottageIt.getAverageGrade(),cottageIt.getPricePerNight()));
 		}
 		return cottagePreviewDTOs;
 	}

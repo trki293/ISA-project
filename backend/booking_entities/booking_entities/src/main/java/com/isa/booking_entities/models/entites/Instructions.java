@@ -33,7 +33,7 @@ public class Instructions {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenInstructions")
 	private long id;
 
-	@Column(name = "length", unique = false, nullable = false)
+	@Column(name = "title", unique = false, nullable = false)
 	private String title;
 
 	private Address address;
