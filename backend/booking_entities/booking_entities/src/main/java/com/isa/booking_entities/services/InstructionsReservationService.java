@@ -23,6 +23,7 @@ import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.StatusOfUser;
 import com.isa.booking_entities.repositories.IAdditionalServicesRepository;
 import com.isa.booking_entities.repositories.IInstructionsReservationRepository;
+import com.isa.booking_entities.repositories.IInstructionsReviewRepository;
 import com.isa.booking_entities.repositories.ISystemParametersRepository;
 import com.isa.booking_entities.services.interfaces.IInstructionsReservationService;
 
@@ -34,17 +35,20 @@ public class InstructionsReservationService implements IInstructionsReservationS
 	private InstructionsReservationDTOConverter instructionsReservationDTOConverter;
 
 	private IAdditionalServicesRepository iAdditionalServicesRepository;
+	
+	private IInstructionsReviewRepository iInstructionsReviewRepository;
 
 	private ISystemParametersRepository iSystemParametersRepository;
 
 	@Autowired
 	public InstructionsReservationService(IInstructionsReservationRepository iInstructionsReservationRepository,
 			IAdditionalServicesRepository iAdditionalServicesRepository,
-			ISystemParametersRepository iSystemParametersRepository) {
+			ISystemParametersRepository iSystemParametersRepository, IInstructionsReviewRepository iInstructionsReviewRepository) {
 		this.iInstructionsReservationRepository = iInstructionsReservationRepository;
 		this.instructionsReservationDTOConverter = new InstructionsReservationDTOConverter();
 		this.iAdditionalServicesRepository = iAdditionalServicesRepository;
 		this.iSystemParametersRepository = iSystemParametersRepository;
+		this.iInstructionsReviewRepository = iInstructionsReviewRepository;
 	}
 
 	@Override
@@ -59,7 +63,7 @@ public class InstructionsReservationService implements IInstructionsReservationS
 
 	@Override
 	public List<InstructionsReservationHistoryDTO> getHistoryOfInstructionsReservations(String emailOfClient) {
-		return instructionsReservationDTOConverter
+		List<InstructionsReservationHistoryDTO> convertedListInstructionsReservation = instructionsReservationDTOConverter
 				.convertListInstructionsReservationToListInstructionsReservationHistoryDTO(
 						iInstructionsReservationRepository.findAll().stream()
 								.filter(instructionsReservationIt -> instructionsReservationIt.getClientForReservation()
@@ -73,7 +77,12 @@ public class InstructionsReservationService implements IInstructionsReservationS
 												|| instructionsReservationIt.getTimeOfEndingReservation()
 														.isBefore(LocalDateTime.now())))
 								.collect(Collectors.toList()));
+		
+		convertedListInstructionsReservation.forEach(instructionsReservationHistoryDTOIt -> instructionsReservationHistoryDTOIt.setUserReviewed(isHaveInstructionsReviewForReservation(emailOfClient, instructionsReservationHistoryDTOIt.getId())));
+		return convertedListInstructionsReservation;
 	}
+	
+	
 
 	@Override
 	public InstructionsReservation createReservation(InstructionsReservationNewDTO instructionsReservationNewDTO,
@@ -111,6 +120,10 @@ public class InstructionsReservationService implements IInstructionsReservationS
 	private AdditionalServices getAdditionalServicesByName(String name) {
 		return iAdditionalServicesRepository.findAll().stream()
 				.filter(additionalServicesIt -> additionalServicesIt.getName().equals(name)).findFirst().orElse(null);
+	}
+	
+	private boolean isHaveInstructionsReviewForReservation(String emailOfClient, long reservationId) {
+		return iInstructionsReviewRepository.findAll().stream().filter(instructionsReviewIt -> instructionsReviewIt.getClientWhoEvaluating().getEmail().equals(emailOfClient) && instructionsReviewIt.getReservationBeingEvaluated().getId()==reservationId).findFirst().orElse(null) != null;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,9 +58,11 @@ public class CottageController {
 		return new ResponseEntity<>(iCottageService.getAllCottages(cottageSearchDTO),HttpStatus.OK);
 	}
 	
-	@PostMapping("/getAllCottagesForClient")
-	public ResponseEntity<List<CottageDisplayDTO>> getAllCottagesForClient(@RequestBody EntitySearchReservationDTO cottageSearchReservationDTO) {
-		return new ResponseEntity<>(iCottageService.getAllCottagesForClient(cottageSearchReservationDTO),HttpStatus.OK);
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PostMapping("/getAllCottagesForClient/{clientEmail}")
+	public ResponseEntity<List<CottageDisplayDTO>> getAllCottagesForClient(@PathVariable String clientEmail, @RequestBody EntitySearchReservationDTO cottageSearchReservationDTO) {
+		Client client = iClientService.getByEmail(clientEmail);
+		return new ResponseEntity<>(iCottageService.getAllCottagesForClient(cottageSearchReservationDTO, client),HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getAllCottageOwners")
@@ -106,6 +109,7 @@ public class CottageController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/checkSubscription/{email}/cottage/{cottageId}")
 	public ResponseEntity<Boolean> checkSubscription(@PathVariable String email, @PathVariable long cottageId) {
 		Client client= iClientService.getByEmail(email);
@@ -113,6 +117,7 @@ public class CottageController {
 		return new ResponseEntity<Boolean>(cottage!=null, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PutMapping(value = "/subscribe/{email}/cottage/{cottageId}", consumes = "application/json")
 	public ResponseEntity<Boolean> subscribe(@PathVariable String email, @PathVariable long cottageId) {
 		Client client= iClientService.getByEmail(email);
@@ -128,6 +133,7 @@ public class CottageController {
 		return new ResponseEntity<Boolean>(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/getAdditionalServicesForCottage/{id}")
 	public ResponseEntity<List<String>> getAdditionalServicesForCottage(@PathVariable long id) {
 		try {
@@ -138,6 +144,7 @@ public class CottageController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/title/{asc}")
 	public ResponseEntity<List<CottageDisplayDTO>> sortCottagesByTitle(@RequestBody List<CottageDisplayDTO> cottageDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -150,6 +157,7 @@ public class CottageController {
 		return new ResponseEntity<List<CottageDisplayDTO>>(cottageDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/city_address/{asc}")
 	public ResponseEntity<List<CottageDisplayDTO>> sortCottagesByAddressCity(@RequestBody List<CottageDisplayDTO> cottageDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -162,6 +170,7 @@ public class CottageController {
 		return new ResponseEntity<List<CottageDisplayDTO>>(cottageDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/country_address/{asc}")
 	public ResponseEntity<List<CottageDisplayDTO>> sortCottagesByAddressCountry(@RequestBody List<CottageDisplayDTO> cottageDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -174,6 +183,7 @@ public class CottageController {
 		return new ResponseEntity<List<CottageDisplayDTO>>(cottageDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/average_grade/{asc}")
 	public ResponseEntity<List<CottageDisplayDTO>> sortCottagesByAverageGrade(@RequestBody List<CottageDisplayDTO> cottageDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -186,6 +196,7 @@ public class CottageController {
 		return new ResponseEntity<List<CottageDisplayDTO>>(cottageDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/price/{asc}")
 	public ResponseEntity<List<CottageDisplayDTO>> sortCottagesByPrice(@RequestBody List<CottageDisplayDTO> cottageDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {

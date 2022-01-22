@@ -20,6 +20,7 @@ import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
 import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
+import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.repositories.IInstructionsRepository;
 import com.isa.booking_entities.services.interfaces.IInstructionsService;
 
@@ -105,11 +106,16 @@ public class InstructionsService implements IInstructionsService {
 
 	@Override
 	public List<InstructionDisplayDTO> getAllInstructionsForClient(
-			EntitySearchReservationDTO instructionsSearchReservationDTO) {
-		return instructionsPreviewDTOConverter
-				.convertListInstructionsToListInstructionDisplayDTO(iInstructionsRepository.findAll().stream().filter(
-						instructionIt -> doesInstructionsMeetParameters(instructionIt, instructionsSearchReservationDTO))
-						.collect(Collectors.toList()));
+			EntitySearchReservationDTO instructionsSearchReservationDTO, Client client) {
+		List<InstructionDisplayDTO> convertedListOfInstructions = instructionsPreviewDTOConverter.convertListInstructionsToListInstructionDisplayDTO(iInstructionsRepository.findAll().stream().filter(
+				instructionsIt -> doesInstructionsMeetParameters(instructionsIt, instructionsSearchReservationDTO))
+				.collect(Collectors.toList()));
+		convertedListOfInstructions.forEach(instructionsDisplayDTOIt -> instructionsDisplayDTOIt.setUserSubscribed(isClientSubscribedOnInstructions(client,instructionsDisplayDTOIt.getId())));
+		return convertedListOfInstructions;
+	}
+	
+	private boolean isClientSubscribedOnInstructions(Client client, long boatId) {
+		return client.getInstructionsSubscriptions().stream().filter(boatIt -> boatIt.getId()==boatId).findFirst().orElse(null) != null;
 	}
 
 	private Boolean doesInstructionsMeetParameters(Instructions instructions,
@@ -126,7 +132,7 @@ public class InstructionsService implements IInstructionsService {
 				instructions.getAverageGrade());
 		Boolean returnValueMaxAverageGrade = checkMaxValueDouble(instructionsSearchReservationDTO.getMaxAverageGrade(),
 				instructions.getAverageGrade());
-		Boolean returnValueIsFreeForPeriod = isThereReservationForInstruction(instructions,
+		Boolean returnValueIsFreeForPeriod = isThereReservationForInstructions(instructions,
 				instructionsSearchReservationDTO);
 		Boolean returnValueExistAvailabilityPeriod = isTherePeriodOfAvailabilityForInstruction(instructions,
 				instructionsSearchReservationDTO);
@@ -138,6 +144,7 @@ public class InstructionsService implements IInstructionsService {
 
 	private Boolean isTherePeriodOfAvailabilityForInstruction(Instructions instruction,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
+		if (entitySearchReservationDTO.getBeginDate()==null && entitySearchReservationDTO.getEndDate()==null) return true;
 		InstructionsAvailabilityPeriod instructionsAvailabilityPeriod = instruction.getInstructionsAvailabilityPeriods()
 				.stream()
 				.filter(availabilityPeriodIt -> (entitySearchReservationDTO.getBeginDate()
@@ -148,35 +155,36 @@ public class InstructionsService implements IInstructionsService {
 		return instructionsAvailabilityPeriod == null ? false : true;
 	}
 
-	private Boolean isThereReservationForInstruction(Instructions instruction,
+	private Boolean isThereReservationForInstructions(Instructions instructions,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
-		List<InstructionsReservation> instructionsReservation = instruction.getInstructionsReservations().stream()
+		if (entitySearchReservationDTO.getBeginDate()==null && entitySearchReservationDTO.getEndDate()==null) return true;
+		List<InstructionsReservation> instructionsReservation = instructions.getInstructionsReservations().stream()
 				.filter(reservationIt -> isReservationBeforOrAfterPeriod(entitySearchReservationDTO, reservationIt))
 				.collect(Collectors.toList());
 
-		List<QuickBooking> quickBookings = instruction.getInstructionsQuickBookings().stream()
+		List<QuickBooking> quickBookings = instructions.getInstructionsQuickBookings().stream()
 				.filter(quickBookingIt -> isQuickBookingBeforOrAfterPeriod(entitySearchReservationDTO, quickBookingIt))
 				.collect(Collectors.toList());
-		return (instructionsReservation.size() != instruction.getInstructionsReservations().size()
-				|| quickBookings.size() != instruction.getInstructionsQuickBookings().size()) ? false : true;
+		return (instructionsReservation.size() != instructions.getInstructionsReservations().size()
+				|| quickBookings.size() != instructions.getInstructionsQuickBookings().size()) ? false : true;
 	}
 
 	private boolean isReservationBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			InstructionsReservation reservationIt) {
-		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
-				&& reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
-				|| (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
-						&& reservationIt.getTimeOfBeginingReservation()
-								.isAfter(entitySearchReservationDTO.getEndDate()));
+		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
+				&& reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getEndDate()))
+				|| (reservationIt.getTimeOfEndingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+						&& reservationIt.getTimeOfEndingReservation()
+								.isBefore(entitySearchReservationDTO.getEndDate()));
 	}
 
 	private boolean isQuickBookingBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			InstructionsQuickBooking quickBookingIt) {
-		return (quickBookingIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
-				&& quickBookingIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
-				|| (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
-						&& quickBookingIt.getTimeOfBeginingReservation()
-								.isAfter(entitySearchReservationDTO.getEndDate()));
+		return (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
+				&& quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getEndDate()))
+				|| (quickBookingIt.getTimeOfEndingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+						&& quickBookingIt.getTimeOfEndingReservation()
+								.isBefore(entitySearchReservationDTO.getEndDate()));
 	}
 
 	@Override

@@ -3,16 +3,20 @@ package com.isa.booking_entities.dtos;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
 import com.isa.booking_entities.models.reservations.TypeOfReservation;
 
 public class ReservationFutureDisplayDTO {
 	private long id;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime beginDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime endDate;
 	private double duration;
 	private double price;
 	private boolean possibleToCancel;
+	private String title;
 	private StatusOfReservation statusOfReservation;
 	private TypeOfReservation typeOfReservation;
 	
@@ -94,6 +98,14 @@ public class ReservationFutureDisplayDTO {
 
 	public void setTypeOfReservation(TypeOfReservation typeOfReservation) {
 		this.typeOfReservation = typeOfReservation;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

@@ -70,6 +70,6 @@ public class ClientController {
 	@GetMapping(value = "/getByEmail/{email}")
 	public ResponseEntity<Client> getClientByEmail(@PathVariable String email){
 		Client client = iClientService.getByEmail(email);
-		return (client==null) ? new ResponseEntity<Client>(client, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		return (client!=null) ? new ResponseEntity<Client>(client, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

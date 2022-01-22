@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,6 +68,7 @@ public class CottageReservationController {
 		this.complaintDTOConverter = new ComplaintDTOConverter();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/getHistoryOfReservation/{email}")
 	public ResponseEntity<List<CottageReservationHistoryDTO>> getClientByEmail(@PathVariable String email){
 		return new ResponseEntity<List<CottageReservationHistoryDTO>>(iCottageReservationService.getHistoryOfCottageReservations(email), HttpStatus.OK);
@@ -111,6 +113,7 @@ public class CottageReservationController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/history/sort/begin_date/{asc}")
 	public ResponseEntity<List<CottageReservationHistoryDTO>> sortCottagesByBeginDate(@RequestBody List<CottageReservationHistoryDTO> cottageReservationHistoryDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -123,6 +126,7 @@ public class CottageReservationController {
 		return new ResponseEntity<List<CottageReservationHistoryDTO>>(cottageReservationHistoryDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/history/sort/duration/{asc}")
 	public ResponseEntity<List<CottageReservationHistoryDTO>> sortCottagesByDuration(@RequestBody List<CottageReservationHistoryDTO> cottageReservationHistoryDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -135,6 +139,7 @@ public class CottageReservationController {
 		return new ResponseEntity<List<CottageReservationHistoryDTO>>(cottageReservationHistoryDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/history/sort/price/{asc}")
 	public ResponseEntity<List<CottageReservationHistoryDTO>> sortCottagesByTotalPrice(@RequestBody List<CottageReservationHistoryDTO> cottageReservationHistoryDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {

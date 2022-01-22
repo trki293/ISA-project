@@ -9,6 +9,7 @@ public class InstructionDisplayDTO {
 	private double pricePerHour;
 	private Address address;
 	private int maxNumberOfPeoples;
+	private boolean userSubscribed;
 	
 	public InstructionDisplayDTO() {
 		// TODO Auto-generated constructor stub
@@ -78,6 +79,14 @@ public class InstructionDisplayDTO {
 
 	public void setMaxNumberOfPeoples(int maxNumberOfPeoples) {
 		this.maxNumberOfPeoples = maxNumberOfPeoples;
+	}
+
+	public boolean isUserSubscribed() {
+		return userSubscribed;
+	}
+
+	public void setUserSubscribed(boolean userSubscribed) {
+		this.userSubscribed = userSubscribed;
 	}
 	
 }

@@ -85,8 +85,6 @@ public class AuthentificationController {
 		Users userInDB = iUsersService.getByEmail(userLoginDTO.getEmail());
 		if (authenticationManager == null) {
 			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-		} else if (userLoginDTO == null) {
-			return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
 		}
 		
 		if (userInDB == null || !userInDB.isEnabledLogin()) {

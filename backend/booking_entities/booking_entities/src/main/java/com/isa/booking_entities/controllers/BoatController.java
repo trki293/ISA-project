@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,9 +67,11 @@ public class BoatController {
 		return new ResponseEntity<List<BoatOwner>>(iBoatOwnerService.getAllNonDeletedBoatOwners(),HttpStatus.OK);
 	}
 	
-	@PostMapping("/getAllBoatsForClient")
-	public ResponseEntity<List<BoatDisplayDTO>> getAllBoatsForClient(@RequestBody EntitySearchReservationDTO boatSearchReservationDTO) {
-		return new ResponseEntity<>(iBoatService.getAllBoatsForClient(boatSearchReservationDTO),HttpStatus.OK);
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PostMapping("/getAllBoatsForClient/{clientEmail}")
+	public ResponseEntity<List<BoatDisplayDTO>> getAllBoatsForClient(@PathVariable String clientEmail, @RequestBody EntitySearchReservationDTO boatSearchReservationDTO) {
+		Client client = iClientService.getByEmail(clientEmail);
+		return new ResponseEntity<>(iBoatService.getAllBoatsForClient(boatSearchReservationDTO, client),HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/getBoatById/{id}")
@@ -105,6 +108,7 @@ public class BoatController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/getAdditionalServicesForBoat/{id}")
 	public ResponseEntity<List<String>> getAdditionalServicesForBoat(@PathVariable long id) {
 		try {
@@ -116,6 +120,7 @@ public class BoatController {
 	}
 	
 	//false ne prati
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/checkSubscription/{email}/boat/{boatId}")
 	public ResponseEntity<Boolean> checkSubscription(@PathVariable String email, @PathVariable long boatId) {
 		Client client= iClientService.getByEmail(email);
@@ -123,6 +128,7 @@ public class BoatController {
 		return new ResponseEntity<Boolean>(boat!=null, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PutMapping(value = "/subscribe/{email}/boat/{boatId}", consumes = "application/json")
 	public ResponseEntity<Boolean> subscribe(@PathVariable String email, @PathVariable long boatId) {
 		Client client= iClientService.getByEmail(email);
@@ -138,6 +144,7 @@ public class BoatController {
 		return new ResponseEntity<Boolean>(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/title/{asc}")
 	public ResponseEntity<List<BoatDisplayDTO>> sortBoatsByTitle(@RequestBody List<BoatDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -150,6 +157,7 @@ public class BoatController {
 		return new ResponseEntity<List<BoatDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/city_address/{asc}")
 	public ResponseEntity<List<BoatDisplayDTO>> sortBoatsByAddressCity(@RequestBody List<BoatDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -161,7 +169,8 @@ public class BoatController {
 		}
 		return new ResponseEntity<List<BoatDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
-	
+	 
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/country_address/{asc}")
 	public ResponseEntity<List<BoatDisplayDTO>> sortBoatsByAddressCountry(@RequestBody List<BoatDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -174,6 +183,7 @@ public class BoatController {
 		return new ResponseEntity<List<BoatDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/average_grade/{asc}")
 	public ResponseEntity<List<BoatDisplayDTO>> sortBoatsByAverageGrade(@RequestBody List<BoatDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -186,6 +196,7 @@ public class BoatController {
 		return new ResponseEntity<List<BoatDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/price/{asc}")
 	public ResponseEntity<List<BoatDisplayDTO>> sortBoatsByPrice(@RequestBody List<BoatDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {

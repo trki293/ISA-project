@@ -27,12 +27,12 @@ import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.users.Client;
 
 @Entity
-@Table(name = "quick_bookings")
+@Table(name = "reservations")
 @Inheritance(strategy = JOINED)
 public class Reservation {
 	@Id
-	@SequenceGenerator(name = "mySeqGenQuickBooking", sequenceName = "mySeqQuickBooking", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenQuickBooking")
+	@SequenceGenerator(name = "mySeqGenReservation", sequenceName = "mySeqReservation", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenReservation")
 	private long id;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "UTC")

@@ -9,11 +9,12 @@ public class BoatDisplayDTO {
 	private double pricePerHour;
 	private Address address;
 	private int capacity;
+	private boolean userSubscribe;
 	
 	public BoatDisplayDTO() {
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public BoatDisplayDTO(long id, String title, double averageGrade, double pricePerHour, Address address,
 			int capacity) {
 		this.id = id;
@@ -78,6 +79,14 @@ public class BoatDisplayDTO {
 
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
+	}
+
+	public boolean isUserSubscribe() {
+		return userSubscribe;
+	}
+
+	public void setUserSubscribe(boolean userSubscribe) {
+		this.userSubscribe = userSubscribe;
 	}
 	
 }

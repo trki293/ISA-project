@@ -1,5 +1,6 @@
 package com.isa.booking_entities.models.users;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.isa.booking_entities.models.complaints.Complaint;
 import com.isa.booking_entities.models.entites.Boat;
@@ -29,6 +31,9 @@ public class Client extends Users {
 
 	@Column(name = "penaltyPoints", unique = false, nullable = false)
 	private long penaltyPoints;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "UTC")
+	private LocalDateTime timeOfResetingPenaltyPoints;
 
 	@Column(name = "loyaltyPoints", unique = false, nullable = false)
 	private long loyaltyPoints;
@@ -48,7 +53,7 @@ public class Client extends Users {
 	@OneToMany(mappedBy = "clientForQuickBooking", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<QuickBooking> quickBookings = new HashSet<QuickBooking>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="client-review")
 	@OneToMany(mappedBy = "clientWhoEvaluating", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Review> reviews = new HashSet<Review>();
 
@@ -155,6 +160,14 @@ public class Client extends Users {
 
 	public void setInstructionsSubscriptions(Set<Instructions> instructionsSubscriptions) {
 		this.instructionsSubscriptions = instructionsSubscriptions;
+	}
+
+	public LocalDateTime getTimeOfResetingPenaltyPoints() {
+		return timeOfResetingPenaltyPoints;
+	}
+
+	public void setTimeOfResetingPenaltyPoints(LocalDateTime timeOfResetingPenaltyPoints) {
+		this.timeOfResetingPenaltyPoints = timeOfResetingPenaltyPoints;
 	}
 
 }

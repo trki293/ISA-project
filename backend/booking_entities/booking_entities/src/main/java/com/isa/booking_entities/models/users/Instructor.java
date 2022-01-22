@@ -28,19 +28,15 @@ public class Instructor extends Users {
 	@Enumerated(EnumType.ORDINAL)
 	private StatusOfUser statuseOfUser;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value="instructor-instructions")
 	@OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Instructions>  instructions= new HashSet<Instructions>();
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "instructorForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<InstructionsReview> instructorReviews = new HashSet<InstructionsReview>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="instructor-report")
 	@OneToMany(mappedBy = "instructorWhoCreateReport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructorReport>  instructorReports= new HashSet<InstructorReport>();
 	
-	@JsonManagedReference
+	@JsonManagedReference(value="instructor-complaint")
 	@OneToMany(mappedBy = "instructorForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructionsComplaint> instructorComplaints = new HashSet<InstructionsComplaint>();
 	
@@ -70,14 +66,6 @@ public class Instructor extends Users {
 
 	public void setInstructions(Set<Instructions> instructions) {
 		this.instructions = instructions;
-	}
-
-	public Set<InstructionsReview> getInstructorReviews() {
-		return instructorReviews;
-	}
-
-	public void setInstructorReviews(Set<InstructionsReview> instructorReviews) {
-		this.instructorReviews = instructorReviews;
 	}
 
 	public Set<InstructorReport> getInstructorReports() {

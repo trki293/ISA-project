@@ -60,7 +60,7 @@ public class QuickBooking {
 	@JsonBackReference
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client clientForQuickBooking;
-
+	
 	public QuickBooking() {
 		// TODO Auto-generated constructor stub
 	}

@@ -36,7 +36,6 @@ public class BoatComplaintService implements IBoatComplaintService {
 			Client client, Boat boat) {
 		BoatComplaint boatComplaint = new BoatComplaint();
 		boatComplaint.setBoatForComplaint(boat);
-		boatComplaint.setBoatOwnerForComplaint(boat.getOwnerOfBoat());
 		boatComplaint.setClientWhoCreateComplaint(client);
 		boatComplaint.setStatusOfComplaint(StatusOfComplaint.WAITING_FOR_RESPONSE);
 		boatComplaint.setText(boatComplaintNewDTO.getText());

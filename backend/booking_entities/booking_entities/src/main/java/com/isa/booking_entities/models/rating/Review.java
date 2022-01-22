@@ -37,7 +37,7 @@ public class Review {
 	@Column(name = "content", unique = false, nullable = false)
 	private String content;
 
-	@JsonBackReference
+	@JsonBackReference(value="client-review")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client clientWhoEvaluating;
 

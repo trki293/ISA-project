@@ -20,6 +20,7 @@ import com.isa.booking_entities.models.reservations.CottageQuickBooking;
 import com.isa.booking_entities.models.reservations.CottageReservation;
 import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
+import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.repositories.ICottageRepository;
 import com.isa.booking_entities.services.interfaces.ICottageService;
 
@@ -122,11 +123,16 @@ public class CottageService implements ICottageService {
 	}
 
 	@Override
-	public List<CottageDisplayDTO> getAllCottagesForClient(EntitySearchReservationDTO cottageSearchReservationDTO) {
-		return cottagePreviewDTOConverter
-				.convertListCottageToListCottageDisplayDTO(iCottageRepository.findAll().stream().filter(
-						cottageIt -> doesCottageMeetParameters(cottageIt, cottageSearchReservationDTO))
-						.collect(Collectors.toList()));
+	public List<CottageDisplayDTO> getAllCottagesForClient(EntitySearchReservationDTO cottageSearchReservationDTO, Client client) {
+		List<CottageDisplayDTO> convertedListOfCottage = cottagePreviewDTOConverter.convertListCottageToListCottageDisplayDTO(iCottageRepository.findAll().stream().filter(
+				cottageIt -> doesCottageMeetParameters(cottageIt, cottageSearchReservationDTO))
+				.collect(Collectors.toList()));
+		convertedListOfCottage.forEach(cottageDisplayDTOIt -> cottageDisplayDTOIt.setUserSubscribe(isClientSubscribedOnCottage(client,cottageDisplayDTOIt.getId())));
+		return convertedListOfCottage;
+	}
+	
+	private boolean isClientSubscribedOnCottage(Client client, long cottageId) {
+		return client.getCottageSubscriptions().stream().filter(cottageIt -> cottageIt.getId()==cottageId).findFirst().orElse(null) != null;
 	}
 	
 	private Boolean doesCottageMeetParameters(Cottage cottage,
@@ -143,9 +149,9 @@ public class CottageService implements ICottageService {
 				cottage.getAverageGrade());
 		Boolean returnValueMaxAverageGrade = checkMaxValueDouble(cottageSearchReservationDTO.getMaxAverageGrade(),
 				cottage.getAverageGrade());
-		Boolean returnValueIsFreeForPeriod = isThereReservationForInstruction(cottage,
+		Boolean returnValueIsFreeForPeriod = isThereReservationForCottage(cottage,
 				cottageSearchReservationDTO);
-		Boolean returnValueExistAvailabilityPeriod = isTherePeriodOfAvailabilityForInstruction(cottage,
+		Boolean returnValueExistAvailabilityPeriod = isTherePeriodOfAvailabilityForCottage(cottage,
 				cottageSearchReservationDTO);
 
 		return returnValueMaxAverageGrade && returnValueMinAverageGrade && returnValueMaxPricePerNight
@@ -153,8 +159,9 @@ public class CottageService implements ICottageService {
 				&& returnValueCity && returnValueCountry && !cottage.getDeleted();
 	}
 
-	private Boolean isTherePeriodOfAvailabilityForInstruction(Cottage cottage,
+	private Boolean isTherePeriodOfAvailabilityForCottage(Cottage cottage,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
+		if (entitySearchReservationDTO.getBeginDate()==null && entitySearchReservationDTO.getEndDate()==null) return true;
 		CottageAvailabilityPeriod cottageAvailabilityPeriod = cottage.getCottageAvailabilityPeriods()
 				.stream()
 				.filter(availabilityPeriodIt -> (entitySearchReservationDTO.getBeginDate()
@@ -165,8 +172,9 @@ public class CottageService implements ICottageService {
 		return cottageAvailabilityPeriod == null ? false : true;
 	}
 
-	private Boolean isThereReservationForInstruction(Cottage cottage,
+	private Boolean isThereReservationForCottage(Cottage cottage,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
+		if (entitySearchReservationDTO.getBeginDate()==null && entitySearchReservationDTO.getEndDate()==null) return true;
 		List<CottageReservation> cottageReservation = cottage.getCottageReservations().stream()
 				.filter(reservationIt -> isReservationBeforOrAfterPeriod(entitySearchReservationDTO, reservationIt))
 				.collect(Collectors.toList());
@@ -180,20 +188,20 @@ public class CottageService implements ICottageService {
 
 	private boolean isReservationBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			CottageReservation reservationIt) {
-		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
-				&& reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
-				|| (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
-						&& reservationIt.getTimeOfBeginingReservation()
-								.isAfter(entitySearchReservationDTO.getEndDate()));
+		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
+				&& reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getEndDate()))
+				|| (reservationIt.getTimeOfEndingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+						&& reservationIt.getTimeOfEndingReservation()
+								.isBefore(entitySearchReservationDTO.getEndDate()));
 	}
 
 	private boolean isQuickBookingBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			CottageQuickBooking quickBookingIt) {
-		return (quickBookingIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
-				&& quickBookingIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
-				|| (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
-						&& quickBookingIt.getTimeOfBeginingReservation()
-								.isAfter(entitySearchReservationDTO.getEndDate()));
+		return (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
+				&& quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getEndDate()))
+				|| (quickBookingIt.getTimeOfEndingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+						&& quickBookingIt.getTimeOfEndingReservation()
+								.isBefore(entitySearchReservationDTO.getEndDate()));
 	}
 	
 	@Override

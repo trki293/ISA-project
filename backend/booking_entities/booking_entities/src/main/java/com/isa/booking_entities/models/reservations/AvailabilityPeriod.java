@@ -21,8 +21,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Inheritance(strategy = JOINED)
 public class AvailabilityPeriod {
 	@Id
-	@SequenceGenerator(name = "mySeqGenQuickBooking", sequenceName = "mySeqQuickBooking", initialValue = 1, allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenQuickBooking")
+	@SequenceGenerator(name = "mySeqGenAvailabilityPeriod", sequenceName = "mySeqAvailabilityPeriod", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mySeqGenAvailabilityPeriod")
 	private long id;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern ="yyyy-MM-dd HH:mm", timezone = "UTC")

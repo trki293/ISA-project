@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,7 @@ public class CottageReviewController {
 		this.iCottageOwnerService = iCottageOwnerService;
 	}
 
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/create")
 	public ResponseEntity<Boolean> createCottageReview(@RequestBody CottageReviewNewDTO cottageReviewNewDTO) {
 		Client client = iClientService.getByEmail(cottageReviewNewDTO.getClientEmail());
@@ -76,7 +78,7 @@ public class CottageReviewController {
 
 	private double getAverageGradeForCottage(Cottage cottage) {
 		List<CottageReview> cottageReviews = iCottageReviewService.getAllForCottage(cottage);
-		int sumGrade = 0;
+		double sumGrade = 0;
 		for (CottageReview cottageReview : cottageReviews) {
 			sumGrade += cottageReview.getRating();
 		}

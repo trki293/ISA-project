@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.isa.booking_entities.dtos.BoatDisplayDTO;
 import com.isa.booking_entities.dtos.BoatPreviewDTO;
 import com.isa.booking_entities.models.entites.Boat;
+import com.isa.booking_entities.models.users.Client;
 
 public class BoatPreviewDTOConverter {
 	public BoatPreviewDTOConverter() {

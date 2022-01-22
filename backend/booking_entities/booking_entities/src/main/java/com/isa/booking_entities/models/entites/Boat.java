@@ -90,27 +90,27 @@ public class Boat {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<AdditionalServices> additionalServices = new HashSet<AdditionalServices>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="boat-quick_booking")
 	@OneToMany(mappedBy = "boatForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatQuickBooking> boatQuickBookings = new HashSet<BoatQuickBooking>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="boat-reservation")
 	@OneToMany(mappedBy = "boatForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatReservation> boatReservations = new HashSet<BoatReservation>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="boat-review")
 	@OneToMany(mappedBy = "boatForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatReview> boatReviews = new HashSet<BoatReview>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="boat-availability_periods")
 	@OneToMany(mappedBy = "boatForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatAvailabilityPeriod> boatAvailabilityPeriods = new HashSet<BoatAvailabilityPeriod>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="boat-complaint")
 	@OneToMany(mappedBy = "boatForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<BoatComplaint> boatComplaints = new HashSet<BoatComplaint>();
 
-	@JsonBackReference
+	@JsonBackReference(value="boat-owner")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private BoatOwner ownerOfBoat;
 

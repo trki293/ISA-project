@@ -40,7 +40,6 @@ public class CottageComplaintService implements ICottageComplaintService {
 			Client client, Cottage cottage) {
 		CottageComplaint cottageComplaint = new CottageComplaint();
 		cottageComplaint.setCottageForComplaint(cottage);
-		cottageComplaint.setCottageOwnerForComplaint(cottage.getOwnerOfCottage());
 		cottageComplaint.setClientWhoCreateComplaint(client);
 		cottageComplaint.setStatusOfComplaint(StatusOfComplaint.WAITING_FOR_RESPONSE);
 		cottageComplaint.setText(cottageComplaintNewDTO.getText());

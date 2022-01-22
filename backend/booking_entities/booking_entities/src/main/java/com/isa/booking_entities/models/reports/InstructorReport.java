@@ -13,7 +13,7 @@ import com.isa.booking_entities.models.users.Instructor;
 @Table(name = "instructor_reports")
 public class InstructorReport extends Report{
 	
-	@JsonBackReference
+	@JsonBackReference(value="instructor-report")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructor instructorWhoCreateReport;
 	

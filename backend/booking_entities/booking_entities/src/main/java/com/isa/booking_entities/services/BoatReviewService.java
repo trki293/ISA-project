@@ -39,7 +39,6 @@ public class BoatReviewService implements IBoatReviewService {
 		boatReview.setClientWhoEvaluating(client);
 		boatReview.setContent(boatReviewNewDTO.getContent());
 		boatReview.setBoatForReview(boatReservation.getBoatForReservation());
-		boatReview.setBoatOwnerForReview(boatReservation.getBoatForReservation().getOwnerOfBoat());
 		boatReview.setPublished(false);
 		boatReview.setRating(boatReviewNewDTO.getRating());
 		boatReview.setReservationBeingEvaluated(boatReservation);

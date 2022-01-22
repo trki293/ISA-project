@@ -23,6 +23,7 @@ import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.StatusOfUser;
 import com.isa.booking_entities.repositories.IAdditionalServicesRepository;
 import com.isa.booking_entities.repositories.ICottageReservationRepository;
+import com.isa.booking_entities.repositories.ICottageReviewRepository;
 import com.isa.booking_entities.repositories.ISystemParametersRepository;
 import com.isa.booking_entities.services.interfaces.ICottageReservationService;
 
@@ -30,6 +31,8 @@ import com.isa.booking_entities.services.interfaces.ICottageReservationService;
 public class CottageReservationService implements ICottageReservationService {
 
 	private ICottageReservationRepository iCottageReservationRepository;
+	
+	private ICottageReviewRepository iCottageReviewRepository;
 
 	private CottageReservationDTOConverter cottageReservationDTOConverter;
 
@@ -39,9 +42,11 @@ public class CottageReservationService implements ICottageReservationService {
 
 	@Autowired
 	public CottageReservationService(ICottageReservationRepository iCottageReservationRepository,
-			IAdditionalServicesRepository iAdditionalServicesRepository,
-			ISystemParametersRepository iSystemParametersRepository) {
+			ICottageReviewRepository iCottageReviewRepository,
+			ISystemParametersRepository iSystemParametersRepository,
+			IAdditionalServicesRepository iAdditionalServicesRepository) {
 		this.iCottageReservationRepository = iCottageReservationRepository;
+		this.iCottageReviewRepository = iCottageReviewRepository;
 		this.cottageReservationDTOConverter = new CottageReservationDTOConverter();
 		this.iSystemParametersRepository = iSystemParametersRepository;
 		this.iAdditionalServicesRepository = iAdditionalServicesRepository;
@@ -59,7 +64,7 @@ public class CottageReservationService implements ICottageReservationService {
 
 	@Override
 	public List<CottageReservationHistoryDTO> getHistoryOfCottageReservations(String emailOfClient) {
-		return cottageReservationDTOConverter.convertListCottageReservationToListCottageReservationHistoryDTO(
+		List<CottageReservationHistoryDTO> convertedListCottageReservation = cottageReservationDTOConverter.convertListCottageReservationToListCottageReservationHistoryDTO(
 				iCottageReservationRepository.findAll().stream().filter(cottageReservationIt -> cottageReservationIt
 						.getClientForReservation().getEmail().equals(emailOfClient)
 						&& (cottageReservationIt.getStatusOfReservation() == StatusOfReservation.CANCELED
@@ -67,6 +72,13 @@ public class CottageReservationService implements ICottageReservationService {
 								|| cottageReservationIt.getStatusOfReservation() == StatusOfReservation.MISSED
 								|| cottageReservationIt.getTimeOfEndingReservation().isBefore(LocalDateTime.now())))
 						.collect(Collectors.toList()));
+		convertedListCottageReservation.forEach(cottageReservationHistoryDTOIt -> cottageReservationHistoryDTOIt.setUserReviewed(isHaveCottageReviewForReservation(emailOfClient, cottageReservationHistoryDTOIt.getId())) );
+		return convertedListCottageReservation;
+	}
+
+	
+	private boolean isHaveCottageReviewForReservation(String emailOfClient, long reservationId) {
+		return iCottageReviewRepository.findAll().stream().filter(cottageReviewIt -> cottageReviewIt.getClientWhoEvaluating().getEmail().equals(emailOfClient) && cottageReviewIt.getReservationBeingEvaluated().getId()==reservationId).findFirst().orElse(null) != null;
 	}
 
 	@Override

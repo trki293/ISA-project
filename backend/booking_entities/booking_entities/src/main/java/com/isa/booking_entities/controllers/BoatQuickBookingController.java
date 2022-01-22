@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,12 +55,14 @@ public class BoatQuickBookingController {
 		this.emailService = emailService;
 	}	
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/getQuickBooking/client/{email}/boat/{boatId}")
 	public ResponseEntity<List<BoatQuickBookingDisplayDTO>> getQuickBookingForBoat(@PathVariable String email, @PathVariable long boatId){
 		Client client = iClientService.getByEmail(email);
 		return new ResponseEntity<List<BoatQuickBookingDisplayDTO>>(iBoatQuickBookingService.getFutureFreeQuickBookingsForBoat(boatId, client), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/createBoatReservationForQuickBooking/{boatQuickBookingId}/client/{email}")
 	public ResponseEntity<Boolean> createBoatReservationForQuickBooking(@PathVariable String email, @PathVariable long boatQuickBookingId) {
 		Client client = iClientService.getByEmail(email);

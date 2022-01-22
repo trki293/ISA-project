@@ -23,6 +23,7 @@ import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.StatusOfUser;
 import com.isa.booking_entities.repositories.IAdditionalServicesRepository;
 import com.isa.booking_entities.repositories.IBoatReservationRepository;
+import com.isa.booking_entities.repositories.IBoatReviewRepository;
 import com.isa.booking_entities.repositories.ISystemParametersRepository;
 import com.isa.booking_entities.services.interfaces.IBoatReservationService;
 
@@ -36,14 +37,17 @@ public class BoatReservationService implements IBoatReservationService {
 	private IAdditionalServicesRepository iAdditionalServicesRepository;
 	
 	private BoatReservationDTOConverter boatReservationDTOConverter;
+	
+	private IBoatReviewRepository iBoatReviewRepository;
 
 	@Autowired
-	public BoatReservationService(IBoatReservationRepository iBoatReservationRepository,
+	public BoatReservationService(IBoatReviewRepository iBoatReviewRepository, IBoatReservationRepository iBoatReservationRepository,
 			IAdditionalServicesRepository iAdditionalServicesRepository,ISystemParametersRepository iSystemParametersRepository) {
 		this.iBoatReservationRepository = iBoatReservationRepository;
 		this.boatReservationDTOConverter = new BoatReservationDTOConverter();
 		this.iAdditionalServicesRepository = iAdditionalServicesRepository;
 		this.iSystemParametersRepository = iSystemParametersRepository;
+		this.iBoatReviewRepository = iBoatReviewRepository;
 	}
 
 	@Override
@@ -58,7 +62,7 @@ public class BoatReservationService implements IBoatReservationService {
 
 	@Override
 	public List<BoatReservationHistoryDTO> getHistoryOfBoatReservations(String emailOfClient) {
-		return boatReservationDTOConverter.convertListBoatReservationToListBoatReservationHistoryDTO(
+		List<BoatReservationHistoryDTO> convertedListBoatReservation = boatReservationDTOConverter.convertListBoatReservationToListBoatReservationHistoryDTO(
 				iBoatReservationRepository.findAll().stream().filter(boatReservationIt -> boatReservationIt
 						.getClientForReservation().getEmail().equals(emailOfClient)
 						&& (boatReservationIt.getStatusOfReservation() == StatusOfReservation.CANCELED
@@ -66,6 +70,8 @@ public class BoatReservationService implements IBoatReservationService {
 								|| boatReservationIt.getStatusOfReservation() == StatusOfReservation.MISSED
 								|| boatReservationIt.getTimeOfEndingReservation().isBefore(LocalDateTime.now())))
 						.collect(Collectors.toList()));
+		convertedListBoatReservation.forEach(boatReservationHistoryDTOIt -> boatReservationHistoryDTOIt.setUserReviewed(isHaveBoatReviewForReservation(emailOfClient, boatReservationHistoryDTOIt.getId())));
+		return convertedListBoatReservation;
 	}
 
 	@Override
@@ -106,6 +112,10 @@ public class BoatReservationService implements IBoatReservationService {
 				.filter(boatReservationIt ->boatReservationIt.getClientForReservation().getId()==client.getId() && boatReservationIt.getTimeOfEndingReservation()
 				.isBefore(LocalDateTime.now()) && boatReservationIt.getStatusOfReservation() != StatusOfReservation.MISSED)
 				.collect(Collectors.toList());
+	}
+	
+	private boolean isHaveBoatReviewForReservation(String emailOfClient, long reservationId) {
+		return iBoatReviewRepository.findAll().stream().filter(boatReviewIt -> boatReviewIt.getClientWhoEvaluating().getEmail().equals(emailOfClient) && boatReviewIt.getReservationBeingEvaluated().getId()==reservationId).findFirst().orElse(null) != null;
 	}
 	
 }

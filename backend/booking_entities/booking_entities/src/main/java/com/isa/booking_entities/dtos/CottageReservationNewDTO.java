@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CottageReservationNewDTO {
 	private long cottageId;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime timeOfBeginingReservation;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime timeOfEndingReservation;
 	private int numberOfPerson; 
 	private List<String> namesOfAdditionalsServices;

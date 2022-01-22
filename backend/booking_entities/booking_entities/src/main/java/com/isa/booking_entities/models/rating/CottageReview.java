@@ -8,18 +8,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.isa.booking_entities.models.entites.Cottage;
-import com.isa.booking_entities.models.users.CottageOwner;
 
 @Entity
 @Table(name="cottage_reviews")
 public class CottageReview extends Review{
-	@JsonBackReference
+	@JsonBackReference(value="cottage-review")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Cottage cottageForReview;
-	
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private CottageOwner cottageOwnerForReview;
 	
 	public CottageReview() {
 		// TODO Auto-generated constructor stub
@@ -33,12 +28,4 @@ public class CottageReview extends Review{
 		this.cottageForReview = cottageForReview;
 	}
 
-	public CottageOwner getCottageOwnerForReview() {
-		return cottageOwnerForReview;
-	}
-
-	public void setCottageOwnerForReview(CottageOwner cottageOwnerForReview) {
-		this.cottageOwnerForReview = cottageOwnerForReview;
-	}
-	
 }

@@ -12,7 +12,7 @@ import com.isa.booking_entities.models.entites.Boat;
 @Entity
 @Table(name = "boat_availability_periods")
 public class BoatAvailabilityPeriod extends AvailabilityPeriod {
-	@JsonBackReference
+	@JsonBackReference(value="boat-availability_periods")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Boat boatForAvailabilityPeriod;
 

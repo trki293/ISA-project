@@ -72,23 +72,23 @@ public class Instructions {
 	@Column(name = "percentageOfEarningsWhenCanceling", unique = false, nullable = false)
 	private double percentageOfEarningsWhenCanceling;
 
-	@JsonBackReference
+	@JsonBackReference(value="instructor-instructions")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructor instructor;
 
-	@JsonManagedReference
+	@JsonManagedReference(value="instructions-quick-booking")
 	@OneToMany(mappedBy = "instructionsForQuickReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructionsQuickBooking> instructionsQuickBookings = new HashSet<InstructionsQuickBooking>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="instructions-reservation")
 	@OneToMany(mappedBy = "instructionsForReservation", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructionsReservation> instructionsReservations = new HashSet<InstructionsReservation>();
 
-	@JsonManagedReference
+	@JsonManagedReference(value="instructions-availability-period")
 	@OneToMany(mappedBy = "instructionsForAvailabilityPeriod", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructionsAvailabilityPeriod> instructionsAvailabilityPeriods = new HashSet<InstructionsAvailabilityPeriod>();
 	
-	@JsonManagedReference
+	@JsonManagedReference(value="instructions-review")
 	@OneToMany(mappedBy = "instructionsForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<InstructionsReview> instructionsReviews= new HashSet<InstructionsReview>();
 	

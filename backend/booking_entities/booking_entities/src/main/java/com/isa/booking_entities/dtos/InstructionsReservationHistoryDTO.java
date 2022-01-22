@@ -3,16 +3,19 @@ package com.isa.booking_entities.dtos;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.isa.booking_entities.models.entites.Instructions;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
 
 public class InstructionsReservationHistoryDTO {
 	private long id;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime beginDate;
 	private double duration;
 	private Instructions instructions;
 	private double price;
 	private StatusOfReservation statusOfReservation;
+	private boolean userReviewed;
 	
 	public InstructionsReservationHistoryDTO() {
 		// TODO Auto-generated constructor stub
@@ -74,6 +77,14 @@ public class InstructionsReservationHistoryDTO {
 
 	public void setStatusOfReservation(StatusOfReservation statusOfReservation) {
 		this.statusOfReservation = statusOfReservation;
+	}
+
+	public boolean isUserReviewed() {
+		return userReviewed;
+	}
+
+	public void setUserReviewed(boolean userReviewed) {
+		this.userReviewed = userReviewed;
 	}
 	
 }

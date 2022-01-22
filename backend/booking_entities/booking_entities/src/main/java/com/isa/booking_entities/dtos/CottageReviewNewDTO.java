@@ -16,7 +16,7 @@ public class CottageReviewNewDTO {
 		this.rating = rating;
 		this.clientEmail = clientEmail;
 	}
-
+  
 	public long getCottageReservationId() {
 		return cottageReservationId;
 	}

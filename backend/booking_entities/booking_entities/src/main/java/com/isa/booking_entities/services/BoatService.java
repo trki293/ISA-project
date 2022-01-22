@@ -20,6 +20,7 @@ import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
 import com.isa.booking_entities.models.reservations.QuickBooking;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
+import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.repositories.IBoatRepository;
 import com.isa.booking_entities.services.interfaces.IBoatService;
 
@@ -114,11 +115,16 @@ public class BoatService implements IBoatService {
 	}
 
 	@Override
-	public List<BoatDisplayDTO> getAllBoatsForClient(EntitySearchReservationDTO boatSearchReservationDTO) {
-		return boatPreviewDTOConverter
-				.convertListBoatToListBoatDisplayDTO(iBoatRepository.findAll().stream().filter(
-						boatIt -> doesBoatMeetParameters(boatIt, boatSearchReservationDTO))
-						.collect(Collectors.toList()));
+	public List<BoatDisplayDTO> getAllBoatsForClient(EntitySearchReservationDTO boatSearchReservationDTO, Client client) {
+		List<BoatDisplayDTO> convertedListOfBoat = boatPreviewDTOConverter.convertListBoatToListBoatDisplayDTO(iBoatRepository.findAll().stream().filter(
+				boatIt -> doesBoatMeetParameters(boatIt, boatSearchReservationDTO))
+				.collect(Collectors.toList()));
+		convertedListOfBoat.forEach(boatDisplayDTOIt -> boatDisplayDTOIt.setUserSubscribe(isClientSubscribedOnBoat(client,boatDisplayDTOIt.getId())));
+		return convertedListOfBoat;
+	}
+
+	private boolean isClientSubscribedOnBoat(Client client, long boatId) {
+		return client.getBoatSubscriptions().stream().filter(boatIt -> boatIt.getId()==boatId).findFirst().orElse(null) != null;
 	}
 	
 	private Boolean doesBoatMeetParameters(Boat boat,
@@ -135,9 +141,9 @@ public class BoatService implements IBoatService {
 				boat.getAverageGrade());
 		Boolean returnValueMaxAverageGrade = checkMaxValueDouble(boatSearchReservationDTO.getMaxAverageGrade(),
 				boat.getAverageGrade());
-		Boolean returnValueIsFreeForPeriod = isThereReservationForInstruction(boat,
+		Boolean returnValueIsFreeForPeriod = isThereReservationForBoat(boat,
 				boatSearchReservationDTO);
-		Boolean returnValueExistAvailabilityPeriod = isTherePeriodOfAvailabilityForInstruction(boat,
+		Boolean returnValueExistAvailabilityPeriod = isTherePeriodOfAvailabilityForBoat(boat,
 				boatSearchReservationDTO);
 
 		return returnValueMaxAverageGrade && returnValueMinAverageGrade && returnValueMaxPricePerHour
@@ -145,8 +151,9 @@ public class BoatService implements IBoatService {
 				&& returnValueCity && returnValueCountry && !boat.getDeleted();
 	}
 
-	private Boolean isTherePeriodOfAvailabilityForInstruction(Boat boat,
+	private Boolean isTherePeriodOfAvailabilityForBoat(Boat boat,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
+		if (entitySearchReservationDTO.getBeginDate()==null && entitySearchReservationDTO.getEndDate()==null) return true;
 		BoatAvailabilityPeriod boatAvailabilityPeriod = boat.getBoatAvailabilityPeriods()
 				.stream()
 				.filter(availabilityPeriodIt -> (entitySearchReservationDTO.getBeginDate()
@@ -157,8 +164,9 @@ public class BoatService implements IBoatService {
 		return boatAvailabilityPeriod == null ? false : true;
 	}
 
-	private Boolean isThereReservationForInstruction(Boat boat,
+	private Boolean isThereReservationForBoat(Boat boat,
 			EntitySearchReservationDTO entitySearchReservationDTO) {
+		if (entitySearchReservationDTO.getBeginDate()==null && entitySearchReservationDTO.getEndDate()==null) return true;
 		List<BoatReservation> boatReservation = boat.getBoatReservations().stream()
 				.filter(reservationIt ->isReservationBeforOrAfterPeriod(entitySearchReservationDTO, reservationIt))
 				.collect(Collectors.toList());
@@ -172,20 +180,20 @@ public class BoatService implements IBoatService {
 
 	private boolean isReservationBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			BoatReservation reservationIt) {
-		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
-				&& reservationIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
-				|| (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
-						&& reservationIt.getTimeOfBeginingReservation()
-								.isAfter(entitySearchReservationDTO.getEndDate()));
+		return reservationIt.getStatusOfReservation()!=StatusOfReservation.CREATED || (reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
+				&& reservationIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getEndDate()))
+				|| (reservationIt.getTimeOfEndingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+						&& reservationIt.getTimeOfEndingReservation()
+								.isBefore(entitySearchReservationDTO.getEndDate()));
 	}
 
 	private boolean isQuickBookingBeforOrAfterPeriod(EntitySearchReservationDTO entitySearchReservationDTO,
 			BoatQuickBooking quickBookingIt) {
-		return (quickBookingIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
-				&& quickBookingIt.getTimeOfBeginingReservation().isBefore(entitySearchReservationDTO.getEndDate()))
-				|| (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
-						&& quickBookingIt.getTimeOfBeginingReservation()
-								.isAfter(entitySearchReservationDTO.getEndDate()));
+		return (quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getBeginDate())
+				&& quickBookingIt.getTimeOfBeginingReservation().isAfter(entitySearchReservationDTO.getEndDate()))
+				|| (quickBookingIt.getTimeOfEndingReservation().isBefore(entitySearchReservationDTO.getBeginDate())
+						&& quickBookingIt.getTimeOfEndingReservation()
+								.isBefore(entitySearchReservationDTO.getEndDate()));
 	}
 
 	@Override

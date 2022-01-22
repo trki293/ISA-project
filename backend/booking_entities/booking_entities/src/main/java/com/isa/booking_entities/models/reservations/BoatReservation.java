@@ -12,7 +12,7 @@ import com.isa.booking_entities.models.entites.Boat;
 @Entity
 @Table(name = "boat_reservations")
 public class BoatReservation extends Reservation {
-	@JsonBackReference
+	@JsonBackReference(value="boat-reservation")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Boat boatForReservation;
 

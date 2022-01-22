@@ -10,6 +10,7 @@ public class CottageDisplayDTO {
 	private Address address;
 	private int numberOfRooms;
 	private int numberOfBeds;
+	private boolean userSubscribe;
 	
 	public CottageDisplayDTO() {
 		// TODO Auto-generated constructor stub
@@ -88,6 +89,14 @@ public class CottageDisplayDTO {
 
 	public void setNumberOfBeds(int numberOfBeds) {
 		this.numberOfBeds = numberOfBeds;
+	}
+
+	public boolean isUserSubscribe() {
+		return userSubscribe;
+	}
+
+	public void setUserSubscribe(boolean userSubscribe) {
+		this.userSubscribe = userSubscribe;
 	}
 	
 }

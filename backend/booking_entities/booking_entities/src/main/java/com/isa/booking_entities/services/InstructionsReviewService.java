@@ -23,7 +23,6 @@ import com.isa.booking_entities.services.interfaces.IInstructionsReviewService;
 @Service
 public class InstructionsReviewService implements IInstructionsReviewService {
 
-
 	private IInstructionsReviewRepository iInstructionsReviewRepository;
 	
 	@Autowired
@@ -42,7 +41,6 @@ public class InstructionsReviewService implements IInstructionsReviewService {
 		InstructionsReview instructionsReview = new InstructionsReview();
 		instructionsReview.setClientWhoEvaluating(client);
 		instructionsReview.setContent(instructionsReviewNewDTO.getContent());
-		instructionsReview.setInstructorForReview(instructionsReservation.getInstructionsForReservation().getInstructor());
 		instructionsReview.setPublished(false);
 		instructionsReview.setRating(instructionsReviewNewDTO.getRating());
 		instructionsReview.setReservationBeingEvaluated(instructionsReservation);
@@ -53,7 +51,7 @@ public class InstructionsReviewService implements IInstructionsReviewService {
 
 	@Override
 	public List<InstructionsReview> getAllForInstructions(Instructions instructions) {
-		return iInstructionsReviewRepository.findAll().stream().filter(instructionsReviewIt -> instructionsReviewIt.getInstructionsForReview().getId()==instructions.getId()).collect(Collectors.toList());
+		return iInstructionsReviewRepository.findAll().stream().filter(instructionsReviewIt ->(instructionsReviewIt.getInstructionsForReview()!=null)? instructionsReviewIt.getInstructionsForReview().getId()==instructions.getId() : false).collect(Collectors.toList());
 	}
 
 	@Override

@@ -67,8 +67,9 @@ public class InstructionsReviewController {
 		Client client = iClientService.getByEmail(instructionsReviewNewDTO.getClientEmail());
 		InstructionsReservation instructionsReservation = iInstructionsReservationService.getById(instructionsReviewNewDTO.getInstructionsReservationId());
 		InstructionsReview instructionsReview = iInstructionsReviewService.createInstructionsReview(instructionsReviewNewDTO, instructionsReservation, client);
-		iReviewService.save(iInstructionsReviewService.save(instructionsReview));
 		Instructions instructions = iInstructionsService.getById(instructionsReservation.getInstructionsForReservation().getId());
+		instructionsReview.setInstructionsForReview(instructions);
+		iReviewService.save(iInstructionsReviewService.save(instructionsReview));
 		instructions.setAverageGrade(getAverageGradeForInstructions(instructions));
 		iInstructionsService.save(instructions);
 		return new ResponseEntity<>(HttpStatus.OK);

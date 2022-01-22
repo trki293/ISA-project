@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,11 +54,14 @@ public class InstructionsController {
 		return new ResponseEntity<>(iInstructionsService.getAllInstructions(instructionsSearchDTO),HttpStatus.OK);
 	}
 	
-	@PostMapping("/getAllInstructionsForClient")
-	public ResponseEntity<List<InstructionDisplayDTO>> getAllInstructionsForClient(@RequestBody EntitySearchReservationDTO instructionsSearchReservationDTO) {
-		return new ResponseEntity<>(iInstructionsService.getAllInstructionsForClient(instructionsSearchReservationDTO),HttpStatus.OK);
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PostMapping("/getAllInstructionsForClient/{clientEmail}")
+	public ResponseEntity<List<InstructionDisplayDTO>> getAllInstructionsForClient(@PathVariable String clientEmail,@RequestBody EntitySearchReservationDTO instructionsSearchReservationDTO) {
+		Client client = iClientService.getByEmail(clientEmail);
+		return new ResponseEntity<>(iInstructionsService.getAllInstructionsForClient(instructionsSearchReservationDTO, client),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/checkSubscription/{email}/instructions/{instructionsId}")
 	public ResponseEntity<Boolean> checkSubscription(@PathVariable String email, @PathVariable long instructionsId) {
 		Client client= iClientService.getByEmail(email);
@@ -109,6 +113,7 @@ public class InstructionsController {
 		return new ResponseEntity<Instructor>(iInstructorService.getById(id),HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PutMapping(value = "/subscribe/{email}/instructions/{instructionsId}", consumes = "application/json")
 	public ResponseEntity<Boolean> subscribe(@PathVariable String email, @PathVariable long instructionsId) {
 		Client client= iClientService.getByEmail(email);
@@ -124,6 +129,7 @@ public class InstructionsController {
 		return new ResponseEntity<Boolean>(HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@GetMapping(value = "/getAdditionalServicesForInstructions/{id}")
 	public ResponseEntity<List<String>> getAdditionalServicesForInstructions(@PathVariable long id) {
 		try {
@@ -134,6 +140,7 @@ public class InstructionsController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/title/{asc}")
 	public ResponseEntity<List<InstructionDisplayDTO>> sortInstructionsByTitle(@RequestBody List<InstructionDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -146,6 +153,7 @@ public class InstructionsController {
 		return new ResponseEntity<List<InstructionDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/city_address/{asc}")
 	public ResponseEntity<List<InstructionDisplayDTO>> sortInstructionsByAddressCity(@RequestBody List<InstructionDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -158,6 +166,7 @@ public class InstructionsController {
 		return new ResponseEntity<List<InstructionDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/country_address/{asc}")
 	public ResponseEntity<List<InstructionDisplayDTO>> sortInstructionsByAddressCountry(@RequestBody List<InstructionDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -170,6 +179,7 @@ public class InstructionsController {
 		return new ResponseEntity<List<InstructionDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/average_grade/{asc}")
 	public ResponseEntity<List<InstructionDisplayDTO>> sortInstructionsByAverageGrade(@RequestBody List<InstructionDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {
@@ -182,6 +192,7 @@ public class InstructionsController {
 		return new ResponseEntity<List<InstructionDisplayDTO>>(boatDisplayDTOs, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
 	@PostMapping("/sort/price/{asc}")
 	public ResponseEntity<List<InstructionDisplayDTO>> sortInstructionsByPrice(@RequestBody List<InstructionDisplayDTO> boatDisplayDTOs, @PathVariable String asc) {
 		if (asc.equals("asc")) {

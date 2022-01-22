@@ -14,24 +14,12 @@ import com.isa.booking_entities.models.users.Instructor;
 @Table(name="instructions_reviews")
 public class InstructionsReview extends Review {
 	
-	@JsonBackReference
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Instructor instructorForReview;
-	
-	@JsonBackReference
+	@JsonBackReference(value="instructions-review")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Instructions instructionsForReview;
 	
 	public InstructionsReview() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public Instructor getInstructorForReview() {
-		return instructorForReview;
-	}
-
-	public void setInstructorForReview(Instructor instructorForReview) {
-		this.instructorForReview = instructorForReview;
 	}
 
 	public Instructions getInstructionsForReview() {

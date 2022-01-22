@@ -13,7 +13,7 @@ import com.isa.booking_entities.models.entites.Boat;
 @Table(name = "boat_quick_bookings")
 public class BoatQuickBooking extends QuickBooking {
 
-	@JsonBackReference
+	@JsonBackReference(value="boat-quick_booking")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Boat boatForQuickReservation;
 

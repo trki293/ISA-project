@@ -28,21 +28,13 @@ public class CottageOwner extends Users {
 	@Enumerated(EnumType.ORDINAL)
 	private StatusOfUser statuseOfUser;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value="cottage-owner")
 	@OneToMany(mappedBy = "ownerOfCottage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Cottage>  cottages= new HashSet<Cottage>();
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "cottageOwnerForReview", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<CottageReview>  cottageOwnerReviews= new HashSet<CottageReview>();
-	
-	@JsonManagedReference
+	@JsonManagedReference(value="cottage-owner-report")
 	@OneToMany(mappedBy = "cottageOwnerWhoCreateReport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<CottageOwnerReport>  cottageOwnerReports= new HashSet<CottageOwnerReport>();
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "cottageOwnerForComplaint", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Set<CottageComplaint>  cottageOwnerComplaints= new HashSet<CottageComplaint>();
 	
 	public CottageOwner() {
 		// TODO Auto-generated constructor stub
@@ -72,28 +64,12 @@ public class CottageOwner extends Users {
 		this.cottages = cottages;
 	}
 
-	public Set<CottageReview> getCottageOwnerReviews() {
-		return cottageOwnerReviews;
-	}
-
-	public void setCottageOwnerReviews(Set<CottageReview> cottageOwnerReviews) {
-		this.cottageOwnerReviews = cottageOwnerReviews;
-	}
-
 	public Set<CottageOwnerReport> getCottageOwnerReports() {
 		return cottageOwnerReports;
 	}
 
 	public void setCottageOwnerReports(Set<CottageOwnerReport> cottageOwnerReports) {
 		this.cottageOwnerReports = cottageOwnerReports;
-	}
-
-	public Set<CottageComplaint> getCottageOwnerComplaints() {
-		return cottageOwnerComplaints;
-	}
-
-	public void setCottageOwnerComplaints(Set<CottageComplaint> cottageOwnerComplaints) {
-		this.cottageOwnerComplaints = cottageOwnerComplaints;
 	}
 	
 }

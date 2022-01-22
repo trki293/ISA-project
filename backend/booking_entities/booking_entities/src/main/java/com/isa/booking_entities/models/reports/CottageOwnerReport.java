@@ -13,7 +13,7 @@ import com.isa.booking_entities.models.users.CottageOwner;
 @Table(name = "cottage_owner_reports")
 public class CottageOwnerReport extends Report {
 	
-	@JsonBackReference
+	@JsonBackReference(value="cottage-owner-report")
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private CottageOwner cottageOwnerWhoCreateReport;
 	

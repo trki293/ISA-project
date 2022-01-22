@@ -1,7 +1,9 @@
 package com.isa.booking_entities.services;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.isa.booking_entities.converter.QuickBookingDTOConverter;
 import com.isa.booking_entities.dtos.BoatQuickBookingDisplayDTO;
 import com.isa.booking_entities.models.SystemParameters;
+import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatQuickBooking;
 import com.isa.booking_entities.models.reservations.BoatReservation;
@@ -70,7 +73,8 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 	@Override
 	public BoatReservation createBoatReservationByBoatQuickBooking(BoatQuickBooking boatQuickBooking, Client client) {
 		BoatReservation boatReservation = new BoatReservation();
-		boatReservation.setAdditionalServicesFromClient(boatQuickBooking.getAdditionalServices());
+		Set<AdditionalServices> additionalServices = boatQuickBooking.getAdditionalServices();
+		boatReservation.setAdditionalServicesFromClient(new HashSet<AdditionalServices>(additionalServices));
 		boatReservation.setClientForReservation(client);
 		boatReservation.setBoatForReservation(boatQuickBooking.getBoatForQuickReservation());
 		boatReservation.setNumberOfPerson(boatQuickBooking.getMaxNumberOfPerson());
@@ -92,7 +96,7 @@ public class BoatQuickBookingService implements IBoatQuickBookingService {
 		return iBoatQuickBookingRepository.findAll().stream().filter(boatQuickBookingIt -> boatReservation
 				.getTimeOfBeginingReservation().isEqual(boatReservation.getTimeOfBeginingReservation())
 				&& boatReservation.getTimeOfEndingReservation().isEqual(boatReservation.getTimeOfEndingReservation())
-				&& boatQuickBookingIt.getClientForQuickBooking().getId() == boatReservation.getClientForReservation()
+				&& boatQuickBookingIt.getClientForQuickBooking()!=null && boatQuickBookingIt.getClientForQuickBooking().getId() == boatReservation.getClientForReservation()
 						.getId()
 				&& boatQuickBookingIt.getBoatForQuickReservation().getId() == boatReservation.getBoatForReservation()
 						.getId())

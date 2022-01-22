@@ -2,13 +2,19 @@ package com.isa.booking_entities.dtos;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.isa.booking_entities.models.entites.Instructions;
 
 public class InstructionsQuickBookingDisplayDTO {
 	private long id;
 	private Instructions instructions;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime beginDate;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime endDate;
+	
 	private double orginalPrice;
 	private double priceWithDiscount;
 	

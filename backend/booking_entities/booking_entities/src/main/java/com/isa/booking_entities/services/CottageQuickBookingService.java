@@ -1,6 +1,7 @@
 package com.isa.booking_entities.services;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.isa.booking_entities.converter.QuickBookingDTOConverter;
 import com.isa.booking_entities.dtos.CottageQuickBookingDisplayDTO;
 import com.isa.booking_entities.models.SystemParameters;
+import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.reservations.CottageQuickBooking;
 import com.isa.booking_entities.models.reservations.CottageReservation;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
@@ -70,7 +72,7 @@ public class CottageQuickBookingService implements ICottageQuickBookingService {
 	public CottageReservation createCottageReservationByCottageQuickBooking(CottageQuickBooking cottageQuickBooking,
 			Client client) {
 		CottageReservation cottageReservation = new CottageReservation();
-		cottageReservation.setAdditionalServicesFromClient(cottageQuickBooking.getAdditionalServices());
+		cottageReservation.setAdditionalServicesFromClient(new HashSet<AdditionalServices>(cottageQuickBooking.getAdditionalServices()));
 		cottageReservation.setClientForReservation(client);
 		cottageReservation.setCottageForReservation(cottageQuickBooking.getCottageForQuickReservation());
 		cottageReservation.setNumberOfPerson(cottageQuickBooking.getMaxNumberOfPerson());

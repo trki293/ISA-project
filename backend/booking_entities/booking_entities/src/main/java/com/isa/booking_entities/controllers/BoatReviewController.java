@@ -76,7 +76,7 @@ public class BoatReviewController {
 
 	private double getAverageGradeForBoat(Boat boat) {
 		List<BoatReview> boatReviews = iBoatReviewService.getAllForBoat(boat);
-		int sumGrade = 0;
+		double sumGrade = 0;
 		for (BoatReview boatReview : boatReviews) {
 			sumGrade += boatReview.getRating();
 		}

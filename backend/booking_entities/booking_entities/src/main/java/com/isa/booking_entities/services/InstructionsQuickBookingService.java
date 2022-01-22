@@ -1,6 +1,7 @@
 package com.isa.booking_entities.services;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.isa.booking_entities.converter.QuickBookingDTOConverter;
 import com.isa.booking_entities.dtos.InstructionsQuickBookingDisplayDTO;
 import com.isa.booking_entities.models.SystemParameters;
+import com.isa.booking_entities.models.entites.AdditionalServices;
 import com.isa.booking_entities.models.reservations.InstructionsQuickBooking;
 import com.isa.booking_entities.models.reservations.InstructionsReservation;
 import com.isa.booking_entities.models.reservations.StatusOfReservation;
@@ -70,7 +72,7 @@ public class InstructionsQuickBookingService implements IInstructionsQuickBookin
 	public InstructionsReservation createInstructionsReservationByInstructionsQuickBooking(InstructionsQuickBooking instructionsQuickBooking,
 			Client client) {
 		InstructionsReservation instructionsReservation = new InstructionsReservation();
-		instructionsReservation.setAdditionalServicesFromClient(instructionsQuickBooking.getAdditionalServices());
+		instructionsReservation.setAdditionalServicesFromClient(new HashSet<AdditionalServices>(instructionsQuickBooking.getAdditionalServices()));
 		instructionsReservation.setClientForReservation(client);
 		instructionsReservation.setInstructionsForReservation(instructionsQuickBooking.getInstructionsForQuickReservation());
 		instructionsReservation.setNumberOfPerson(instructionsQuickBooking.getMaxNumberOfPerson());

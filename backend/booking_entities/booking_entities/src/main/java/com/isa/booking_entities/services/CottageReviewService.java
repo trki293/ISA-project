@@ -39,7 +39,6 @@ public class CottageReviewService implements ICottageReviewService {
 		cottageReview.setClientWhoEvaluating(client);
 		cottageReview.setContent(cottageReviewNewDTO.getContent());
 		cottageReview.setCottageForReview(cottageReservation.getCottageForReservation());
-		cottageReview.setCottageOwnerForReview(cottageReservation.getCottageForReservation().getOwnerOfCottage());
 		cottageReview.setPublished(false);
 		cottageReview.setRating(cottageReviewNewDTO.getRating());
 		cottageReview.setReservationBeingEvaluated(cottageReservation);
