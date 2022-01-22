@@ -127,6 +127,7 @@ class LoginPage extends Component {
                 .then((res) => {
                     if (res === true) {
                         window.location.href = "http://localhost:3000/changePassword/" + this.state.userEmail;
+                        localStorage.setItem("isFirstLogin", true);
                     } else {
                         window.location.href = "http://localhost:3000/adminSystem/homePage";
                     }

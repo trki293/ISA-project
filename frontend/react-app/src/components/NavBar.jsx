@@ -8,32 +8,131 @@ const clearLocalStorage = () => {
 const NavBar = ({ user }) => {
     const NavBarForClient = (
         <Toolbar>
-            <Grid container>
-                <Grid item xs={6}></Grid>
-                <Grid item xs={6} container style={{ textAlign: "right" }}>
-                    <Grid item xs={3} />
+            <Grid xs={125} container spacing={1} >
+                <Grid item xs={1}>
+                    
                     <Grid item xs={3}>
-                        <Typography>
+                        <Typography style={{marginTop:"15px"}}>
                             <Link
                                 to="/client/homePage"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
                             >
-                                Home page
+                                Home
                             </Link>
                         </Typography>
                     </Grid>
+                </Grid>
+                <Grid item xs={1}>
+                    
                     <Grid item xs={3}>
-                        <Typography>
+                        <Typography style={{marginTop:"15px"}}>
                             <Link
-                                to="/client/profile"
+                                to="/client/boatsForClient"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
                             >
-                                Profile
+                                Boats
                             </Link>
                         </Typography>
                     </Grid>
-                    <Grid item xs={3}>
-                        <Typography>
+                </Grid>
+                <Grid item xs={1} style={{ textAlign: "right" }}>
+                    <Grid item xs={3} >
+                        <Typography style={{marginTop:"15px", marginRight:"20px"}}>
+                            <Link
+                                to="/client/cottagesForClient"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                Cottages  
+                            </Link>
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid item xs={2} style={{ textAlign: "center" }}>
+                    <Grid item xs={50}>
+                        <Typography style={{marginTop:"15px", marginRight:"10px"}}>
+                            <Link
+                                to="/client/instructionsForClient"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Instructions
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                
+                <Grid item xs={2} style={{ textAlign: "left" }}>
+                    <Grid item xs={50}>
+                        <Typography style={{marginTop:"5px"}}>
+                            <Link
+                                to="/client/history/cottagesReservation"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  History Cottage Reservation
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={2} style={{ textAlign: "left" }}>
+                    <Grid item xs={50} >
+                        <Typography style={{marginTop:"5px"}}>
+                            <Link
+                                to="/client/history/boatsReservation"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  History Boats Reservation
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={2} style={{ textAlign: "left" }}>
+                    <Grid item xs={50}>
+                        <Typography style={{marginTop:"5px"}}>
+                            <Link
+                                to="/client/history/instructionsReservation"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  History Instructions Reservation
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={1} style={{ textAlign: "left" }}>
+                    <Grid item xs={2}>
+                        <Typography style={{marginTop:"5px"}}>
+                            <Link
+                                to="/client/future/AllReservations"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Future Resevations
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                
+            </Grid>
+
+
+            <Grid xs={45} item container spacing={1} style={{ textAlign: "right" }}>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={3}></Grid>
+                <Grid item xs={2}>
+                    <Typography>
+                        <Link
+                            to="/client/profile"
+                            style={{ color: "#fafafa", textDecoration: "none" }}
+                        >
+                            Profile
+                        </Link>
+                    </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                    <Typography>
                             <a
                                 href="/"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
@@ -41,11 +140,11 @@ const NavBar = ({ user }) => {
                             >
                                 Sing out
                             </a>
-                        </Typography>
-                    </Grid>
+                    </Typography>
                 </Grid>
             </Grid>
-        </Toolbar>
+
+        </Toolbar >
     );
 
     const NavBarForSystemAdmin = (
@@ -67,7 +166,7 @@ const NavBar = ({ user }) => {
                     <Grid item xs={3}>
                         <Typography>
                             <Link
-                                to="/dermatologist/profile"
+                                to="/client/profile"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
                             >
                                 Profile
