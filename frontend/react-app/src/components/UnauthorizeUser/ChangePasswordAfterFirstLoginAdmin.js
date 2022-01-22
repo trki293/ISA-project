@@ -30,6 +30,13 @@ const ChangePasswordAfterFirstLoginAdmin = () => {
     const [newPasswordField, setNewPasswordField] = useState("");
     const [confirmNewPasswordField, setConfirmNewPasswordField] = useState("");
 
+    useEffect(() => {
+        var splitID = []
+        splitID = window.location.href.split("/");
+        const token = splitID[4];
+        alert(token);
+    }, []);
+
     const changePassword = () => {
         axios
             .put("http://localhost:8080/system_admins/changePassword/"+localStorage.getItem("userEmail"), {
@@ -49,10 +56,10 @@ const ChangePasswordAfterFirstLoginAdmin = () => {
         <div>
             <br />
             <br />
-            <TextField type="password" value={newPasswordField} onChange={(e) => setNewPasswordField(e.target.value)} id="outlined-basic" variant="outlined" size="small" />
+            <TextField label="Password" type="password" value={newPasswordField} onChange={(e) => setNewPasswordField(e.target.value)} id="outlined-basic" variant="outlined" size="small" />
             <br />
             <br />
-            <TextField type="password" value={confirmNewPasswordField} onChange={(e) => setConfirmNewPasswordField(e.target.value)} id="outlined-basic" variant="outlined" size="small" />
+            <TextField label="Confirmation Password" type="password" value={confirmNewPasswordField} onChange={(e) => setConfirmNewPasswordField(e.target.value)} id="outlined-basic" variant="outlined" size="small" />
             <br />
             <br />
             <Button onClick={() => changePassword()} variant="contained" color="primary">Update</Button>

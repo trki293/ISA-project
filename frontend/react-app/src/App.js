@@ -92,7 +92,6 @@ const redirect = () => {
         <div>
           <>
           {(userRole === "CLIENT" &&  <Redirect to="/client/homePage"></Redirect> )}
-          {(userRole === "SYSTEM_ADMIN" &&  <Redirect to="/adminSystem/homePage"></Redirect> )}
           </>
 
           <>
