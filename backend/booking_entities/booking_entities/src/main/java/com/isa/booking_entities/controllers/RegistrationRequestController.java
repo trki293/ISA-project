@@ -59,7 +59,7 @@ public class RegistrationRequestController {
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public RegistrationRequestController(ISystemAdminService iSystemAdminService, IRegistrationRequestService iRegistrationRequestService,
+	public RegistrationRequestController(IAuthorityService iAuthorityService,ISystemAdminService iSystemAdminService, IRegistrationRequestService iRegistrationRequestService,
 			IUsersService iUsersService, IInstructorService iInstructorService, IBoatOwnerService iBoatOwnerService,
 			ICottageOwnerService iCottageOwnerService, EmailService emailService) {
 		this.iRegistrationRequestService = iRegistrationRequestService;
@@ -69,6 +69,7 @@ public class RegistrationRequestController {
 		this.iCottageOwnerService = iCottageOwnerService;
 		this.emailService = emailService;
 		this.iSystemAdminService = iSystemAdminService;
+		this.iAuthorityService = iAuthorityService;
 		this.passwordEncoder = new BCryptPasswordEncoder();
 	}
 	

@@ -111,6 +111,12 @@ public class CottageReviewController {
 		return new ResponseEntity<List<CottageReview>>(iCottageReviewService.getOnlyPublishedForCottage(iCottageService.getById(cottageId)), HttpStatus.OK) ;
 	}
 	
+	
+	@GetMapping(value = "/getOnlyCottageReviewsForSystemAdmin")
+	public ResponseEntity<List<CottageReview>> getOnlyCottageReviewsForSystemAdmin(){
+		return new ResponseEntity<List<CottageReview>>(iCottageReviewService.getOnlyCottageReviewsForSystemAdmin(), HttpStatus.OK) ;
+	}
+	
 	@GetMapping(value = "/getOnlyPublishedCottageReviewsForCottageOwner/{email}")
 	public ResponseEntity<List<CottageReview>> getOnlyPublishedCottageReviewsForCottageOwner(@PathVariable String email){
 		return new ResponseEntity<List<CottageReview>>(iCottageReviewService.getOnlyPublishedForCottageOwner(iCottageOwnerService.getByEmail(email)), HttpStatus.OK) ;

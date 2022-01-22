@@ -16,4 +16,5 @@ public interface IBoatReviewService {
 	BoatReview getById(long id);
 	List<BoatReview> getOnlyPublishedForBoat(Boat boat);
 	List<BoatReview> getOnlyPublishedForBoatOwner(BoatOwner boatOwner);
+	List<BoatReview> getOnlyBoatReviewsForSystemAdmin();
 }

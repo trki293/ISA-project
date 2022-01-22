@@ -149,32 +149,143 @@ const NavBar = ({ user }) => {
 
     const NavBarForSystemAdmin = (
         <Toolbar>
-            <Grid container>
-                <Grid item xs={6}></Grid>
-                <Grid item xs={6} container style={{ textAlign: "right" }}>
-                    <Grid item xs={3} />
+            <Grid xs={150} container spacing={1} >
+                <Grid item xs={1}>
+                    
                     <Grid item xs={3}>
-                        <Typography>
+                        <Typography style={{marginTop:"15px"}}>
                             <Link
-                                to="/systemAdmin/homePage"
+                                to="/adminSystem/homePage"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
                             >
-                                Home page
+                                Home
                             </Link>
                         </Typography>
                     </Grid>
-                    <Grid item xs={3}>
-                        <Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    
+                    <Grid item xs={30}>
+                        <Typography style={{marginTop:"15px"}}>
                             <Link
-                                to="/client/profile"
+                                to="/adminSystem/entities"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
                             >
-                                Profile
+                                Users/Entities
                             </Link>
                         </Typography>
                     </Grid>
-                    <Grid item xs={3}>
-                        <Typography>
+                </Grid>
+                <Grid item xs={2} style={{ textAlign: "center" }}>
+                    <Grid item xs={40} >
+                        <Typography style={{marginTop:"5px", marginLeft:"25px"}}>
+                            <Link
+                                to="/adminSystem/registrationRequests"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                Registration Requests  
+                            </Link>
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid item xs={2} style={{ textAlign: "center" }}>
+                    <Grid item xs={40}>
+                        <Typography style={{marginTop:"5px", marginRight:"10px"}}>
+                            <Link
+                                to="/adminSystem/deleteAccountRequests"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Delete Account Requests
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                
+                <Grid item xs={1} style={{ textAlign: "left" }}>
+                    <Grid item xs={20}>
+                        <Typography style={{marginTop:"15px"}}>
+                            <Link
+                                to="/adminSystem/reports"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Reports
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={1} style={{ textAlign: "left" }}>
+                    <Grid item xs={40} >
+                        <Typography style={{marginTop:"15px"}}>
+                            <Link
+                                to="/adminSystem/complaints"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Complaints
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={1} style={{ textAlign: "left" }}>
+                    <Grid item xs={20}>
+                        <Typography style={{marginTop:"15px", marginLeft:"10px"}}>
+                            <Link
+                                to="/adminSystem/reviews"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Reviews
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={2} style={{ textAlign: "left" }}>
+                    <Grid item xs={30}>
+                        <Typography style={{marginTop:"15px"}}>
+                            <Link
+                                to="/adminSystem/createSystemAdmin"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  Create System Admin
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+                <Grid item xs={1} style={{ textAlign: "left" }}>
+                    <Grid item xs={50}>
+                        <Typography style={{marginTop:"5px"}}>
+                            <Link
+                                to="/adminSystem/systemParameters"
+                                style={{ color: "#fafafa", textDecoration: "none" }}
+                            >
+                                  System Parameters
+                            </Link>
+                        </Typography>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+
+
+            <Grid xs={45} item container spacing={1} style={{ textAlign: "right" }}>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={2}></Grid>
+                <Grid item xs={3}></Grid>
+                <Grid item xs={2}>
+                    <Typography>
+                        <Link
+                            to="/adminSystem/profile"
+                            style={{ color: "#fafafa", textDecoration: "none" }}
+                        >
+                            Profile
+                        </Link>
+                    </Typography>
+                </Grid>
+                <Grid item xs={3}>
+                    <Typography>
                             <a
                                 href="/"
                                 style={{ color: "#fafafa", textDecoration: "none" }}
@@ -182,11 +293,11 @@ const NavBar = ({ user }) => {
                             >
                                 Sing out
                             </a>
-                        </Typography>
-                    </Grid>
+                    </Typography>
                 </Grid>
             </Grid>
-        </Toolbar>
+
+        </Toolbar >
     );
 
     const NavBarForUnregistred = (

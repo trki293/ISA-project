@@ -10,10 +10,11 @@ class LoginPage extends Component {
         super(props);
 
         this.state = {
-            token:"",
-            roleUser:"",
+            token: "",
+            roleUser: "",
             userEmail: "",
             password: "",
+            lastTimePenaltyPointsReset: "",
             wrong: false,
             openDialog: true,
         };
@@ -31,11 +32,22 @@ class LoginPage extends Component {
                     token: tokenDTO.accessToken,
                     userEmail: tokenDTO.email,
                     roleUser: tokenDTO.typeOfUser,
+                    lastTimePenaltyPointsReset: tokenDTO.lastTimePenaltyPointsReset,
                     openDialog: true,
                 });
                 localStorage.setItem("token", this.state.token);
                 localStorage.setItem("userEmail", this.state.userEmail);
                 localStorage.setItem("roleUser", this.state.roleUser);
+                if (this.state.roleUser === 'CLIENT') {
+                    axios
+                        .get("http://localhost:8080/clients/checkIfClientNeedResetPenaltyPoints/"+this.state.userEmail, {
+                            headers: { Authorization: `Bearer ` + localStorage.getItem('token'), consumes: 'application/json' }
+                        }
+                        )
+                        .then((res) => {
+                            console.log("Uradjeni penali!")
+                        });
+                }
                 this.redirect();
             })
             .catch(function (error) {
@@ -44,8 +56,8 @@ class LoginPage extends Component {
                 }
             });
 
-            
-        
+
+
     }
 
     setOpenDialog(state) {
@@ -114,18 +126,20 @@ class LoginPage extends Component {
     }
 
     redirect() {
-        var redirection1 = "/systemAdmin/homePage";
+        var redirection1 = "/adminSystem/homePage";
         var redirection2 = "/client";
 
         var userRole = localStorage.getItem("roleUser");
-        alert("Usao ",userRole);
+        alert("Usao ", userRole);
         if (userRole === "SYSTEM_ADMIN") {
+            alert("Usao ", userRole);
             axios
                 .get("http://localhost:8080/system_admins/checkIfFirstLogin/" + this.state.userEmail, {
                     headers: { Authorization: `Bearer ` + this.state.token, consumes: 'application/json' }
                 })
                 .then((res) => {
-                    if (res === true) {
+                    console.log(res.data);
+                    if (res.data === true) {
                         window.location.href = "http://localhost:3000/changePassword/" + this.state.userEmail;
                         localStorage.setItem("isFirstLogin", true);
                     } else {
@@ -138,7 +152,7 @@ class LoginPage extends Component {
                     }
                 });
         }
-        if (userRole === "CLIENT") {    
+        if (userRole === "CLIENT") {
             window.location.href = "http://localhost:3000/client/homePage";
         }
     }

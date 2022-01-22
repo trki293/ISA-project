@@ -73,4 +73,9 @@ public class CottageReviewService implements ICottageReviewService {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public List<CottageReview> getOnlyCottageReviewsForSystemAdmin() {
+		return iCottageReviewRepository.findAll().stream().filter(cottageReviewIt -> cottageReviewIt.getStatusOfReview()==StatusOfReview.CREATED).collect(Collectors.toList());
+	}
+
 }

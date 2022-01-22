@@ -1,5 +1,6 @@
 package com.isa.booking_entities.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isa.booking_entities.models.requests.DeleteAccountRequest;
@@ -11,8 +12,9 @@ import com.isa.booking_entities.services.interfaces.IDeleteAccountRequestRespons
 @Service
 public class DeleteAccountRequestResponseService implements IDeleteAccountRequestResponseService {
 	
+	@Autowired
 	private IDeleteAccountRequestResponseRepository iDeleteAccountRequestResponseRepository;
-	
+	 
 	@Override
 	public DeleteAccountRequestResponse save(DeleteAccountRequestResponse deleteAccountRequestResponse) {
 		return iDeleteAccountRequestResponseRepository.save(deleteAccountRequestResponse);

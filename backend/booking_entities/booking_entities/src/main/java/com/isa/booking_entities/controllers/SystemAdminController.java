@@ -100,4 +100,13 @@ public class SystemAdminController {
 		}
 		return new ResponseEntity<Boolean>(systemAdmin.isFirstLogin(), HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/getByEmail/{systemAdminEmail}")
+	public ResponseEntity<SystemAdmin> getByEmail(@PathVariable String systemAdminEmail) {
+		SystemAdmin systemAdmin = iSystemAdminService.getByEmail(systemAdminEmail);
+		if (systemAdmin==null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<SystemAdmin>(systemAdmin, HttpStatus.OK);
+	}
 }

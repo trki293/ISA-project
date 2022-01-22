@@ -16,4 +16,5 @@ public interface IInstructionsReviewService {
 	InstructionsReview getById(long id);
 	List<InstructionsReview> getOnlyPublishedForInstructions(Instructions instructions);
 	List<InstructionsReview> getOnlyPublishedForInstructor(Instructor instructor);
+	List<InstructionsReview> getInstructionsReviewsForSystemAdmin();
 }

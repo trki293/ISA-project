@@ -110,6 +110,11 @@ public class InstructionsReviewController {
 		return new ResponseEntity<List<InstructionsReview>>(iInstructionsReviewService.getOnlyPublishedForInstructions(iInstructionsService.getById(instructionsId)), HttpStatus.OK) ;
 	}
 	
+	@GetMapping(value = "/getInstructionsReviewsForSystemAdmin")
+	public ResponseEntity<List<InstructionsReview>> getInstructionsReviewsForSystemAdmin(){
+		return new ResponseEntity<List<InstructionsReview>>(iInstructionsReviewService.getInstructionsReviewsForSystemAdmin(), HttpStatus.OK) ;
+	}
+	
 	@GetMapping(value = "/getOnlyPublishedInstructionsReviewsForInstructor/{email}")
 	public ResponseEntity<List<InstructionsReview>> getOnlyPublishedInstructionsReviewsForInstructor(@PathVariable String email){
 		return new ResponseEntity<List<InstructionsReview>>(iInstructionsReviewService.getOnlyPublishedForInstructor(iInstructorService.getByEmail(email)), HttpStatus.OK) ;

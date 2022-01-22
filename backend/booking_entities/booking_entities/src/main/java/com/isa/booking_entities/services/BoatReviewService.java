@@ -74,4 +74,9 @@ public class BoatReviewService implements IBoatReviewService {
 						&& boatReviewIt.getBoatForReview().getOwnerOfBoat().getId() == boatOwner.getId())
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public List<BoatReview> getOnlyBoatReviewsForSystemAdmin() {
+		return iBoatReviewRepository.findAll().stream().filter(boatReviewIt-> boatReviewIt.getStatusOfReview() == StatusOfReview.CREATED).collect(Collectors.toList());
+	}
 }

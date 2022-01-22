@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,7 +70,7 @@ public class DeleteAccountRequestController {
 	}
 	
 	@GetMapping(value = "/getAllDeleteAccountRequests")
-	public ResponseEntity<List<DeleteAccountRequest>> getAllDeleteAccountRequests(@PathVariable String userEmail) {
+	public ResponseEntity<List<DeleteAccountRequest>> getAllDeleteAccountRequests() {
 		return new ResponseEntity<List<DeleteAccountRequest>>(iDeleteAccountRequestService.getAllRequestsThatHaveNoResponse(), HttpStatus.OK);
 	}
 	
@@ -78,6 +79,7 @@ public class DeleteAccountRequestController {
 		return new ResponseEntity<DeleteAccountRequest>(iDeleteAccountRequestService.getById(requestId), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMINSYS')")
 	@PostMapping("/createResponse")
 	public ResponseEntity<Boolean> createDeleteAccountRequestResponse(@RequestBody DeleteAccountRequestResponseNewDTO deleteAccountRequestResponseNewDTO) {
 		SystemAdmin systemAdmin = iSystemAdminService.getByEmail(deleteAccountRequestResponseNewDTO.getSystemAdminEmail()); 

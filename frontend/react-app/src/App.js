@@ -37,6 +37,25 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-d
 import './App.css';
 import UserProfile from './components/Client/UserProfile';
 import DeleteAccountRequest from './components/Client/DeleteAccountRequest';
+import HomePageSystemAdmin from './components/SystemAdmin/HomePageSystemAdmin';
+import AllEntities from './components/SystemAdmin/AllEntities';
+import AllRegistrationRequests from './components/SystemAdmin/AllRegistrationRequests';
+import CreateResponseForRegistrationRequest from './components/SystemAdmin/CreateResponseForRegistrationRequest';
+import AllDeleteAccountRequests from './components/SystemAdmin/AllDeleteAccountRequests';
+import CreateResponseForDeleteAccountRequest from './components/SystemAdmin/CreateResponseForDeleteAccountRequest';
+import AllReports from './components/SystemAdmin/AllReports';
+import CreateResponseForBoatOwner from './components/SystemAdmin/CreateResponseForBoatOwner';
+import CreateResponseForCottageOwner from './components/SystemAdmin/CreateResponseForCottageOwnerReport';
+import CreateResponseForInstructor from './components/SystemAdmin/CreateResponseForInstructorReport';
+import AllComplaints from './components/SystemAdmin/AllComplaints';
+import CreateResponseForInstructionsComplaint from './components/SystemAdmin/CreateResponseForInstructionsComplaint';
+import CreateResponseForCottageComplaint from './components/SystemAdmin/CreateResponseForCottageComplaint';
+import CreateResponseForBoatComplaint from './components/SystemAdmin/CreateResponseForBoatComplaint';
+import AllReviews from './components/SystemAdmin/AllReviews';
+import CreateSystemAdmin from './components/SystemAdmin/CreateSystemAdmin';
+import SystemParameters from './components/SystemAdmin/SystemParameters';
+import UserProfileAdmin from './components/SystemAdmin/UserProfileAdmin';
+import ChangePasswordAfterFirstLoginAdmin from './components/UnauthorizeUser/ChangePasswordAfterFirstLoginAdmin';
 
 
 function App() {
@@ -58,11 +77,11 @@ function App() {
 
 
 const redirect = () => {
-  if(userRole === "Client"){
+  if(userRole === "CLIENT"){
     return <Redirect to="/client/homePage"></Redirect>
   }
-  if(userRole === "SystemAdmin"){
-    return <Redirect to="/systemAdmin/homePage"></Redirect>
+  if(userRole === "SYSTEM_ADMIN"){
+    return <Redirect to="/adminSystem/homePage"></Redirect>
   }
 }
 
@@ -73,7 +92,7 @@ const redirect = () => {
         <div>
           <>
           {(userRole === "CLIENT" &&  <Redirect to="/client/homePage"></Redirect> )}
-          {(userRole === "SYSTEM_ADMIN" &&  <Redirect to="/systemAdmin/homePage"></Redirect> )}
+          {(userRole === "SYSTEM_ADMIN" &&  <Redirect to="/adminSystem/homePage"></Redirect> )}
           </>
 
           <>
@@ -121,7 +140,25 @@ const redirect = () => {
             <Route exact path="/client/complaint/instructor/:instructorId" component={CreateInstructorComplaint}></Route>
             <Route exact path="/client/profile" component={UserProfile}></Route>
             <Route exact path="/client/deleteRequest/create" component={DeleteAccountRequest}></Route>
-            
+            <Route exact path="/adminSystem/homePage" component={HomePageSystemAdmin}></Route>
+            <Route exact path="/adminSystem/entities" component={AllEntities}></Route>
+            <Route exact path="/adminSystem/registrationRequests" component={AllRegistrationRequests}></Route>
+            <Route exact path="/adminSystem/registrationRequest/reject/:requestId" component={CreateResponseForRegistrationRequest}></Route>
+            <Route exact path="/adminSystem/deleteAccountRequests" component={AllDeleteAccountRequests}></Route>
+            <Route exact path="/adminSystem/deleteAccountRequest/Response/:requestId" component={CreateResponseForDeleteAccountRequest}></Route>
+            <Route exact path="/adminSystem/reports" component={AllReports}></Route>
+            <Route exact path="/adminSystem/boatOwnerReport/review/:requestId" component={CreateResponseForBoatOwner}></Route>
+            <Route exact path="/adminSystem/cottageOwnerReport/review/:requestId" component={CreateResponseForCottageOwner}></Route>
+            <Route exact path="/adminSystem/instructorReport/review/:requestId" component={CreateResponseForInstructor}></Route>
+            <Route exact path="/adminSystem/complaints" component={AllComplaints}></Route>
+            <Route exact path="/adminSystem/cottageComplaint/review/:id" component={CreateResponseForCottageComplaint}></Route>
+            <Route exact path="/adminSystem/boatComplaint/review/:id" component={CreateResponseForBoatComplaint}></Route>
+            <Route exact path="/adminSystem/instructionsComplaint/review/:id" component={CreateResponseForInstructionsComplaint}></Route>
+            <Route exact path="/adminSystem/reviews" component={AllReviews}></Route>
+            <Route exact path="/adminSystem/createSystemAdmin" component={CreateSystemAdmin}></Route>
+            <Route exact path="/adminSystem/systemParameters" component={SystemParameters}></Route>
+            <Route exact path="/adminSystem/profile" component={UserProfileAdmin}></Route>
+            <Route exact path="/changePassword/:email" component={ChangePasswordAfterFirstLoginAdmin}></Route>
           </Switch>
         </div>
       </Router>

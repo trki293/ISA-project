@@ -26,7 +26,7 @@ INSERT INTO instructors (id, loyalty_points, statuse_of_user) values (3, 0, 0);
 
 INSERT INTO system_admins (id, is_first_login) values(4, false);
 
-INSERT INTO clients (id, penalty_points, loyalty_points, statuse_of_user) values (5, 0, 0, 0);
+INSERT INTO clients (id, penalty_points, loyalty_points, statuse_of_user, time_of_reseting_penalty_points) values (5, 0, 0, 0, '2022-01-20 20:39');
 
 INSERT INTO boats (id, title, type_of_boat, length, average_grade, deleted, engine_number, engine_power, max_speed, street_name, street_number, city, country, promotional_description, pictures_paths, capacity, rules_of_conduct, price_per_hour, percentage_of_earnings_when_canceling, owner_of_boat_id) values (nextval('my_seq_boat'), 'Brod Galeb', 0, 20.0 , 5.0 , false, 3, 30000, 80, 'Petra II Petrovica', '1', 'Novi Sad', 'Srbija', 'Nesto bezveze', 'Za sad nesto bezveze', 10, 'Gluposti razno-razne', 1000.0, 0.0, 1);
 INSERT INTO boats (id, title, type_of_boat, length, average_grade, deleted, engine_number, engine_power, max_speed, street_name, street_number, city, country, promotional_description, pictures_paths, capacity, rules_of_conduct, price_per_hour, percentage_of_earnings_when_canceling, owner_of_boat_id) values (nextval('my_seq_boat'), 'Brod Verige', 1, 25.0 , 0.0 , false, 2, 20000, 60, 'Petra II Petrovica', '1', 'Novi Sad', 'Srbija', 'Nesto bezveze', 'Za sad nesto bezveze', 15, 'Gluposti razno-razne', 1500.0, 0.0, 1);
@@ -116,3 +116,15 @@ INSERT INTO cottage_reviews (id, cottage_for_review_id) values(1, 1);
 INSERT INTO boat_reviews (id, boat_for_review_id) values (2, 1);
 
 INSERT INTO instructions_reviews (id, instructions_for_review_id) values (3, 1);
+
+INSERT INTO registration_requests (id, email, password, first_name, last_name, phone_number, street_name, street_number, city, country, type_of_user, registration_reason, state_of_request, system_admin_who_review_registration_request_id) values (nextVal('my_seq_registration_request'), 'nikolaaa981@gmail.com', 'nesto123', 'Nikola', 'Stojcevic', '+3876829382732', 'Balzakova', '12a', 'Indjija', 'Srbija', 2, 'Nestooooo', 0, null); 
+
+INSERT INTO reports (id, reporting_client_id, type_of_report, status_of_report, reporting_type) values (nextval('my_seq_report'), 5, 1, 0, 0);
+INSERT INTO reports (id, reporting_client_id, type_of_report, status_of_report, reporting_type) values (nextval('my_seq_report'), 5, 1, 0, 1);
+INSERT INTO reports (id, reporting_client_id, type_of_report, status_of_report, reporting_type) values (nextval('my_seq_report'), 5, 1, 0, 2);
+
+INSERT INTO boat_owner_reports (id, boat_owner_who_create_report_id) values (1,1);
+
+INSERT INTO cottage_owner_reports (id, cottage_owner_who_create_report_id) values (2,2);
+
+INSERT INTO instructor_reports (id, instructor_who_create_report_id) values (3,3);

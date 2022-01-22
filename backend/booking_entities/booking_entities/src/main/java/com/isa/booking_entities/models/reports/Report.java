@@ -34,7 +34,7 @@ public class Report {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Client reportingClient;
 
-	@Column(name = "picturesPaths", unique = false, nullable = true)
+	@Column(name = "content", unique = false, nullable = true)
 	private String content;
 
 	@Enumerated(EnumType.ORDINAL)

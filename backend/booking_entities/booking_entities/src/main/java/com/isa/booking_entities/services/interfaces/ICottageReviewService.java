@@ -16,4 +16,5 @@ public interface ICottageReviewService {
 	CottageReview getById(long id);
 	List<CottageReview> getOnlyPublishedForCottage(Cottage cottage);
 	List<CottageReview> getOnlyPublishedForCottageOwner(CottageOwner cottageOwner);
+	List<CottageReview> getOnlyCottageReviewsForSystemAdmin();
 }

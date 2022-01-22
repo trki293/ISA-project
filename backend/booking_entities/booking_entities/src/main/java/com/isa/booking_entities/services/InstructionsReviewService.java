@@ -74,4 +74,9 @@ public class InstructionsReviewService implements IInstructionsReviewService {
 						&& instructionsReviewIt.getInstructionsForReview().getInstructor().getId() == instructor.getId())
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public List<InstructionsReview> getInstructionsReviewsForSystemAdmin() {
+		return iInstructionsReviewRepository.findAll().stream().filter(instructionsReviewIt -> instructionsReviewIt.getStatusOfReview() == StatusOfReview.CREATED).collect(Collectors.toList());
+	}
 }

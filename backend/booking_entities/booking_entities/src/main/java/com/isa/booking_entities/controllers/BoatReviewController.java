@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.isa.booking_entities.dtos.BoatReviewNewDTO;
 import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.rating.BoatReview;
+import com.isa.booking_entities.models.rating.BoatReview;
 import com.isa.booking_entities.models.rating.StatusOfReview;
 import com.isa.booking_entities.models.reservations.BoatReservation;
 import com.isa.booking_entities.models.users.Client;
@@ -107,6 +108,11 @@ public class BoatReviewController {
 	@GetMapping(value = "/getOnlyPublishedBoatReviewsForBoat/{boatId}")
 	public ResponseEntity<List<BoatReview>> getOnlyPublishedBoatReviewsForBoat(@PathVariable long boatId){
 		return new ResponseEntity<List<BoatReview>>(iBoatReviewService.getOnlyPublishedForBoat(iBoatService.getById(boatId)), HttpStatus.OK) ;
+	}
+	
+	@GetMapping(value = "/getOnlyBoatReviewsForSystemAdmin")
+	public ResponseEntity<List<BoatReview>> getOnlyBoatReviewsForSystemAdmin(){
+		return new ResponseEntity<List<BoatReview>>(iBoatReviewService.getOnlyBoatReviewsForSystemAdmin(), HttpStatus.OK) ;
 	}
 	
 	@GetMapping(value = "/getOnlyPublishedBoatReviewsForBoatOwner/{email}")

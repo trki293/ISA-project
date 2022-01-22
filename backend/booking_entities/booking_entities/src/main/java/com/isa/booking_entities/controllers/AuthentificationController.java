@@ -1,6 +1,7 @@
 package com.isa.booking_entities.controllers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +31,7 @@ import com.isa.booking_entities.dtos.UserLoginDTO;
 import com.isa.booking_entities.dtos.UserTokenStateDTO;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.models.users.ConfirmationToken;
+import com.isa.booking_entities.models.users.TypeOfUser;
 import com.isa.booking_entities.models.users.Users;
 import com.isa.booking_entities.security.TokenUtils;
 import com.isa.booking_entities.services.CustomUserDetailsService;
@@ -101,9 +103,9 @@ public class AuthentificationController {
 		Users user = (Users) authentication.getPrincipal();
 		String jwt = tokenUtils.generateToken(user.getUsername());
 		int expiresIn = tokenUtils.getExpiredIn();
-
+		LocalDateTime lastTimePenaltyPointsReset = userInDB.getTypeOfUser() == TypeOfUser.CLIENT ? iClientService.getById(userInDB.getId()).getTimeOfResetingPenaltyPoints(): null; 
 		// Vrati token kao odgovor na uspesnu autentifikaciju
-		return ResponseEntity.ok(new UserTokenStateDTO(jwt, userInDB.getEmail(), userInDB.getTypeOfUser(), expiresIn));
+		return ResponseEntity.ok(new UserTokenStateDTO(jwt, userInDB.getEmail(), userInDB.getTypeOfUser(), expiresIn, lastTimePenaltyPointsReset));
 	}
 
 	@PostMapping("/registration")
@@ -116,6 +118,7 @@ public class AuthentificationController {
 		}
 		Client client = usersDTOConverter.convertUserCreateDTOToClient(userCreateDTO);
 		client.setAuthorities(iAuthorityService.getByName("ROLE_CLIENT"));
+		client.setTimeOfResetingPenaltyPoints(LocalDateTime.now());
 		iClientService.save(client);
 		Users userCreated = iUsersService.save(client);
 		ConfirmationToken confirmationToken = iConfirmationTokenService.save(new ConfirmationToken(userCreated));

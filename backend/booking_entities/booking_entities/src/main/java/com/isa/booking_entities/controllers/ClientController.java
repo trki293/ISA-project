@@ -1,5 +1,6 @@
 package com.isa.booking_entities.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isa.booking_entities.dtos.UserUpdateDTO;
-import com.isa.booking_entities.models.entites.Boat;
 import com.isa.booking_entities.models.users.Client;
 import com.isa.booking_entities.services.interfaces.IClientService;
 import com.isa.booking_entities.services.interfaces.IUsersService;
@@ -44,6 +44,17 @@ public class ClientController {
 		Client updatedClient = iClientService.updateClient(client, userUpdateDTO);
 		iClientService.save(updatedClient);
 		iUsersService.save(updatedClient);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/checkIfClientNeedResetPenaltyPoints/{clientEmail}")
+	public ResponseEntity<Boolean> checkIfClientNeedResetPenaltyPoints(@PathVariable String clientEmail) {
+		Client client = iClientService.getByEmail(clientEmail);
+		if (LocalDateTime.now().getDayOfMonth()==1 && client.getTimeOfResetingPenaltyPoints().getDayOfMonth()!=1) {
+			client.setTimeOfResetingPenaltyPoints(LocalDateTime.now());
+			client.setPenaltyPoints(0);
+		}
+		iUsersService.save(iClientService.save(client));
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
